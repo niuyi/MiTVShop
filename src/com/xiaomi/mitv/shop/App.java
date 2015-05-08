@@ -16,4 +16,5 @@ public class App extends Application {
     public static App getInstance(){
         return mInstance;
     }
+	
 }
