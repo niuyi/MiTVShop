@@ -28,23 +28,19 @@ public abstract class MyDuokanBaseRequest extends MyBaseRequest {
     @Override
     public void run() {
         Log.i(TAG, "MyScraperRequest run!");
-
         try{
-            doRequest(System.currentTimeMillis()/1000);
-            if(mResponse.getStatus() == 105){
-                // ts is invalid.
-                doRequest(mResponse.getTs());
+            if(!beforeSend()){
+                doRequest(System.currentTimeMillis()/1000);
             }
         }finally {
             reportRequestComplete();
         }
-
     }
 
     private void reportRequestComplete() {
         if(mObserver != null) {
             if (mResponse == null) {
-                mResponse = new DKResponse(DKResponse.STATUS_UNKOWN_ERROR);
+                mResponse = new DKResponse(DKResponse.STATUS_UNKOWN_ERROR, null);
             }
 
             Log.i(TAG, "onRequestCompleted");
@@ -96,19 +92,22 @@ public abstract class MyDuokanBaseRequest extends MyBaseRequest {
             httpClient.addHeader("Accept-Encoding", "gzip,deflate");
             httpClient.addHeader("host", ApiConfig.getServerHost());
 
-            HttpResponse response;
+            HttpResponse httpResponse;
 
             try {
-                response = httpClient.doRequest(request, body == null && params.size() == 0);
+                httpResponse = httpClient.doRequest(request, body == null && params.size() == 0);
                 ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+
                 final int blockSize = 8192;
                 byte[] buffer = new byte[blockSize];
+
                 int count = 0;
-                while((count = response.getContentStream().read(buffer, 0 , blockSize)) > 0) {
+                while((count = httpResponse.getContentStream().read(buffer, 0 , blockSize)) > 0) {
                     byteStream.write(buffer,0, count);
                 }
-                mResponse = parseDKResponse(byteStream.toByteArray(), getResponseType());
-                response.getContentStream().close();
+
+                mResponse = new DKResponse(DKResponse.STATUS_SUCCESS,  new String(buffer, 0, buffer.length, "utf-8"));
+                httpResponse.getContentStream().close();
 
             }catch(Exception e) {
                 mResponse.setStatus(DKResponse.STATUS_SERVER_ERROR);
@@ -120,22 +119,22 @@ public abstract class MyDuokanBaseRequest extends MyBaseRequest {
         }
     }
 
-    private DKResponse parseDKResponse(byte[] buf, Class<?> cls){
-
-        DKResponse res = null;
-
-        try {
-            String json = new String(buf, 0, buf.length, "utf-8");
-            Log.d(TAG, "got response in gzip: " + json);
-
-            res = (DKResponse)JsonSerializer.getInstance().deserialize(json, cls);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return res;
-    }
+//    private DKResponse parseDKResponse(byte[] buf, Class<?> cls){
+//
+//        DKResponse res = null;
+//
+//        try {
+//            String json = new String(buf, 0, buf.length, "utf-8");
+//            Log.d(TAG, "got response in gzip: " + json);
+//
+//            res = (DKResponse)JsonSerializer.getInstance().deserialize(json, cls);
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        return res;
+//    }
 
     private byte[] getBody(){
         Object input = getInput();
@@ -181,7 +180,10 @@ public abstract class MyDuokanBaseRequest extends MyBaseRequest {
         return "/" + locale.toString().replace('_', '/');
     }
 
-    protected abstract Class<?> getResponseType();
+    protected boolean beforeSend(){
+        return false;
+    }
+
     protected abstract Object getInput();
     protected abstract String getPath();
     protected abstract String getParameters();

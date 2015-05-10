@@ -10,15 +10,14 @@ public class DKResponse {
     public static final int STATUS_SERVER_ERROR = 10001;
     public static final int STATUS_UNKOWN_ERROR = 10002;
 
+    public static final String DATA_KEY = "DATA";
+
     private int status;
-    private long ts;
+    private String response;
 
-    public DKResponse() {
-        status = STATUS_SUCCESS;
-    }
-
-    public DKResponse(int status) {
+    public DKResponse(int status, String response) {
         this.status = status;
+        this.response = response;
     }
 
     public int getStatus() {
@@ -29,11 +28,7 @@ public class DKResponse {
         this.status = status;
     }
 
-    public long getTs() {
-        return ts;
-    }
-
-    public void setTs(long ts) {
-        this.ts = ts;
+    public String getResponse(){
+        return response;
     }
 }

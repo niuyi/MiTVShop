@@ -1,4 +1,4 @@
-package com.xiaomi.mitv.shop.com.xiaomi.mitv.shop.db;
+package com.xiaomi.mitv.shop.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

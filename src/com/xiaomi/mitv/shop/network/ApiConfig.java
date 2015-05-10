@@ -19,18 +19,18 @@ public class ApiConfig {
 
     public static String getServerUrl(){
 
-        if(ProductInfo.isHKVersion()){
-            return "http://" + SERVER_HK_HOST;
-        }
+//        if(ProductInfo.isHKVersion()){
+//            return "http://" + SERVER_HK_HOST;
+//        }
 
         return "http://" + SERVER_HOST;
 
     }
 
     public static String getServerHost(){
-        if(ProductInfo.isHKVersion()){
-            return SERVER_HK_HOST;
-        }
+//        if(ProductInfo.isHKVersion()){
+//            return SERVER_HK_HOST;
+//        }
 
         return SERVER_HOST;
     }
