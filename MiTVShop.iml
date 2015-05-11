@@ -13,7 +13,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/gen" isTestSource="false" generated="true" />
     </content>
-    <orderEntry type="jdk" jdkName="Android API 17 Platform" jdkType="Android SDK" />
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">
       <library>
@@ -33,19 +33,19 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library" scope="PROVIDED">
+    <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://D:/work/git/MiTV/Build/libs/jars/MitvAPI.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/picasso-2.5.2.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" scope="PROVIDED">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/libs/picasso-2.5.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../MiTV_master/Build/libs/jars/MitvAPI.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

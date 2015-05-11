@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+       android:background="#ffffff"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top|center_vertical"
+            android:orientation="horizontal" >
+
+        <ImageView
+                android:id="@+id/icon_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="48px"
+                android:layout_marginTop="48px"
+                android:background="@drawable/icon_back_arrow"/>
+
+        <ImageView
+                android:id="@+id/back_v_line"
+                android:layout_width="1px"
+                android:layout_height="96px"
+                android:layout_marginLeft="15px"
+                android:layout_marginRight="15px"
+                android:background="@drawable/line"/>
+
+        <TextView
+                android:id="@+id/title_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="33px"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:singleLine="true"
+                android:text="选择产品"
+                android:textColor="#000000"
+                android:textSize="48px" />
+
+    </LinearLayout>
+
+   <com.xiaomi.mitv.shop.widget.MyListViewEx xmlns:android="http://schemas.android.com/apk/res/android"
+             android:id="@+id/list_view"
+             android:layout_marginTop="120px"
+             android:layout_gravity="center_horizontal"
+             android:layout_width="1700px"
+             android:layout_height="wrap_content"
+             android:scrollbarStyle="outsideOverlay"
+             android:cacheColorHint="@android:color/transparent"
+                 android:listSelector="@android:color/transparent"/>
+
+</FrameLayout>

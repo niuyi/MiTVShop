@@ -4,10 +4,12 @@
     <file url="file://$PROJECT_DIR$/libs/jackson-core-asl-1.6.0.jar" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/libs/jackson-mapper-asl-1.6.0.jar" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/com/xiaomi/mitv/shop/DetailActivity.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/com/xiaomi/mitv/shop/GoodSelectionActivity.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/com/xiaomi/mitv/shop/network/BASE64Encoder.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/com/xiaomi/mitv/shop/network/Hex.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/com/xiaomi/mitv/shop/network/JsonSerializer.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/com/xiaomi/mitv/shop/network/ProductDetailRequest.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/com/xiaomi/mitv/shop/network/Security.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/com/xiaomi/mitv/shop/widget/MyListViewEx.java" charset="UTF-8" />
   </component>
 </project>
