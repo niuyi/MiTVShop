@@ -27,7 +27,7 @@ public class GoodSelectionActivity extends Activity {
         mListView = (MyListViewEx)findViewById(R.id.list_view);
 //        mListView.setAdapter(new L);
         mListView.setAdapter(new MyListAdapter());
-
+        mListView.setSelection(0);
         mLayoutInflater = getLayoutInflater();
     }
 
@@ -43,7 +43,7 @@ public class GoodSelectionActivity extends Activity {
 
         @Override
         public int getCount() {
-            return 4;
+            return 9;
         }
 
         @Override
@@ -75,7 +75,7 @@ public class GoodSelectionActivity extends Activity {
             }
 
             Picasso.with(GoodSelectionActivity.this).load("http://static.home.mi.com/app/shop/img?id=shop_466161732d4d67bb15d3ae550da7c0f8.jpg&t=jpeg&z=1&q=80").into(holder.icon);
-            holder.title.setText("小米手机4");
+            holder.title.setText("小米手机4: "+ position);
             holder.price.setText("1999元");
 
             return convertView;

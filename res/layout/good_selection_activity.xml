@@ -45,9 +45,6 @@
              android:layout_marginTop="120px"
              android:layout_gravity="center_horizontal"
              android:layout_width="1700px"
-             android:layout_height="wrap_content"
-             android:scrollbarStyle="outsideOverlay"
-             android:cacheColorHint="@android:color/transparent"
-                 android:listSelector="@android:color/transparent"/>
+             android:layout_height="wrap_content"/>
 
 </FrameLayout>

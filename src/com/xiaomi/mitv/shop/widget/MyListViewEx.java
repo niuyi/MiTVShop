@@ -1,8 +1,8 @@
 package com.xiaomi.mitv.shop.widget;
 
 import android.animation.ObjectAnimator;
-import android.app.Fragment;
 import android.content.Context;
+import android.graphics.Canvas;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -11,12 +11,10 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
-import android.widget.BaseAdapter;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.ListView;
-import com.xiaomi.mitv.api.util.MILog;
+import android.widget.*;
 import com.xiaomi.mitv.shop.R;
+
+import java.lang.reflect.Field;
 
 /**
  * Created by niuyi on 2015/5/11.
@@ -27,6 +25,9 @@ public class MyListViewEx extends FrameLayout {
     private MyListView mListView;
     private BaseAdapter mListAdapter = null;
     private ImageView mSelectorView;
+    private View mStubView;
+    private Scroller mScroller;
+
     private long mLastKeyTime = 0;
     private int mScrollDuration = 180;
     private int mSelectorDuration = 150;
@@ -34,6 +35,7 @@ public class MyListViewEx extends FrameLayout {
     private ObjectAnimator mSelectorAnimator;
     private float mSelectorTop = 0;
     private int mTopPosition = 0;
+    private float maskTransY = Float.MIN_VALUE;
 
     protected int mHeightDelta = 0;
 
@@ -58,17 +60,19 @@ public class MyListViewEx extends FrameLayout {
         final Context context = getContext();
 
         mListView = new MyListView(context);
-        mListView.setPadding(0, 0, 0, 0);
-        mListView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
-                LayoutParams.MATCH_PARENT));
-
+        mListView.setPadding(40, 0, 40, 0);
+        mListView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
         mListView.setSelector(android.R.color.transparent);
+        mListView.setScrollBarStyle(SCROLLBARS_OUTSIDE_OVERLAY);
+        mListView.setFocusable(true);
 
-        addView(mListView);
+        FrameLayout.LayoutParams para = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+        para.topMargin = 40;
+        addView(mListView, para);
 
         mSelectorView = new ImageView(getContext());
 
-        FrameLayout.LayoutParams para = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 242);
+        para = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 320);
         para.gravity = Gravity.CENTER_HORIZONTAL;
 
 //        mSelectorView.setScaleType(ImageView.ScaleType.FIT_XY);
@@ -76,17 +80,14 @@ public class MyListViewEx extends FrameLayout {
 
         addView(mSelectorView, para);
 
-//        mListView.setFocusable(true);
-//        this.setOnFocusChangeListener(this);
-//        mListView.setOnFocusChangeListener(this);
-//        mStubView = new View(context);
-//        int screenHeight = context.getResources().getDisplayMetrics().heightPixels;
-//        mStubView.setLayoutParams(new ListView.LayoutParams(1, screenHeight));
-//        mListView.addFooterView(mStubView);
-//        setWillNotDraw(false);
-//
-//        mScroller = new Scroller();
-//        mKeyPressHelper.setOnKeyPressListener(this);
+        mStubView = new View(context);
+        int screenHeight = context.getResources().getDisplayMetrics().heightPixels;
+        mStubView.setLayoutParams(new ListView.LayoutParams(1, screenHeight));
+        mListView.addFooterView(mStubView);
+
+        setWillNotDraw(false);
+        mScroller = new Scroller();
+
     }
 
     public void setAdapter(BaseAdapter adapter){
@@ -94,15 +95,28 @@ public class MyListViewEx extends FrameLayout {
         mListView.setAdapter(adapter);
     }
 
+    public void setSelection(int selection){
+        Log.d(TAG, "set selection to " + selection);
+        mSelection = selection;
+        invalidateSelection();
+    }
+
+    private void invalidateSelection(){
+        maskTransY = Float.MIN_VALUE;
+        invalidate();
+    }
+
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         if(event.getAction() == KeyEvent.ACTION_DOWN){
             if(event.getKeyCode() == KeyEvent.KEYCODE_DPAD_UP ||
                     event.getKeyCode() == KeyEvent.KEYCODE_DPAD_DOWN){
-                if(System.currentTimeMillis() - mLastKeyTime > mScrollDuration - 5){
-                    mLastKeyTime = System.currentTimeMillis();
-                    handleUpDownKey(event);
-                }
+//                if(System.currentTimeMillis() - mLastKeyTime > mScrollDuration - 5){
+//                    mLastKeyTime = System.currentTimeMillis();
+//                    handleUpDownKey(event);
+//                }
+
+                handleUpDownKey(event);
                 return true;
             }
         }else if(event.getAction() == KeyEvent.ACTION_DOWN &&
@@ -120,76 +134,54 @@ public class MyListViewEx extends FrameLayout {
                 mSelection--;
                 postSelection();
                 View selectionView = getSelectionView(mSelection);
-                handleUpKey(selectionView);
+                if(selectionView != null){
+                    float targetY = calcSelector(selectionView);
+                    moveSelector(targetY);
+                    return;
+                }
+
+                mTopPosition = mSelection;
+                mScroller.scrollTo(mSelection, mScrollDuration);
             }
         }else if(event.getKeyCode() == KeyEvent.KEYCODE_DPAD_DOWN){
             if(mSelection >= 0 && mSelection < mListView.getCount() - 2){
-                int oldSeletion = mSelection;
                 mSelection++;
                 postSelection();
-                handleDownKey();
-            }
-        }
-    }
-
-    private void handleUpKey(View selectionView){
-        if(selectionView != null){
-            float targetY = calcSelector(selectionView);
-            Log.d(TAG, "selectionView top = " + selectionView.getTop());
-            moveSelector(targetY);
-        }else{
-            mTopPosition = mSelection;
-//            mScroller.scrollTo(mSelection, mScrollDuration);
-        }
-    }
-
-    private void handleDownKey(){
-
-        Log.d(TAG, "move selection to = " + mSelection);
-        View selectionView = getSelectionView(mSelection);
-        if(selectionView != null){
-            float targetY = calcSelector(selectionView);
-            Log.d(TAG, "selectionView top = " + selectionView.getTop());
-            moveSelector(targetY);
-        }else{
-            mTopPosition++;
-            mListView.smoothScrollToPositionFromTop(mTopPosition, 0, mScrollDuration);
-//            setLinearInterpolator();
-            if(mTopPosition == 1){//这是为了避免header跟别的child尺寸不一样
-                if(mListView.getChildAt(0) != null && mListView.getChildAt(1) != null){
-                    int deltaHeight = mListView.getChildAt(0).getHeight() - mListView.getChildAt(1).getHeight();
-                    if(deltaHeight > 10){
-                        float adjustY = mSelectorView.getTranslationY() - deltaHeight;
-                        if((mSelectorAnimator != null) && mSelectorAnimator.isRunning()){
-                            adjustY = mSelectorTop - deltaHeight;
-                        }
-
-                        moveSelector(adjustY);
-                    }
+                Log.d(TAG, "move selection to = " + mSelection);
+                View selectionView = getSelectionView(mSelection);
+                if(selectionView != null){
+                    float targetY = calcSelector(selectionView);
+                    Log.d(TAG, "selectionView top = " + selectionView.getTop());
+                    moveSelector(targetY);
+                    return;
                 }
+                mTopPosition++;
+                mListView.smoothScrollToPositionFromTop(mTopPosition, 0, mScrollDuration);
+                setLinearInterpolator();
             }
         }
     }
 
     private float calcSelector(View selectionView){
         Log.i(TAG, "calcSelector: " + mSelection);
-
-        if(mSelection == 0){
-            return selectionView.getTop();
-        }else{
-            int top = selectionView.getTop();
-            return top - 1;//一个像素的矫正
-        }
+        return selectionView.getTop();
+//        if(mSelection == 0){
+//            return selectionView.getTop() - 38;
+//        }else{
+//            int top = selectionView.getTop() - 38;
+//            return top - 1;//一锟斤拷锟斤拷锟截的斤拷锟斤拷
+//        }
     }
 
 
     public void postSelection(){
 //        onSelectionChanged();
-        mHandler.removeCallbacks(mUpdateSelection);
-        mHandler.postDelayed(mUpdateSelection, mScrollDuration + 300);
+//        mHandler.removeCallbacks(mUpdateSelection);
+//        mHandler.postDelayed(mUpdateSelection, mScrollDuration + 300);
     }
 
     private void moveSelector(float targetY){
+
         if(mSelectorAnimator != null){
             mSelectorAnimator.cancel();
         }
@@ -214,6 +206,30 @@ public class MyListViewEx extends FrameLayout {
             }
         }
         return null;
+    }
+
+    @Override
+    public void draw(Canvas canvas) {
+        Log.i(TAG, "draw");
+
+        super.draw(canvas);
+        if(maskTransY == Float.MIN_VALUE){
+            View selectionView = getSelectionView(mSelection);
+            if(selectionView != null){
+                mSelectorView.setVisibility(View.VISIBLE);
+                maskTransY = calcSelector(selectionView);
+                mSelectorView.setTranslationY(maskTransY);
+            }else{
+                if(mSelection >= 0 && mSelection < mListView.getCount() - 1){
+                    mListView.setSelectionFromTop(mSelection, 0);
+                    mTopPosition = mSelection;
+                }
+            }
+        }
+        if(mSelection < 0 || mSelection >= mListView.getCount() - 1 || mListView.getCount() <= 0){
+            if(mSelectorView.getVisibility() == View.VISIBLE){
+                mSelectorView.setVisibility(View.INVISIBLE);            }
+        }
     }
 
     private Runnable mUpdateSelection = new Runnable() {
@@ -249,6 +265,91 @@ public class MyListViewEx extends FrameLayout {
 //            setSelection(mTopPosition);
 //            MILog.d(TAG, "onLayout: set top position = " + mTopPosition);
             super.onLayout(changed, l, t, r, b);
+        }
+    }
+
+    private class Scroller implements Runnable{
+
+        private final static int INVALID_POS = -1;
+        private int mTargetPos = INVALID_POS;
+        private int mLastFirstPos = INVALID_POS;
+        private int mDuration = 200;
+
+        public void scrollTo(int position, int duration){
+            if(mListView.getChildCount() == 1 || position < 0 || position >= mListView.getCount()){
+                return;
+            }
+            mHandler.removeCallbacks(this);
+            mDuration = duration;
+            mTargetPos = position;
+            boolean isHandled = handleScroll();
+            mLastFirstPos = mListView.getFirstVisiblePosition();
+            if(!isHandled){
+                mHandler.post(this);
+            }
+        }
+
+        public void stop(){
+            mListView.setScrollY(0);
+            mListView.smoothScrollBy(0, 0);
+            mHandler.removeCallbacks(this);
+        }
+
+        @Override
+        public void run() {
+            if(mLastFirstPos == INVALID_POS){
+                mHandler.removeCallbacks(this);
+                return;
+            }
+            int firstPos = mListView.getFirstVisiblePosition();
+            if(mLastFirstPos == firstPos){
+                mHandler.post(this);
+                return;
+            }
+            mLastFirstPos = firstPos;
+            boolean isHandled = handleScroll();
+            if(!isHandled){
+                mHandler.post(this);
+            }else{
+                mHandler.removeCallbacks(this);
+                mLastFirstPos = INVALID_POS;
+            }
+        }
+        private boolean handleScroll(){
+            int firstPos = mListView.getFirstVisiblePosition();
+            int lastPos = firstPos + mListView.getChildCount() - 1;
+            if(mTargetPos >= firstPos && mTargetPos <= lastPos){
+                int targetTop = (int) mListView.getChildAt(mTargetPos - firstPos).getTop();
+                if(targetTop != 0){
+                    mListView.smoothScrollBy(targetTop, mDuration);
+                    setLinearInterpolator();
+                    return true;
+                }
+            }else if(mTargetPos < firstPos){
+                mListView.smoothScrollBy(-mListView.getChildAt(0).getHeight(), mDuration);
+                setLinearInterpolator();
+            }else if(mTargetPos > lastPos){
+                mListView.smoothScrollBy(mListView.getChildAt(0).getHeight(), mDuration);
+                setLinearInterpolator();
+            }
+            return false;
+        }
+    }
+
+    private void setLinearInterpolator(){
+        try {
+            Field flingField = AbsListView.class.getDeclaredField("mFlingRunnable");
+            flingField.setAccessible(true);
+            Object flingObject = flingField.get(mListView);
+            Class<?> flingRunnableClass = Class.forName("android.widget.AbsListView$FlingRunnable");
+            Field scrollerField = flingRunnableClass.getDeclaredField("mScroller");
+            scrollerField.setAccessible(true);
+            Object scroller = scrollerField.get(flingObject);
+            Field interpolatorField = OverScroller.class.getDeclaredField("mInterpolator");
+            interpolatorField.setAccessible(true);
+            interpolatorField.set(scroller, new LinearInterpolator());
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
         }
     }
 }
