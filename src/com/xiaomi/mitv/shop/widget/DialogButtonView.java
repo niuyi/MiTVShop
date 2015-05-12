@@ -1,14 +1,12 @@
 package com.xiaomi.mitv.shop.widget;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.*;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.ToggleButton;
+import android.widget.*;
 import com.xiaomi.mitv.shop.R;
 
 import java.util.List;
@@ -20,12 +18,11 @@ public class DialogButtonView extends LinearLayout {
 
     final private String TAG = "DialogButtonView";
 
-    private ButtonOnClickListener mButtonOnClickListener;
     private OnItemClickListener mListener;
     private List<? extends CharSequence> mButtonNames;
     private CharSequence mTitle;
 
-    private LinearLayout mButtonContainer;
+    private RadioGroup mButtonContainer;
     private int mSelectedIndex = -1;
 
     public DialogButtonView(Context context) {
@@ -55,112 +52,54 @@ public class DialogButtonView extends LinearLayout {
         TextView title = (TextView) findViewById(R.id.item_title);
         title.setText(mTitle);
 
-        mButtonContainer = (LinearLayout) findViewById(R.id.item_container);
-        mButtonOnClickListener = new ButtonOnClickListener();
+        mButtonContainer = (RadioGroup) findViewById(R.id.item_container);
 
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+        RadioGroup.LayoutParams params = new RadioGroup.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.rightMargin = 32;
+        params.rightMargin = 60;
         params.gravity = Gravity.CENTER_VERTICAL;
 
-        mButtonContainer.setOnFocusChangeListener(new OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                Log.i(TAG, "mButtonContainer onFocusChange: view: " + v.getTag() + " ,hasFocus:" + hasFocus);
-                if(hasFocus){
-
-                }
-            }
-        });
-
         for (int i = 0; i < mButtonNames.size(); ++i) {
-            ToggleButton btn = new ToggleButton(getContext());
+            RadioButton btn = new RadioButton(getContext());
             btn.setTag(i);
 
             btn.setText(mButtonNames.get(i));
-            btn.setTextOff(mButtonNames.get(i));
-            btn.setTextOn(mButtonNames.get(i));
-
+            btn.setTextColor(Color.BLACK);
+            btn.setButtonDrawable(android.R.color.transparent);
             btn.setBackgroundResource(R.drawable.device_shop_dialog_btn_selector);
             mButtonContainer.addView(btn, params);
-
-            btn.setOnFocusChangeListener(new OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View v, boolean hasFocus) {
-                    Log.i(TAG, "onFocusChange: view: " + v.getTag() + " ,hasFocus:" + hasFocus);
-                    ToggleButton button = (ToggleButton)v;
-                    if(hasFocus){
-                        mSelectedIndex = ((Integer)v.getTag()).intValue();
-
-                        for (int i = 0; i < mButtonContainer.getChildCount(); ++i) {
-                            ToggleButton b = (ToggleButton)mButtonContainer.getChildAt(i);
-                            b.setChecked(false);
-                        }
-
-                        button.setChecked(true);
-                    }
-                }
-            });
-        }
-    }
-
-//    @Override
-//    public boolean dispatchKeyEvent(KeyEvent event) {
-//        Log.i(TAG, this.getTag() + " , dispatchKeyEvent: " + event);
+//            btn.setOnFocusChangeListener(new OnFocusChangeListener() {
+//                @Override
+//                public void onFocusChange(View v, boolean hasFocus) {
+//                    Log.i(TAG, "onFocusChange: view: " + v.getTag() + " ,hasFocus:" + hasFocus);
 //
-////        if(event.getAction() == KeyEvent.ACTION_DOWN
-////                && event.getKeyCode() == KeyEvent.KEYCODE_DPAD_LEFT){
-////            if(mSelectedIndex > 0){
-////                mSelectedIndex --;
-////                updateSelection();
-////            }
-////        }else if(event.getAction() == KeyEvent.ACTION_DOWN
-////                && event.getKeyCode() == KeyEvent.KEYCODE_DPAD_RIGHT){
-////            if(mSelectedIndex < mButtonContainer.getChildCount() - 1){
-////                mSelectedIndex ++;
-////                updateSelection();
-////            }
-////        }
+//                    ToggleButton button = (ToggleButton)v;
+//                    if(hasFocus){
+//                        mSelectedIndex = ((Integer)v.getTag()).intValue();
 //
-//        return super.dispatchKeyEvent(event);
-//    }
-
-    private void updateSelection() {
-        Log.i(TAG, "updateSelection: " + mSelectedIndex);
-
-        Button b = getCurrentButton();
-        if(b != null){
-            b.setSelected(true);
+//                        for (int i = 0; i < mButtonContainer.getChildCount(); ++i) {
+//                            ToggleButton b = (ToggleButton)mButtonContainer.getChildAt(i);
+//                            b.setChecked(false);
+//                        }
+//
+//                        button.setChecked(true);
+//                    }
+//                }
+//            });
         }
     }
 
-    public void setSelected(){
-        Log.i(TAG, "setSelected: " + mSelectedIndex);
-        Button b = getCurrentButton();
-        if(b != null){
-           b.setSelected(true);
-        }
-    }
-
-    private ToggleButton getCurrentButton() {
-        if(mSelectedIndex >= 0 && mSelectedIndex <= mButtonContainer.getChildCount() - 1){
-            return (ToggleButton)mButtonContainer.getChildAt(mSelectedIndex);
-        }
+    private RadioButton getCurrentButton() {
+//        if(mSelectedIndex >= 0 && mSelectedIndex <= mButtonContainer.getChildCount() - 1){
+//            return (ToggleButton)mButtonContainer.getChildAt(mSelectedIndex);
+//        }
 
         return null;
     }
 
-    public void setFocus(){
-        mButtonContainer.requestFocus();
-        ToggleButton b = getCurrentButton();
-        if(b != null){
-           b.requestFocus();
-        }
-    }
-
     public String getSelected(){
-        ToggleButton b = getCurrentButton();
+        RadioButton b = getCurrentButton();
         if(b != null){
             return b.getTag().toString();
         }
