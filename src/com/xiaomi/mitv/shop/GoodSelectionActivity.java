@@ -3,6 +3,7 @@ package com.xiaomi.mitv.shop;
 import android.app.Activity;
 import android.database.DataSetObserver;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import com.xiaomi.mitv.shop.widget.MyListViewEx;
  */
 public class GoodSelectionActivity extends Activity {
 
+    private static final String TAG = "MyListViewEx";
     private MyListViewEx mListView;
     private LayoutInflater mLayoutInflater;
     
@@ -27,7 +29,16 @@ public class GoodSelectionActivity extends Activity {
         mListView = (MyListViewEx)findViewById(R.id.list_view);
 //        mListView.setAdapter(new L);
         mListView.setAdapter(new MyListAdapter());
-        mListView.setSelection(0);
+//        mListView.setSelection(0);
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                int sel = mListView.getSelection();
+                Log.i(TAG, "sel: " + sel);
+            }
+        });
+
+
         mLayoutInflater = getLayoutInflater();
     }
 
