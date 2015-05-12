@@ -18,7 +18,7 @@ public class DialogButtonView extends LinearLayout {
 
     final private String TAG = "DialogButtonView";
 
-    private OnItemClickListener mListener;
+    private OnItemCheckedListener mListener;
     private List<? extends CharSequence> mButtonNames;
     private CharSequence mTitle;
 
@@ -62,38 +62,78 @@ public class DialogButtonView extends LinearLayout {
 
         for (int i = 0; i < mButtonNames.size(); ++i) {
             RadioButton btn = new RadioButton(getContext());
-            btn.setTag(i);
+            btn.setTag(mTitle + ":" + i);
 
             btn.setText(mButtonNames.get(i));
             btn.setTextColor(Color.BLACK);
             btn.setButtonDrawable(android.R.color.transparent);
             btn.setBackgroundResource(R.drawable.device_shop_dialog_btn_selector);
             mButtonContainer.addView(btn, params);
-//            btn.setOnFocusChangeListener(new OnFocusChangeListener() {
-//                @Override
-//                public void onFocusChange(View v, boolean hasFocus) {
-//                    Log.i(TAG, "onFocusChange: view: " + v.getTag() + " ,hasFocus:" + hasFocus);
-//
-//                    ToggleButton button = (ToggleButton)v;
-//                    if(hasFocus){
-//                        mSelectedIndex = ((Integer)v.getTag()).intValue();
-//
-//                        for (int i = 0; i < mButtonContainer.getChildCount(); ++i) {
-//                            ToggleButton b = (ToggleButton)mButtonContainer.getChildAt(i);
-//                            b.setChecked(false);
-//                        }
-//
-//                        button.setChecked(true);
-//                    }
-//                }
-//            });
+            btn.setOnFocusChangeListener(new OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    Log.i(TAG, "onFocusChange: view: " + v.getTag() + " ,hasFocus:" + hasFocus);
+
+                    if(hasFocus){
+                        RadioButton button = (RadioButton)v;
+                        mSelectedIndex = Integer.valueOf(((String)v.getTag()).split(":")[1]);
+                        button.setChecked(true);
+
+                        if(mListener != null){
+                            mListener.onChecked((DialogButtonView)v, mSelectedIndex);
+                        }
+                    }
+                }
+            });
         }
     }
 
-    private RadioButton getCurrentButton() {
-//        if(mSelectedIndex >= 0 && mSelectedIndex <= mButtonContainer.getChildCount() - 1){
-//            return (ToggleButton)mButtonContainer.getChildAt(mSelectedIndex);
+
+    @Override
+    public View focusSearch(View focused, int direction) {
+        View v = super.focusSearch(focused, direction);
+        Log.i(TAG, "focusSearch: " + focused.getTag() + " dir: " + direction + " title: " + mTitle + " new v: " + v.getTag());
+        return v;
+//        if(direction == FOCUS_UP || direction == FOCUS_DOWN){
+//            RadioButton currentButton = getCurrentButton();
+//            if(currentButton != null){
+//                Log.i(TAG, "focusSearch: " + currentButton.getTag());
+//            }else{
+//                Log.i(TAG, "focusSearch: " + currentButton);
+//            }
+//            if(currentButton != null){
+//                currentButton.requestFocus();
+//                return currentButton;
+//            }
 //        }
+//
+//        return super.focusSearch(focused, direction);
+    }
+
+    @Override
+    public View getFocusedChild() {
+        Log.i(TAG, "getFocusedChild");
+        return super.getFocusedChild();
+    }
+
+    @Override
+    public View findFocus() {
+        View v = super.findFocus();
+        Log.i(TAG, "findFocus: " + v.getTag());
+
+        return v;
+    }
+
+    @Override
+    public void requestChildFocus(View child, View focused) {
+        Log.i(TAG, "requestChildFocus: " + child.getTag() + " f:" + focused.getTag());
+        super.requestChildFocus(child, focused);
+    }
+
+    private RadioButton getCurrentButton() {
+        if(mSelectedIndex >= 0 && mSelectedIndex <= mButtonContainer.getChildCount() - 1){
+            return (RadioButton)mButtonContainer.getChildAt(mSelectedIndex);
+        }
 
         return null;
     }
@@ -116,7 +156,7 @@ public class DialogButtonView extends LinearLayout {
         mButtonNames = names;
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener) {
+    public void setOnItemCheckedListener(OnItemCheckedListener listener) {
         mListener = listener;
     }
 
@@ -171,15 +211,7 @@ public class DialogButtonView extends LinearLayout {
         return -1;
     }
 
-    public interface OnItemClickListener {
-        public void onClick(DialogButtonView view, int pos);
-    }
-
-    private class ButtonOnClickListener implements OnClickListener {
-        @Override
-        public void onClick(View v) {
-            int pos = (Integer) v.getTag();
-            mListener.onClick(DialogButtonView.this, pos);
-        }
+    public interface OnItemCheckedListener {
+        public void onChecked(DialogButtonView view, int pos);
     }
 }

@@ -56,7 +56,7 @@ public class MyActivity extends Activity {
 //                }
 //            });
 
-            view.setItemTitle("index: " + i);
+            view.setItemTitle(String.valueOf(i));
 
             List<String> names = new ArrayList<String>();
             names.add("红色");
