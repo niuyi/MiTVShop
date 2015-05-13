@@ -198,10 +198,10 @@ public class MyActivity extends Activity implements DialogButtonView.OnItemCheck
         if(pos < 0)
             return;
 
-        if(pos > 0){
-            DialogButtonView dialogButtonView = mViews.get(pos - 1);
-            dialogButtonView.setAllNextFocusDownId(button.getId());
-        }
+//        if(pos > 0){
+//            DialogButtonView dialogButtonView = mViews.get(pos - 1);
+//            dialogButtonView.setAllNextFocusDownId(button.getId());
+//        }
 
         if(pos < mViews.size() - 1){
             DialogButtonView dialogButtonView = mViews.get(pos + 1);

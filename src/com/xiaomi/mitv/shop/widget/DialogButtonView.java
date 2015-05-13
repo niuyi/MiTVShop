@@ -208,10 +208,13 @@ public class DialogButtonView extends LinearLayout {
     public void updateStatus(final ProductDetail.Node node) {
         Log.i(TAG, "updateStatus: " + getTag());
 
+        mButtonContainer.clearCheck();
+
         for (int i = 0; i < mButtonContainer.getChildCount(); i++) {
             RadioButton button = (RadioButton)mButtonContainer.getChildAt(i);
             ProductDetail.Option op = (ProductDetail.Option) button.getTag();
             ProductDetail.Node currentNode = ProductDetail.findNodeById(node, op.id);
+//            button.setChecked(false);
 
             if(currentNode != null && currentNode.valid){
                 Log.i(TAG, "enable true: " + op.id);
@@ -221,7 +224,7 @@ public class DialogButtonView extends LinearLayout {
                 Log.i(TAG, "enable false: " + op.id);
                 button.setFocusable(false);
                 button.setEnabled(false);
-                button.setChecked(false);
+//                button.setChecked(false);
             }
 
 //            if(currentNode != null){
