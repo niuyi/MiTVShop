@@ -213,18 +213,29 @@ public class DialogButtonView extends LinearLayout {
             ProductDetail.Option op = (ProductDetail.Option) button.getTag();
             ProductDetail.Node currentNode = ProductDetail.findNodeById(node, op.id);
 
-            if(currentNode != null){
-                if(currentNode.valid){
-                    Log.i(TAG, "enable true: " + op.id);
-                    button.setFocusable(true);
-                    button.setEnabled(true);
-                }else{
-                    Log.i(TAG, "enable false: " + op.id);
-                    button.setFocusable(false);
-                    button.setEnabled(false);
-                    button.setChecked(false);
-                }
+            if(currentNode != null && currentNode.valid){
+                Log.i(TAG, "enable true: " + op.id);
+                button.setFocusable(true);
+                button.setEnabled(true);
+            }else{
+                Log.i(TAG, "enable false: " + op.id);
+                button.setFocusable(false);
+                button.setEnabled(false);
+                button.setChecked(false);
             }
+
+//            if(currentNode != null){
+//                if(currentNode.valid){
+//                    Log.i(TAG, "enable true: " + op.id);
+//                    button.setFocusable(true);
+//                    button.setEnabled(true);
+//                }else{
+//                    Log.i(TAG, "enable false: " + op.id);
+//                    button.setFocusable(false);
+//                    button.setEnabled(false);
+//                    button.setChecked(false);
+//                }
+//            }
         }
 
     }

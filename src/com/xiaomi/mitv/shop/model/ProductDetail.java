@@ -59,7 +59,7 @@ public class ProductDetail {
                 }
 
                 Node result = findNodeById(node.child, id);
-                if(result != null){
+                if(result != null && result.valid){
                     return result;
                 }
             }

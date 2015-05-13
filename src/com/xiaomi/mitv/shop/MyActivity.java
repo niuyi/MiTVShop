@@ -65,7 +65,8 @@ public class MyActivity extends Activity implements DialogButtonView.OnItemCheck
         }
 
         mButton = new Button(this);
-        mButton.setText("submit");
+        mButton.setText("Buy");
+        mButton.setEnabled(false);
 
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -223,7 +224,20 @@ public class MyActivity extends Activity implements DialogButtonView.OnItemCheck
         Log.i(TAG, "gid: " + node.gid);
         if(!TextUtils.isEmpty(node.gid)){
             String text = mDetail.goods_status.get(node.gid);
-            mButton.setText(text);
+
+            if("1".equalsIgnoreCase(text)){
+                mButton.setFocusable(true);
+                mButton.setEnabled(true);
+                mButton.setText("Buy");
+            }else{
+                mButton.setFocusable(false);
+                mButton.setEnabled(false);
+                mButton.setText("No Goods");
+            }
+        }else{
+            mButton.setFocusable(false);
+            mButton.setEnabled(false);
+            mButton.setText("Buy");
         }
     }
 
