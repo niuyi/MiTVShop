@@ -1,0 +1,133 @@
+{
+  "status": 0,
+  "data": {
+    "goods_status": {
+      "2151700019": "立即购买",
+      "2151400205": "暂时缺货"
+    },
+    "props_def": [
+      {
+        "name": "颜色",
+        "level": 1,
+        "options": [
+          {
+            "id": 1,
+            "name": "白色"
+          },
+          {
+            "id": 2,
+            "name": "亮白"
+          }
+        ]
+      },
+      {
+        "name": "制式",
+        "level": 2,
+        "options": [
+          {
+            "id": 3,
+            "name": "移动4G"
+          },
+          {
+            "id": 4,
+            "name": "联通4G"
+          },
+          {
+            "id": 5,
+            "name": "电信4G"
+          }
+        ]
+      },
+      {
+        "name": "容量",
+        "level": 3,
+        "options": [
+          {
+            "id": 8,
+            "name": "16G"
+          },
+          {
+            "id": 7,
+            "name": "64G"
+          }
+        ]
+      }
+    ],
+    "props_tree": [
+      {
+        "icon": "xxxx",
+        "poster": "xxxx",
+        "valid": true,
+        "child": [
+          {
+            "icon": "xxxx",
+            "valid": false,
+            "id": 3
+          },
+          {
+            "icon": "xxxx",
+            "valid": true,
+            "child": [
+              {
+                "value": "16G",
+                "icon": "xxxx",
+                "valid": true,
+                "id": 8,
+                "gid": "2151400205"
+              },
+              {
+                "value": "64G",
+                "icon": "xxxx",
+                "valid": false,
+                "id": 7
+              }
+            ],
+            "id": 4
+          },
+          {
+            "icon": "xxxx",
+            "valid": false,
+            "id": 5
+          }
+        ],
+        "id": 1
+      },
+      {
+        "icon": "xxxx",
+        "poster": "xxxx",
+        "valid": true,
+        "child": [
+          {
+            "icon": "xxxx",
+            "valid": true,
+            "child": [
+              {
+                "icon": "xxxx",
+                "valid": false,
+                "id": 8
+              },
+              {
+                "icon": "xxxx",
+                "valid": true,
+                "id": 7,
+                "gid": "2151700019"
+              }
+            ],
+            "id": 3
+          },
+          {
+            "icon": "xxxx",
+            "valid": false,
+            "id": 4
+          },
+          {
+            "icon": "xxxx",
+            "valid": false,
+            "id": 5
+          }
+        ],
+        "id": 2
+      }
+    ]
+  }
+}

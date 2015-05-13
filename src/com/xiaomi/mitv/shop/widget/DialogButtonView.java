@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import com.xiaomi.mitv.shop.R;
+import com.xiaomi.mitv.shop.model.ProductDetail;
 
 import java.util.List;
 
@@ -25,6 +26,15 @@ public class DialogButtonView extends LinearLayout {
     private RadioGroup mButtonContainer;
     private int mSelectedIndex = -1;
 
+    private ProductDetail.Option mCurrentNode = null;
+
+    private ProductDetail.Prop mProp;
+    private Object option;
+
+    public void setProp(ProductDetail.Prop p){
+        this.mProp = p;
+    }
+
     public DialogButtonView(Context context) {
         super(context);
     }
@@ -38,7 +48,7 @@ public class DialogButtonView extends LinearLayout {
     }
 
     public void inflate() {
-        if (TextUtils.isEmpty(mTitle) || mButtonNames == null) {
+        if (mProp == null) {
             Log.i(TAG, "title || button names is null!");
             return;
         }
@@ -50,7 +60,7 @@ public class DialogButtonView extends LinearLayout {
         Log.i(TAG, "init!");
 
         TextView title = (TextView) findViewById(R.id.item_title);
-        title.setText(mTitle);
+        title.setText(mProp.name);
 
         mButtonContainer = (RadioGroup) findViewById(R.id.item_container);
 
@@ -60,33 +70,39 @@ public class DialogButtonView extends LinearLayout {
         params.rightMargin = 60;
         params.gravity = Gravity.CENTER_VERTICAL;
 
-        for (int i = 0; i < mButtonNames.size(); ++i) {
-            RadioButton btn = new RadioButton(getContext());
-            btn.setTag(mTitle + ":" + i);
-            btn.setId(Integer.valueOf(mTitle.toString()).intValue() * 10000 + i);
+        if(mProp.options != null){
+            for(ProductDetail.Option op : mProp.options){
+                RadioButton btn = new RadioButton(getContext());
 
-            btn.setText(mButtonNames.get(i));
-            btn.setTextColor(Color.BLACK);
-            btn.setButtonDrawable(android.R.color.transparent);
-            btn.setBackgroundResource(R.drawable.device_shop_dialog_btn_selector);
-            mButtonContainer.addView(btn, params);
-            btn.setOnFocusChangeListener(new OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View v, boolean hasFocus) {
-                    Log.i(TAG, "onFocusChange: view: " + v.getTag() + " ,hasFocus:" + hasFocus);
+                btn.setTag(op);
+                btn.setId(op.id);
+                btn.setText(op.name);
 
-                    if(hasFocus){
-                        RadioButton button = (RadioButton)v;
-                        mSelectedIndex = Integer.valueOf(((String)v.getTag()).split(":")[1]);
-                        button.setChecked(true);
+                btn.setTextColor(Color.BLACK);
+                btn.setButtonDrawable(android.R.color.transparent);
+                btn.setBackgroundResource(R.drawable.device_shop_dialog_btn_selector);
+                btn.setOnFocusChangeListener(new OnFocusChangeListener() {
+                    @Override
+                    public void onFocusChange(View v, boolean hasFocus) {
+                        Log.i(TAG, "onFocusChange: view: " + v.getTag() + " ,hasFocus:" + hasFocus);
 
-                        if(mListener != null){
-                            mListener.onChecked(DialogButtonView.this, button);
+                        if (hasFocus) {
+                            RadioButton button = (RadioButton) v;
+
+                            mCurrentNode = (ProductDetail.Option) button.getTag();
+                            button.setChecked(true);
+
+                            if (mListener != null) {
+                                mListener.onChecked(DialogButtonView.this, button);
+                            }
                         }
                     }
-                }
-            });
+                });
+
+                mButtonContainer.addView(btn, params);
+            }
         }
+
     }
 
 
@@ -173,16 +189,44 @@ public class DialogButtonView extends LinearLayout {
 
     public void setAllNextFocusDownId(int id) {
         Log.i(TAG, "setAllNextFocusDownId: " + id + " ,for: " + getTag());
-        for (int i = 0; i < mButtonContainer.getChildCount(); ++i) {
+        for (int i = 0; i < mButtonContainer.getChildCount(); i++) {
             mButtonContainer.getChildAt(i).setNextFocusDownId(id);
         }
     }
 
     public void setAllNextFocusUpId(int id) {
         Log.i(TAG, "setAllNextFocusUpId: " + id + " ,for: " + getTag());
-        for (int i = 0; i < mButtonContainer.getChildCount(); ++i) {
+        for (int i = 0; i < mButtonContainer.getChildCount(); i++) {
             mButtonContainer.getChildAt(i).setNextFocusUpId(id);
         }
+    }
+
+    public void setFocus() {
+        mButtonContainer.getChildAt(0).requestFocus();
+    }
+
+    public void updateStatus(final ProductDetail.Node node) {
+        Log.i(TAG, "updateStatus: " + getTag());
+
+        for (int i = 0; i < mButtonContainer.getChildCount(); i++) {
+            RadioButton button = (RadioButton)mButtonContainer.getChildAt(i);
+            ProductDetail.Option op = (ProductDetail.Option) button.getTag();
+            ProductDetail.Node currentNode = ProductDetail.findNodeById(node, op.id);
+
+            if(currentNode != null){
+                if(currentNode.valid){
+                    Log.i(TAG, "enable true: " + op.id);
+                    button.setFocusable(true);
+                    button.setEnabled(true);
+                }else{
+                    Log.i(TAG, "enable false: " + op.id);
+                    button.setFocusable(false);
+                    button.setEnabled(false);
+                    button.setChecked(false);
+                }
+            }
+        }
+
     }
 
     public interface OnItemCheckedListener {
