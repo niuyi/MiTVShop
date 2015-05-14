@@ -5,12 +5,14 @@ import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.xiaomi.mitv.shop.model.ProductDetail;
 import com.xiaomi.mitv.shop.network.DKResponse;
 import com.xiaomi.mitv.shop.widget.DialogButtonView;
+import com.xiaomi.mitv.shop.widget.GoodSelectionWindow;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -63,10 +65,11 @@ public class MyActivity extends Activity implements DialogButtonView.OnItemCheck
             mContainer.addView(view);
             mViews.add(view);
         }
-
+//
         mButton = new Button(this);
         mButton.setText("Buy");
-        mButton.setEnabled(false);
+        mButton.requestFocus();
+//        mButton.setEnabled(false);
 
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,6 +111,7 @@ public class MyActivity extends Activity implements DialogButtonView.OnItemCheck
                 printNode(node, 1);
             }
 
+            detail.name = "小米手机4电信4G版2GB内存 白色 16G";
             return detail;
 
 
@@ -139,48 +143,51 @@ public class MyActivity extends Activity implements DialogButtonView.OnItemCheck
     }
 
     public void onSubmit(View view){
-        AssetManager assetManager = getAssets();
-        ByteArrayOutputStream outputStream = null;
-        InputStream inputStream = null;
-        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-        try {
-            inputStream = assetManager.open("detail.json");
-            final int blockSize = 8192;
-            byte[] buffer = new byte[blockSize];
-            int count = 0;
-            while((count = inputStream.read(buffer, 0, blockSize)) > 0) {
-                byteStream.write(buffer,0, count);
-            }
-        } catch (IOException e) {
-        }
 
-        try {
-            byte[] bytes = byteStream.toByteArray();
-            String json = new String(bytes, 0, bytes.length, "utf-8");
-
-            DKResponse res = new DKResponse(1, json);
-            ProductDetail detail = ProductDetail.parse(res.getResponse());
-
-            Log.i(TAG, "newRes name: " + detail.name);
-            Log.i(TAG, "newRes price: " + detail.price);
-            Log.i(TAG, "newRes size: " + detail.goods_status.size());
-
-            for(ProductDetail.Prop p : detail.props_def){
-                Log.i(TAG, "newRes prop:" + p.name);
-                for(ProductDetail.Option o : p.options){
-                    Log.i(TAG, "newRes option:" + o.name);
-                }
-            }
-
-            for(ProductDetail.Node node : detail.props_tree){
-                printNode(node, 1);
-            }
-
-//            JSONObject root = new JSONObject(json);
-//            Log.i(TAG, "status: " + root.getInt("status"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        GoodSelectionWindow window = new GoodSelectionWindow(this, mDetail);
+        window.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);
+//        AssetManager assetManager = getAssets();
+//        ByteArrayOutputStream outputStream = null;
+//        InputStream inputStream = null;
+//        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+//        try {
+//            inputStream = assetManager.open("detail.json");
+//            final int blockSize = 8192;
+//            byte[] buffer = new byte[blockSize];
+//            int count = 0;
+//            while((count = inputStream.read(buffer, 0, blockSize)) > 0) {
+//                byteStream.write(buffer,0, count);
+//            }
+//        } catch (IOException e) {
+//        }
+//
+//        try {
+//            byte[] bytes = byteStream.toByteArray();
+//            String json = new String(bytes, 0, bytes.length, "utf-8");
+//
+//            DKResponse res = new DKResponse(1, json);
+//            ProductDetail detail = ProductDetail.parse(res.getResponse());
+//
+//            Log.i(TAG, "newRes name: " + detail.name);
+//            Log.i(TAG, "newRes price: " + detail.price);
+//            Log.i(TAG, "newRes size: " + detail.goods_status.size());
+//
+//            for(ProductDetail.Prop p : detail.props_def){
+//                Log.i(TAG, "newRes prop:" + p.name);
+//                for(ProductDetail.Option o : p.options){
+//                    Log.i(TAG, "newRes option:" + o.name);
+//                }
+//            }
+//
+//            for(ProductDetail.Node node : detail.props_tree){
+//                printNode(node, 1);
+//            }
+//
+////            JSONObject root = new JSONObject(json);
+////            Log.i(TAG, "status: " + root.getInt("status"));
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
 
 //        for(int i = 0 ; i < mContainer.getChildCount() ; i++){
