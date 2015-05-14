@@ -42,46 +42,47 @@ public class DetailActivity extends Activity {
         request.setObserver(new MyBaseRequest.MyObserver() {
             @Override
             public void onRequestCompleted(MyBaseRequest request, DKResponse response) {
+                Log.i(TAG, "onRequestCompleted: " + response.getResponse());
                 if (response != null
                         && response.getStatus() == DKResponse.STATUS_SUCCESS
-                        && !TextUtils.isEmpty(response.getResponse())) {
+                        && !TextUtils.isEmpty(response.getData())) {
 
                     mHandler.removeCallbacksAndMessages(null);
 
                     ProductDetailFragment frag = new ProductDetailFragment();
                     Bundle input = new Bundle();
-                    input.putString(DKResponse.DATA_KEY, response.getResponse());
+                    input.putString(DKResponse.DATA_KEY, response.getData());
                     frag.setArguments(input);
 
                     switchFragment(frag);
 
-                    new Thread(){
-                        @Override
-                        public void run() {
-                            try {
-                                Thread.sleep(15000);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-
-                            ProductDetail detail = new ProductDetail();
-                            detail.price = "¥1999起";
-                            detail.images = new String[]{
-                                    "http://c1.mifile.cn/f/i/2014/cn/goods/mi4/md/gallery/gallery-list-f.jpg?140722",
-                                    "http://c1.mifile.cn/f/i/2014/cn/goods/mi4/md/gallery/gallery-list-n.jpg"};
-
-                            final String json = JsonSerializer.getInstance().serialize(detail);
-
-                            final ProductDetailFragment detailFragment = getDetailFragment();
-
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    detailFragment.reload(json);
-                                }
-                            });
-                        }
-                    }.start();
+//                    new Thread(){
+//                        @Override
+//                        public void run() {
+//                            try {
+//                                Thread.sleep(15000);
+//                            } catch (InterruptedException e) {
+//                                e.printStackTrace();
+//                            }
+//
+//                            ProductDetail detail = new ProductDetail();
+//                            detail.price = "¥1999起";
+//                            detail.images = new String[]{
+//                                    "http://c1.mifile.cn/f/i/2014/cn/goods/mi4/md/gallery/gallery-list-f.jpg?140722",
+//                                    "http://c1.mifile.cn/f/i/2014/cn/goods/mi4/md/gallery/gallery-list-n.jpg"};
+//
+//                            final String json = JsonSerializer.getInstance().serialize(detail);
+//
+//                            final ProductDetailFragment detailFragment = getDetailFragment();
+//
+//                            runOnUiThread(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    detailFragment.reload(json);
+//                                }
+//                            });
+//                        }
+//                    }.start();
 
                 }else{
                     showFailurePage();

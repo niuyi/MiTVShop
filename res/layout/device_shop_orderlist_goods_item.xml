@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/class_A"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/split_line"
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:background="@color/class_Z"/>
+
+    <RelativeLayout
+        android:id="@+id/goods_click_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/item_thumbnail"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_width="67dp"
+            android:layout_height="67dp" />
+
+        <TextView
+            android:id="@+id/goods_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="26dp"
+            android:text=""
+            android:textColor="@color/class_V"
+            android:textSize="36px" />
+
+        <TextView
+            android:id="@+id/item_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="27dp"
+            android:layout_toLeftOf="@+id/goods_price"
+            android:text=""
+            android:textColor="@color/class_Y"
+            android:textSize="36px"
+            android:layout_toRightOf="@id/item_thumbnail"
+            android:lineSpacingExtra="2dp"
+            />
+
+        <TextView
+            android:id="@+id/goods_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="53dp"
+            android:text=""
+            android:textColor="@color/class_D"
+            android:textSize="20px" />
+
+        <!--<Button-->
+            <!--android:id="@+id/btn_comments"-->
+            <!--android:layout_width="71dp"-->
+            <!--android:layout_height="27dp"-->
+            <!--android:layout_marginTop="82dp"-->
+            <!--android:layout_marginBottom="14dp"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:background="@drawable/device_shop_comment_btn_bg"-->
+            <!--android:text="@string/device_shop_order_comment"-->
+            <!--android:textColor="@color/class_Y"-->
+            <!--android:textSize="@dimen/font_size_13sp"-->
+            <!--android:visibility="gone"-->
+            <!--/>-->
+        </RelativeLayout>
+</LinearLayout>

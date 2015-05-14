@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:background="@color/white">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:layout_width="1500px"
+                  android:layout_height="match_parent"
+                  android:layout_gravity="center_horizontal"
+                  android:background="@color/white"
+                  android:orientation="vertical">
+
+        <ScrollView
+                android:id="@+id/pay_container"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:overScrollMode="never">
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="26dp"
+                    android:paddingBottom="26dp"
+                    android:orientation="vertical">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center"
+                        android:drawableLeft="@drawable/device_shop_pay_success"
+                        android:drawablePadding="12dp"
+                        android:text="订单提交成功"
+                        android:textColor="#74AA1F"
+                        android:textSize="19sp" />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center"
+                        android:text="请尽快完成支付，超时订单将被关闭"
+                        android:textColor="#888"
+                        android:textSize="13sp" />
+
+                <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.3dp"
+                        android:layout_marginTop="22dp"
+                        android:background="#E5E5E5" />
+
+                <LinearLayout
+                        android:id="@+id/cart_null"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="16dp"
+                        android:background="#FAFAFA"
+                        android:orientation="vertical">
+
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="20dp"
+                            android:paddingTop="4dp"
+                            android:paddingRight="20dp"
+                            android:paddingBottom="4dp"
+                            android:orientation="horizontal">
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingRight="10dp"
+                                android:includeFontPadding="false"
+                                android:text="订单金额"
+                                android:textColor="#7B7B7B"
+                                android:textSize="36px" />
+
+                        <TextView
+                                android:id="@+id/price_content"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:includeFontPadding="false"
+                                android:text="¥1999.00"
+                                android:textColor="@color/class_V"
+                                android:textSize="36px"
+                                />
+                    </LinearLayout>
+
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="20dp"
+                            android:paddingTop="4dp"
+                            android:paddingRight="20dp"
+                            android:paddingBottom="4dp"
+                            android:orientation="horizontal">
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingRight="12dp"
+                                android:includeFontPadding="false"
+                                android:text="订单编号"
+                                android:textColor="#7B7B7B"
+                                android:textSize="36px" />
+
+                        <TextView
+                                android:id="@+id/order_id"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:includeFontPadding="false"
+                                android:text="51505112345678908"
+                                android:textSize="36px"
+                                android:textColor="@color/class_V" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="20dp"
+                            android:paddingTop="4dp"
+                            android:paddingRight="20dp"
+                            android:paddingBottom="4dp"
+                            android:orientation="horizontal">
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="top"
+                                android:paddingRight="12dp"
+                                android:includeFontPadding="false"
+                                android:text="收货地址"
+                                android:textColor="#7B7B7B"
+                                android:textSize="36px" />
+
+                        <TextView
+                                android:id="@+id/address_content"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:includeFontPadding="false"
+                                android:lineSpacingExtra="2dp"
+                                android:text="北京 北京市 西土城路10号 2-201"
+                                android:textSize="36px"
+                                android:textColor="@color/class_V" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="20dp"
+                            android:paddingTop="4dp"
+                            android:paddingRight="20dp"
+                            android:paddingBottom="4dp"
+                            android:orientation="horizontal">
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingRight="12dp"
+                                android:includeFontPadding="false"
+                                android:text="送货时间"
+                                android:textColor="#7B7B7B"
+                                android:textSize="36px" />
+
+                        <TextView
+                                android:id="@+id/deliver_content"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:includeFontPadding="false"
+                                android:text="不限送货时间"
+                                android:textSize="36px"
+                                android:textColor="@color/class_V" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="20dp"
+                            android:paddingTop="4dp"
+                            android:paddingRight="20dp"
+                            android:paddingBottom="4dp"
+                            android:orientation="horizontal">
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingRight="12dp"
+                                android:includeFontPadding="false"
+                                android:text="发票类型"
+                                android:textColor="#7B7B7B"
+                                android:textSize="36px" />
+
+                        <TextView
+                                android:id="@+id/invoice_content"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:includeFontPadding="false"
+                                android:text="个人电子发票"
+                                android:textSize="36px"
+                                android:textColor="@color/class_V" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                            android:id="@+id/invoice_title_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="20dp"
+                            android:paddingTop="4dp"
+                            android:paddingRight="20dp"
+                            android:paddingBottom="4dp"
+                            android:orientation="horizontal"
+                            android:visibility="gone">
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingRight="12dp"
+                                android:includeFontPadding="false"
+                                android:text="发票抬头"
+                                android:textColor="#7B7B7B"
+                                android:textSize="36px" />
+
+                        <TextView
+                                android:id="@+id/invoice_content2"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:includeFontPadding="false"
+                                android:text="text"
+                                android:textSize="36px"
+                                android:textColor="@color/class_V" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.3dp"
+                        android:background="#E5E5E5" />
+
+
+                <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30px"
+                        android:layout_gravity="left"
+                        android:orientation="horizontal">
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:includeFontPadding="false"
+                                android:text="请选择支付方式"
+                                android:textColor="@color/class_V"
+                                android:textSize="36px" />
+
+                        <RadioGroup android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal">
+
+                                <RadioButton
+                                        android:id="@+id/ali_pay"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="20dp"
+                                        android:layout_gravity="center_vertical"
+                                        android:background="@drawable/device_shop_checkout_btn_selector"
+                                        android:button="@android:color/transparent"
+                                        android:text="支付宝"
+                                        android:textColor="#333"
+                                        android:textSize="32px" />
+
+                                <RadioButton
+                                        android:id="@+id/union_pay"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="20dp"
+                                        android:layout_gravity="center_vertical"
+                                        android:background="@drawable/device_shop_checkout_btn_selector"
+                                        android:button="@android:color/transparent"
+                                        android:text="小米钱包"
+                                        android:textColor="#333"
+                                        android:textSize="32px" />
+
+                        </RadioGroup>
+
+                </LinearLayout>
+
+                    <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_gravity="right"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                    android:id="@+id/tv_price"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:includeFontPadding="false"
+                                    android:layout_gravity="center_vertical"
+                                    android:textSize="40px"
+                                    android:text="订单总额"
+                                    android:textColor="#FF4500"/>
+
+                            <TextView
+                                    android:id="@+id/price"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:includeFontPadding="false"
+                                    android:layout_marginLeft="20px"
+                                    android:layout_gravity="center_vertical"
+                                    android:textSize="40px"
+                                    android:text="¥1999"
+                                    android:textColor="#F75D00" />
+
+                            <Button
+                                    android:id="@+id/button_buy"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:text="去结算"
+                                    android:layout_marginLeft="20px"
+                                    android:textSize="40px"
+                                    android:textColor="#FFFFFF"
+                                    android:background="@drawable/btn_normal"/>
+                    </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
+
+</FrameLayout>

@@ -16,13 +16,17 @@ public class DKResponse<T> {
     public static final int STATUS_UNKOWN_ERROR = 10002;
 
     public static final String DATA_KEY = "DATA";
+    private final String rawData;
 
     public int status;
     private String response;
+    private String data;
 
     public DKResponse(int status, String rawData) {
         this.status = status;
+        this.rawData = rawData;
         this.response = parseData(rawData);
+        this.data = rawData;
     }
 
     private String parseData(String response) {
@@ -49,4 +53,9 @@ public class DKResponse<T> {
     public String getResponse(){
         return response;
     }
+
+    public String getData(){
+        return data;
+    }
+
 }

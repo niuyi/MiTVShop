@@ -1,21 +1,25 @@
 package com.xiaomi.mitv.shop.widget;
 
 import android.app.Fragment;
+import android.content.Intent;
+import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.view.animation.AnimationUtils;
 import android.widget.*;
 import com.squareup.picasso.Picasso;
 import com.xiaomi.mitv.shop.DetailActivity;
+import com.xiaomi.mitv.shop.GoodSelectionActivity;
 import com.xiaomi.mitv.shop.R;
 import com.xiaomi.mitv.shop.model.ProductDetail;
 import com.xiaomi.mitv.shop.network.DKResponse;
 import com.xiaomi.mitv.shop.network.JsonSerializer;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Created by linniu on 2015/5/9.
@@ -42,12 +46,60 @@ public class ProductDetailFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Log.i(TAG, "buy now");
+                GoodSelectionWindow win = new GoodSelectionWindow(getActivity(),getDetail());
+                win.showAtLocation(getActivity().getWindow().getDecorView(), Gravity.CENTER, 0, 0);
+
+//                Intent in = new Intent();
+//                in.setClassName(getActivity(), GoodSelectionActivity.class.getName());
+//
+//                getActivity().startActivity(in);
             }
         });
 
         mBuyButton.requestFocus();
 
         return view;
+    }
+
+    private ProductDetail getDetail(){
+        AssetManager assetManager = getActivity().getAssets();
+        ByteArrayOutputStream outputStream = null;
+        InputStream inputStream = null;
+        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+        try {
+            inputStream = assetManager.open("detail.json");
+            final int blockSize = 8192;
+            byte[] buffer = new byte[blockSize];
+            int count = 0;
+            while((count = inputStream.read(buffer, 0, blockSize)) > 0) {
+                byteStream.write(buffer,0, count);
+            }
+        } catch (IOException e) {
+        }
+
+        try {
+            byte[] bytes = byteStream.toByteArray();
+            String json = new String(bytes, 0, bytes.length, "utf-8");
+
+            DKResponse res = new DKResponse(1, json);
+            ProductDetail detail = ProductDetail.parse(res.getResponse());
+
+//            for(ProductDetail.Node node : detail.props_tree){
+//                printNode(node, 1);
+//            }
+
+            detail.name = "小米手机4电信4G版2GB内存 白色 16G";
+            return detail;
+
+
+
+//            JSONObject root = new JSONObject(json);
+//            Log.i(TAG, "status: " + root.getInt("status"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     @Override

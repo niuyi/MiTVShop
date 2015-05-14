@@ -1,4 +1,176 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="list_bg_color">#ffefeff0</color>
+    <color name="white">#FFFFFF</color>
+
+    <color name="white_90_transparent">#E5FFFFFF</color>
+    <color name="white_80_transparent">#CCFFFFFF</color>
+    <color name="white_75_transparent">#C0FFFFFF</color>
+    <color name="white_60_transparent">#A0FFFFFF</color>
+    <color name="white_50_transparent">#80FFFFFF</color>
+    <color name="white_40_transparent">#60FFFFFF</color>
+    <color name="white_30_transparent">#40FFFFFF</color>
+    <color name="white_20_transparent">#30FFFFFF</color>
+    <color name="black_90_transparent">#E6000000</color>
+    <color name="black_75_transparent">#C0000000</color>
+    <color name="black_50_transparent">#80000000</color>
+    <color name="black_60_transparent">#A0000000</color>
+    <color name="black_30_transparent">#60000000</color>
+    <color name="black_20_transparent">#30000000</color>
+    <color name="black_10_transparent">#1A000000</color>
+    <color name="black_40_transparent">#66000000</color>
+    <color name="black_00_transparent">#00000000</color>
+    <color name="black_03_transparent">#08000000</color>
+    <color name="black">#000000</color>
+
+    <color name="class_A">#FFFFFF</color>
+    <color name="class_B">#000000</color>
+    <color name="class_C">#4D4D4D</color>
+    <color name="class_D">#999999</color>
+    <color name="class_E">#BFBFBF</color>
+    <color name="class_F">#F3F3F3</color>
+    <color name="class_G">#7d7d7d</color>
+    <color name="class_J">#FC4949</color>
+    <color name="class_K">#16A7FA</color>
+    <color name="class_L">#5ead2f</color>
+    <color name="class_H">#3e85dc</color>
+    <color name="class_M">#CCCCCC</color>
+    <color name="class_N">#3eb4cf</color>
+    <color name="class_O">#eaeaea</color>
+    <color name="class_P">#606060</color>
+    <color name="class_Q">#008AE5</color>
+    <color name="class_R">#d7d7d7</color>
+    <color name="class_S">#3fb57d</color>
+    <color name="class_T">#f8f8f8</color>
+    <color name="class_U">#dfdfdf</color>
+    <color name="class_V">#333333</color>
+    <color name="class_W">#969696</color>
+    <color name="class_X">#737373</color>
+    <color name="class_Y">#666666</color>
+    <color name="class_Z">#E7E7E7</color>
+
+    <color name="class_text_1">#1a1a1a</color>
+    <color name="class_text_2">#555555</color>
+    <color name="class_text_3">#999999</color>
+    <color name="class_text_4">#bfbfbf</color>
+    <color name="class_text_5">#22d2e9</color>
+    <color name="class_text_6">#ffffff</color>
+    <color name="class_text_7">#ff7700</color>
+    <color name="class_text_8">#404040</color>
+    <color name="class_text_9">#155ba0</color>
+    <color name="class_text_10">#323232</color>
+    <color name="class_text_11">#adadad</color>
+    <color name="class_text_12">#606060</color>
+    <color name="class_text_13">#9c9c9c</color>
+    <color name="class_text_14">#5ead2f</color>
+    <color name="class_text_15">#858585</color>
+    <color name="class_text_16">#aeaeae</color>
+    <color name="class_text_17">#1dc58a</color>
+    <color name="class_text_18">#5f5f5f</color>
+    <color name="class_text_19">#7c7c7c</color>
+    <color name="class_text_20">#232323</color>
+    <color name="class_text_21">#4a4a4a</color>
+    <color name="class_text_22">#c7c7c7</color>
+    <color name="class_text_23">#9e9e9e</color>
+    <color name="class_text_24">#0095f3</color>
+
+    <color name="class_text_trans_80">#ccffffff</color>
+    <color name="class_text_trans_40">#66ffffff</color>
+
+    <color name="class_A_80_trans">#80ffffff</color>
+    <color name="class_A_75_trans">#C0ffffff</color>
+    <color name="class_A_60_trans">#AAffffff</color>
+    <color name="class_A_50_trans">#7fffffff</color>
+    <color name="class_A_30_trans">#4bffffff</color>
+    <color name="class_A_20_trans">#32ffffff</color>
+    <color name="class_A_10_trans">#19ffffff</color>
+    <color name="class_B_75_trans">#C0333333</color>
+    <color name="class_B_15_trans">#27333333</color>
+    <color name="class_O_75_trans">#C0000000</color>
+    <color name="class_O_90_trans">#E6000000</color>
+    <color name="class_D_50_trans">#7f999999</color>
+    <color name="class_E_50_trans">#7faaaaaa</color>
+    <color name="class_L_30_trans">#4B2288DD</color>
+    <color name="class_P_50_trans">#7f606060</color>
+    <color name="remote_download_menu_bg_normal">#3C4050</color>
+    <color name="remote_download_menu_bg_pressed">#343745</color>
+    <color name="startup_page_bg">#ececec</color>
+    <color name="startup_page_text_color">#b4b2b2</color>
+    <drawable name="transparent">#00ffffff</drawable>
+
+    <!-- NumberPicker background text color -->
+    <color name="number_picker_text_bg">#7f000000</color>
+    <!-- NumberPicker foreground text color -->
+    <color name="number_picker_text_fg">#fffb6003</color>
+    <!-- NumberPicker label text color -->
+    <color name="number_picker_text_label">#fffb6003</color>
+
+    <color name="menu_item_color_normal">#e6e6e6</color>
+    <color name="menu_item_color_highlight">#2798e7</color>
+
+    <color name="percent_digit_color_start">#1BB5FF</color>
+    <color name="percent_digit_color_end">#7AD4FF</color>
+
+    <!-- Media file picker grid view blank area color -->
+    <color name="grid_blank_color">#FFEFEFEF</color>
+
+    <color name="camera_bg">#ff2b2b2b</color>
+
+    <color name="class_GRAY">#fff7f7f7</color>
+
+    <color name="scene_add_text_black">#666666</color>
+    <color name="scene_add_text_gray">#BCBCBC</color>
+
+    <color name="list_bg_line">#ffc0c0c1</color>
+    <color name="intro_plug_btn_color">#66a7e0</color>
+    <color name="intro_camera_btn_color">#f48e1f</color>
+    <drawable name="drawable_bg_white">#00ffffff</drawable>
+    <drawable name="drawable_bg_pressed">#1A000000</drawable>
+
+    <drawable name="list_divider_locked">#20ffffff</drawable>
+    <drawable name="common_list_item_pressed">#ff3fb57d</drawable>
+
+    <color name="light_gray">#E5E5E5</color>
+    <color name="gray">#CCC</color>
+    <color name="list_row_selected">#78c8e6</color>
+
+    <color name="title_bar_text_color">#FF606060</color>
+    <color name="title_bar_text_color_white">#FFFFFFFF</color>
+    <color name="title_bar_text_color_black">#FF000000</color>
+
+    <color name="router_bg">#ff1b63ab</color>
+    <color name="router_line_color">#ffc1c1c1</color>
+    <color name="router_text_color">#ff555555</color>
+    <color name="router_text_color_info">#ffafafaf</color>
+
+    <color name="mitv_circle_color">#ff858585</color>
+    <color name="red">#FF4A00</color>
+    <color name="sep_line">#D5D5D5</color>
+
+    <color name="gateway_event_text_color">#FFFFFFFF</color>
+    <color name="gateway_time_text_color">#B2FFFFFF</color>
+    <color name="tips_background_text_color">#FFE5934C</color>
+    <color name="tips_background_color">#FFFFF5DB</color>
+    <color name="tips_background_net_color">#FFFFEEEE</color>
+    <color name="camera_encode_backgroud">#F8F8F8</color>
+    <color name="plug_timer_hint">#32A974</color>
+    <color name="plug_timer_marked">#208356</color>
+    <color name="plug_timer_subTitle">#afafaf</color>
+    <drawable name="red">#FF4A00</drawable>
+    <drawable name="sep_line">#D5D5D5</drawable>
+    <drawable name="lock_dim_mask">#33000000</drawable>
+    <drawable name="gateway_green">#00C193</drawable>
+
+    <drawable name="mitv_white_line">#ffd6dbdf</drawable>
+    <drawable name="mitv_white_line_black">#ff202020</drawable>
+
+    <color name="device_shop_order_down_link">#FF8D3A</color>
+    <color name="device_shop_order_background">#815A34</color>
+    <color name="device_shop_address_add_bg">#F7F7F7</color>
+    <color name="device_shop_track_line_bg">#DCDCDC</color>
+    <color name="device_shop_track_end_txt">#6EC235</color>
+    <color name="device_shop_track_split">#E9E9E9</color>
+    <color name="device_shop_order_state">#FF4A00</color>
+
+    <color name="outline_color">#FFFFFFFF</color>
 </resources>
