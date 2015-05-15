@@ -11,20 +11,21 @@ public class ProductDetailRequest extends MyDuokanBaseRequest {
 
     @Override
     protected boolean beforeSend() {
-        ProductDetail detail = new ProductDetail();
-        detail.name = "小米手机";
-        detail.price = "¥1999起";
-        detail.images = new String[]{
-                "http://c1.mifile.cn/f/i/2014/cn/goods/mi4/md/gallery/gallery-list-a.png",
-                "http://c1.mifile.cn/f/i/2014/cn/goods/mi4/md/gallery/gallery-list-d_2x.jpg",
-                "http://c1.mifile.cn/f/i/2014/cn/goods/mi4/md/gallery/gallery-list-e_2x.png"};
-
-
-        String json = JsonSerializer.getInstance().serialize(detail);
-
-        mResponse = new DKResponse(DKResponse.STATUS_SUCCESS, json);
-
-        return true;
+//        ProductDetail detail = new ProductDetail();
+//        detail.name = "小米手机";
+//        detail.price = "¥1999起";
+//        detail.images = new String[]{
+//                "http://c1.mifile.cn/f/i/2014/cn/goods/mi4/md/gallery/gallery-list-a.png",
+//                "http://c1.mifile.cn/f/i/2014/cn/goods/mi4/md/gallery/gallery-list-d_2x.jpg",
+//                "http://c1.mifile.cn/f/i/2014/cn/goods/mi4/md/gallery/gallery-list-e_2x.png"};
+//
+//
+//        String json = JsonSerializer.getInstance().serialize(detail);
+//
+//        mResponse = new DKResponse(DKResponse.STATUS_SUCCESS, json);
+//
+//        return true;
+        return false;
     }
 
     @Override
@@ -34,12 +35,12 @@ public class ProductDetailRequest extends MyDuokanBaseRequest {
 
     @Override
     protected String getPath() {
-        return null;
+        return "mishop/api/list";
     }
 
     @Override
     protected String getParameters() {
-        return null;
+        return String.format("&product=%s", "1");
     }
 
     @Override

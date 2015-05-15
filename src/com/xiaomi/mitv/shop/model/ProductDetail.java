@@ -9,11 +9,15 @@ import java.util.Map;
  * Created by linniu on 2015/5/9.
  */
 public class ProductDetail {
+    public String id;
+    public int status;
     public String name;
-    public String price;
+    public Price price;
     public String[] images;
 
-    public Map<String, String> goods_status;
+    public GoodStatus[] goods_status;
+    public Intro[] introduce;
+
     public Prop[] props_def;
     public Node[] props_tree;
 
@@ -39,12 +43,28 @@ public class ProductDetail {
         public String name;
     }
 
+    public static class Intro{
+        public String name;
+        public String[] album;
+    }
+
     public static class Node{
         public String icon;
         public boolean valid;
         public int id;
         public String gid;
         public Node[] child;
+    }
+
+    public static class GoodStatus{
+        public String id;
+        public String name;
+        public int status;
+    }
+
+    public static class Price{
+        public String max;
+        public String min;
     }
 
     public Node findNodeById(int id){

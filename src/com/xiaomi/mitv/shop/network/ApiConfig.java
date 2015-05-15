@@ -23,7 +23,7 @@ public class ApiConfig {
 //            return "http://" + SERVER_HK_HOST;
 //        }
 
-        return "http://" + SERVER_HOST;
+        return "http://10.235.176.26:9025";
 
     }
 

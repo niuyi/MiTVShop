@@ -3,4 +3,5 @@
     <string name="app_name">MiTVShop</string>
     <string name="device_shop_cart_checkout_total_price">￥%1$s</string>
     <string name="device_shop_order_goods_item_count_fmt">× %d</string>
+    <string name="hdplayer">高清播放器</string>
 </resources>

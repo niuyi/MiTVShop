@@ -1,0 +1,83 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity" >
+
+    <ImageView
+        android:id="@+id/handbook_main_background_imageview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    </ImageView>
+
+    <!--<com.xiaomi.mitv.shop.detail.widget.EntrancePageWidget-->
+        <!--android:id="@+id/handbook_first_page_widget"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:background="@drawable/entrance_bg" >-->
+
+        <!--<RelativeLayout-->
+            <!--android:id="@+id/handbook_first_page_title_group"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content" >-->
+
+            <!--<ImageView-->
+                <!--android:id="@+id/handbook_first_page_back_imageview"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="@dimen/back_imageview_margin_left"-->
+                <!--android:src="@drawable/back" />-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/handbook_first_page_title_textview"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="20px"-->
+                <!--android:layout_marginTop="@dimen/title_textview_margin_top"-->
+                <!--android:layout_toRightOf="@id/handbook_first_page_back_imageview"-->
+                <!--android:text="商品详情"-->
+                <!--android:textAppearance="@style/title_textview_style" >-->
+            <!--</TextView>-->
+        <!--</RelativeLayout>-->
+    <!--</com.xiaomi.mitv.shop.detail.widget.EntrancePageWidget>-->
+
+    <com.xiaomi.mitv.shop.detail.widget.PostersControlWidget
+        android:id="@+id/handbook_second_page_widget"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </com.xiaomi.mitv.shop.detail.widget.PostersControlWidget>
+
+    <com.xiaomi.mitv.shop.detail.widget.ShowFullScreenImageWidget
+        android:id="@+id/handbook_third_page_widget"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    </com.xiaomi.mitv.shop.detail.widget.ShowFullScreenImageWidget>
+
+    <RelativeLayout
+        android:id="@+id/handbook_forth_page_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <ImageView
+            android:id="@+id/handbook_forth_page_left_arrow_imageview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20px"
+            android:src="@drawable/icon_arrow_left_normal"
+            android:visibility="invisible" >
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/handbook_forth_page_right_arrow_imageview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20px"
+            android:src="@drawable/icon_arrow_normal"
+            android:visibility="invisible" >
+        </ImageView>
+    </RelativeLayout>
+
+</FrameLayout>

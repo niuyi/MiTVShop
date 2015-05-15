@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ImageView
+        android:id="@+id/handbook_second_page_background_imageview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    </ImageView>
+
+    <RelativeLayout
+        android:id="@+id/handbook_second_page_pagebook_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="152px" >
+
+        <ImageView
+            android:id="@+id/handbook_second_page_first_pagebook"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/handbook_second_page_last_pagebook"
+            android:layout_centerHorizontal="true" />
+
+        <ImageView
+            android:id="@+id/handbook_second_page_second_pagebook"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/handbook_second_page_last_pagebook"
+            android:layout_centerHorizontal="true" />
+
+        <ImageView
+            android:id="@+id/handbook_second_page_third_pagebook"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/handbook_second_page_last_pagebook"
+            android:layout_centerHorizontal="true" />
+
+        <ImageView
+            android:id="@+id/handbook_second_page_last_pagebook"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/handbook_second_page_posters_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/handbook_second_page_other_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <com.xiaomi.mitv.shop.detail.widget.PageProgressMarker
+            android:id="@+id/handbook_second_page_pageprogressmarker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="1400px"
+            android:layout_marginTop="198px"
+            android:background="@drawable/number_bg"
+            android:visibility="invisible" >
+        </com.xiaomi.mitv.shop.detail.widget.PageProgressMarker>
+
+        <ImageView
+            android:id="@+id/handbook_second_page_center_focus_imageview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="150px"
+            android:src="@drawable/focus"
+            android:visibility="invisible" >
+        </ImageView>
+
+        <TextView
+            android:id="@+id/handbook_second_page_title_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/second_page_title_textview_margin_left"
+            android:layout_marginTop="@dimen/title_textview_margin_top"
+            android:textAppearance="@style/sencond_page_title_textview_style" >
+        </TextView>
+    </RelativeLayout>
+
+    <RelativeLayout
+         android:id="@+id/handbook_second_page_mask_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <ImageView
+            android:id="@+id/handbook_second_page_left_mask_imageview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="146px"
+            android:src="@drawable/mask_left" >
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/handbook_second_page_right_mask_imageview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="146px"
+            android:src="@drawable/mask_right" >
+        </ImageView>
+    </RelativeLayout>
+
+    <LinearLayout
+            android:layout_gravity="bottom|right"
+            android:layout_marginRight="100px"
+            android:focusable="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        <TextView
+                android:id="@+id/price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="false"
+                android:layout_gravity="center_vertical"
+                android:textSize="40px"
+                android:text="¥1999"
+                android:textColor="#F75D00" />
+
+        <Button
+                android:id="@+id/button_buy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="立即购买"
+                android:layout_marginLeft="20px"
+                android:textSize="40px"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/btn_normal"/>
+    </LinearLayout>
+
+</FrameLayout>

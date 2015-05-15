@@ -45,16 +45,20 @@ public class DetailActivity extends Activity {
                 Log.i(TAG, "onRequestCompleted: " + response.getResponse());
                 if (response != null
                         && response.getStatus() == DKResponse.STATUS_SUCCESS
-                        && !TextUtils.isEmpty(response.getData())) {
+                        && !TextUtils.isEmpty(response.getResponse())) {
 
                     mHandler.removeCallbacksAndMessages(null);
 
-                    ProductDetailFragment frag = new ProductDetailFragment();
-                    Bundle input = new Bundle();
-                    input.putString(DKResponse.DATA_KEY, response.getData());
-                    frag.setArguments(input);
+                    ProductDetail productDetail = ProductDetail.parse(response.getResponse());
+                    Log.i(TAG, "productDetail: " + productDetail.status);
+                    Log.i(TAG, "productDetail, price: " + productDetail.price.max);
 
-                    switchFragment(frag);
+//                    ProductDetailFragment frag = new ProductDetailFragment();
+//                    Bundle input = new Bundle();
+//                    input.putString(DKResponse.DATA_KEY, response.getResponse());
+//                    frag.setArguments(input);
+//
+//                    switchFragment(frag);
 
 //                    new Thread(){
 //                        @Override

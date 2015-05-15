@@ -52,9 +52,11 @@ public abstract class MyDuokanBaseRequest extends MyBaseRequest {
         mUrl = ApiConfig.getServerUrl();
         String deviceId = mitv.os.System.getDeviceID();
         //todo:
-        String sig = "/" + getPath() + "/" + deviceId + "/" + getPlatformID() + "/" +
-                Build.VERSION.SDK_INT + getLocaleString() + "?key=" + ApiConfig.API_KEY +
-                "&ts="+ts;
+//        String sig = "/" + getPath() + "/" + deviceId + "/" + getPlatformID() + "/" +
+//                Build.VERSION.SDK_INT + getLocaleString() + "?key=" + ApiConfig.API_KEY +
+//                "&ts="+ts;
+
+        String sig = "/" + getPath() + String.format("?key=%s&deviceId=%s&ts=%s", ApiConfig.API_KEY, getPlatformID(), ts);
 
         String para = getParameters();
 
@@ -110,7 +112,8 @@ public abstract class MyDuokanBaseRequest extends MyBaseRequest {
                 httpResponse.getContentStream().close();
 
             }catch(Exception e) {
-                mResponse.setStatus(DKResponse.STATUS_SERVER_ERROR);
+                e.printStackTrace();
+                mResponse = new DKResponse(DKResponse.STATUS_SERVER_ERROR, "");
                 Log.e(TAG, e.getMessage(), e);
             }
 

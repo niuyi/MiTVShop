@@ -10,7 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.xiaomi.mitv.shop.model.ProductDetail;
+import com.xiaomi.mitv.shop.network.CheckoutRequest;
 import com.xiaomi.mitv.shop.network.DKResponse;
+import com.xiaomi.mitv.shop.network.MyBaseRequest;
 import com.xiaomi.mitv.shop.widget.DialogButtonView;
 import com.xiaomi.mitv.shop.widget.GoodSelectionWindow;
 import org.json.JSONException;
@@ -45,26 +47,26 @@ public class MyActivity extends Activity implements DialogButtonView.OnItemCheck
         mContainer.setOrientation(LinearLayout.VERTICAL);
         FrameLayout.LayoutParams para = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
         mContainer.setFocusable(true);
-
+//
         root.addView(mContainer, para);
-
-        mDetail = getDetail();
-
-        //todo: check the data
-
-        for(int i = 0 ; i < mDetail.props_def.length; i++){
-            ProductDetail.Prop p = mDetail.props_def[i];
-            DialogButtonView view = new DialogButtonView(this);
-            view.setOnItemCheckedListener(this);
-
-            view.setProp(p);
-
-            view.inflate();
-            view.setTag(i);
-
-            mContainer.addView(view);
-            mViews.add(view);
-        }
+//
+//        mDetail = getDetail();
+//
+//        //todo: check the data
+//
+//        for(int i = 0 ; i < mDetail.props_def.length; i++){
+//            ProductDetail.Prop p = mDetail.props_def[i];
+//            DialogButtonView view = new DialogButtonView(this);
+//            view.setOnItemCheckedListener(this);
+//
+//            view.setProp(p);
+//
+//            view.inflate();
+//            view.setTag(i);
+//
+//            mContainer.addView(view);
+//            mViews.add(view);
+//        }
 //
         mButton = new Button(this);
         mButton.setText("Buy");
@@ -79,9 +81,9 @@ public class MyActivity extends Activity implements DialogButtonView.OnItemCheck
         });
         mContainer.addView(mButton);
 
-        if(mViews.size() > 0){
-            mViews.get(0).setFocus();
-        }
+//        if(mViews.size() > 0){
+//            mViews.get(0).setFocus();
+//        }
     }
 
     private ProductDetail getDetail(){
@@ -144,8 +146,26 @@ public class MyActivity extends Activity implements DialogButtonView.OnItemCheck
 
     public void onSubmit(View view){
 
-        GoodSelectionWindow window = new GoodSelectionWindow(this, mDetail);
-        window.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);
+        CheckoutRequest req = new CheckoutRequest();
+        req.setObserver(new MyBaseRequest.MyObserver() {
+            @Override
+            public void onRequestCompleted(MyBaseRequest request, DKResponse response) {
+                if(response != null
+                        && response.getStatus() == DKResponse.STATUS_SUCCESS
+                        && !TextUtils.isEmpty(response.getResponse())){
+                    Log.i(TAG, "res: " + response.getResponse());
+                }
+            }
+
+            @Override
+            public void onAbort() {
+
+            }
+        });
+        req.send();
+
+//        GoodSelectionWindow window = new GoodSelectionWindow(this, mDetail);
+//        window.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);
 //        AssetManager assetManager = getAssets();
 //        ByteArrayOutputStream outputStream = null;
 //        InputStream inputStream = null;
@@ -200,52 +220,52 @@ public class MyActivity extends Activity implements DialogButtonView.OnItemCheck
     public void onChecked(DialogButtonView view, RadioButton button) {
         Log.i(TAG, "onChecked: " + view.getTag() + " ,id: " + button.getId() + " ,tag: " + button.getTag());
 
-        int pos = mViews.indexOf(view);
-
-        if(pos < 0)
-            return;
-
-//        if(pos > 0){
-//            DialogButtonView dialogButtonView = mViews.get(pos - 1);
-//            dialogButtonView.setAllNextFocusDownId(button.getId());
+//        int pos = mViews.indexOf(view);
+//
+//        if(pos < 0)
+//            return;
+//
+////        if(pos > 0){
+////            DialogButtonView dialogButtonView = mViews.get(pos - 1);
+////            dialogButtonView.setAllNextFocusDownId(button.getId());
+////        }
+//
+//        if(pos < mViews.size() - 1){
+//            DialogButtonView dialogButtonView = mViews.get(pos + 1);
+//            dialogButtonView.setAllNextFocusUpId(button.getId());
 //        }
-
-        if(pos < mViews.size() - 1){
-            DialogButtonView dialogButtonView = mViews.get(pos + 1);
-            dialogButtonView.setAllNextFocusUpId(button.getId());
-        }
-
-        if(pos == mViews.size() -1 && mButton != null){
-            mButton.setNextFocusUpId(button.getId());
-        }
-
-        ProductDetail.Option option = (ProductDetail.Option)button.getTag();
-        ProductDetail.Node node = mDetail.findNodeById(option.id);
-        Log.i(TAG, "find node: " + node.id);
-
-        for(int i = pos + 1 ; i < mViews.size() ; i ++){
-            DialogButtonView dialogButtonView = mViews.get(i);
-            dialogButtonView.updateStatus(node);
-        }
-
-        Log.i(TAG, "gid: " + node.gid);
-        if(!TextUtils.isEmpty(node.gid)){
-            String text = mDetail.goods_status.get(node.gid);
-
-            if("1".equalsIgnoreCase(text)){
-                mButton.setFocusable(true);
-                mButton.setEnabled(true);
-                mButton.setText("Buy");
-            }else{
-                mButton.setFocusable(false);
-                mButton.setEnabled(false);
-                mButton.setText("No Goods");
-            }
-        }else{
-            mButton.setFocusable(false);
-            mButton.setEnabled(false);
-            mButton.setText("Buy");
-        }
+//
+//        if(pos == mViews.size() -1 && mButton != null){
+//            mButton.setNextFocusUpId(button.getId());
+//        }
+//
+//        ProductDetail.Option option = (ProductDetail.Option)button.getTag();
+//        ProductDetail.Node node = mDetail.findNodeById(option.id);
+//        Log.i(TAG, "find node: " + node.id);
+//
+//        for(int i = pos + 1 ; i < mViews.size() ; i ++){
+//            DialogButtonView dialogButtonView = mViews.get(i);
+//            dialogButtonView.updateStatus(node);
+//        }
+//
+//        Log.i(TAG, "gid: " + node.gid);
+//        if(!TextUtils.isEmpty(node.gid)){
+//            String text = mDetail.goods_status.get(node.gid);
+//
+//            if("1".equalsIgnoreCase(text)){
+//                mButton.setFocusable(true);
+//                mButton.setEnabled(true);
+//                mButton.setText("Buy");
+//            }else{
+//                mButton.setFocusable(false);
+//                mButton.setEnabled(false);
+//                mButton.setText("No Goods");
+//            }
+//        }else{
+//            mButton.setFocusable(false);
+//            mButton.setEnabled(false);
+//            mButton.setText("Buy");
+//        }
     }
 
 }

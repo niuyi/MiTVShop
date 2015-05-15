@@ -119,7 +119,7 @@ public class ProductDetailFragment extends Fragment {
     private void initView() {
         mCurrentIndex = 0;
 
-        mPriceTextView.setText(mDetail.price);
+        mPriceTextView.setText("1000");
 
         mViewSwitcher.removeAllViews();
 

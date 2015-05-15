@@ -88,51 +88,51 @@ public class GoodSelectionWindow extends PopupWindow implements DialogButtonView
     public void onChecked(DialogButtonView view, RadioButton button) {
         Log.i(TAG, "onChecked: " + view.getTag() + " ,id: " + button.getId() + " ,tag: " + button.getTag());
 
-        int pos = mViews.indexOf(view);
-
-        if(pos < 0)
-            return;
-
-//        if(pos > 0){
-//            DialogButtonView dialogButtonView = mViews.get(pos - 1);
-//            dialogButtonView.setAllNextFocusDownId(button.getId());
+//        int pos = mViews.indexOf(view);
+//
+//        if(pos < 0)
+//            return;
+//
+////        if(pos > 0){
+////            DialogButtonView dialogButtonView = mViews.get(pos - 1);
+////            dialogButtonView.setAllNextFocusDownId(button.getId());
+////        }
+//
+//        if(pos < mViews.size() - 1){
+//            DialogButtonView dialogButtonView = mViews.get(pos + 1);
+//            dialogButtonView.setAllNextFocusUpId(button.getId());
 //        }
-
-        if(pos < mViews.size() - 1){
-            DialogButtonView dialogButtonView = mViews.get(pos + 1);
-            dialogButtonView.setAllNextFocusUpId(button.getId());
-        }
-
-        if(pos == mViews.size() -1 && mButton != null){
-            mButton.setNextFocusUpId(button.getId());
-        }
-
-        ProductDetail.Option option = (ProductDetail.Option)button.getTag();
-        ProductDetail.Node node = mDetail.findNodeById(option.id);
-        Log.i(TAG, "find node: " + node.id);
-
-        for(int i = pos + 1 ; i < mViews.size() ; i ++){
-            DialogButtonView dialogButtonView = mViews.get(i);
-            dialogButtonView.updateStatus(node);
-        }
-
-        Log.i(TAG, "gid: " + node.gid);
-        if(!TextUtils.isEmpty(node.gid)){
-            String text = mDetail.goods_status.get(node.gid);
-
-            if("1".equalsIgnoreCase(text)){
-                mButton.setFocusable(true);
-                mButton.setEnabled(true);
-                mButton.setText("Buy");
-            }else{
-                mButton.setFocusable(false);
-                mButton.setEnabled(false);
-                mButton.setText("No Goods");
-            }
-        }else{
-            mButton.setFocusable(false);
-            mButton.setEnabled(false);
-            mButton.setText("Buy");
-        }
+//
+//        if(pos == mViews.size() -1 && mButton != null){
+//            mButton.setNextFocusUpId(button.getId());
+//        }
+//
+//        ProductDetail.Option option = (ProductDetail.Option)button.getTag();
+//        ProductDetail.Node node = mDetail.findNodeById(option.id);
+//        Log.i(TAG, "find node: " + node.id);
+//
+//        for(int i = pos + 1 ; i < mViews.size() ; i ++){
+//            DialogButtonView dialogButtonView = mViews.get(i);
+//            dialogButtonView.updateStatus(node);
+//        }
+//
+//        Log.i(TAG, "gid: " + node.gid);
+//        if(!TextUtils.isEmpty(node.gid)){
+//            String text = mDetail.goods_status.get(node.gid);
+//
+//            if("1".equalsIgnoreCase(text)){
+//                mButton.setFocusable(true);
+//                mButton.setEnabled(true);
+//                mButton.setText("Buy");
+//            }else{
+//                mButton.setFocusable(false);
+//                mButton.setEnabled(false);
+//                mButton.setText("No Goods");
+//            }
+//        }else{
+//            mButton.setFocusable(false);
+//            mButton.setEnabled(false);
+//            mButton.setText("Buy");
+//        }
     }
 }
