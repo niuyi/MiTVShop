@@ -108,7 +108,8 @@ public abstract class MyDuokanBaseRequest extends MyBaseRequest {
                     byteStream.write(buffer,0, count);
                 }
 
-                mResponse = new DKResponse(DKResponse.STATUS_SUCCESS,  new String(buffer, 0, buffer.length, "utf-8"));
+                byte[] bytes = byteStream.toByteArray();
+                mResponse = new DKResponse(DKResponse.STATUS_SUCCESS,  new String(bytes, 0, bytes.length, "utf-8"));
                 httpResponse.getContentStream().close();
 
             }catch(Exception e) {

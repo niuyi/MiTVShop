@@ -9,6 +9,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import com.xiaomi.mitv.shop.model.Order;
 import com.xiaomi.mitv.shop.model.ProductDetail;
 import com.xiaomi.mitv.shop.network.CheckoutRequest;
 import com.xiaomi.mitv.shop.network.DKResponse;
@@ -154,6 +155,10 @@ public class MyActivity extends Activity implements DialogButtonView.OnItemCheck
                         && response.getStatus() == DKResponse.STATUS_SUCCESS
                         && !TextUtils.isEmpty(response.getResponse())){
                     Log.i(TAG, "res: " + response.getResponse());
+
+                    Order order = Order.parse(response.getResponse());
+
+                    Log.i(TAG, "order: " + order.header.code);
                 }
             }
 
