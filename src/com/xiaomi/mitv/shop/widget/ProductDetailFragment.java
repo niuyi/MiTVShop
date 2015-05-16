@@ -14,6 +14,7 @@ import com.xiaomi.mitv.shop.DetailActivity;
 import com.xiaomi.mitv.shop.GoodSelectionActivity;
 import com.xiaomi.mitv.shop.R;
 import com.xiaomi.mitv.shop.model.ProductDetail;
+import com.xiaomi.mitv.shop.model.ProductManager;
 import com.xiaomi.mitv.shop.network.DKResponse;
 import com.xiaomi.mitv.shop.network.JsonSerializer;
 
@@ -33,6 +34,7 @@ public class ProductDetailFragment extends Fragment {
 
     private int mCurrentIndex;
     private ProductDetail mDetail;
+    private String mPid;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,6 +43,9 @@ public class ProductDetailFragment extends Fragment {
         mPriceTextView = (TextView)view.findViewById(R.id.tv_price);
         mBuyButton = (Button)view.findViewById(R.id.button_buy);
         mViewSwitcher = (ViewFlipper)view.findViewById(R.id.vf_container);
+
+        mPid = getArguments().getString(ProductDetail.PID_KEY);
+        mDetail = ProductManager.INSTSNCE.getProductDetail(mPid);
 
         mBuyButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,42 +67,42 @@ public class ProductDetailFragment extends Fragment {
     }
 
     private ProductDetail getDetail(){
-        AssetManager assetManager = getActivity().getAssets();
-        ByteArrayOutputStream outputStream = null;
-        InputStream inputStream = null;
-        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-        try {
-            inputStream = assetManager.open("detail.json");
-            final int blockSize = 8192;
-            byte[] buffer = new byte[blockSize];
-            int count = 0;
-            while((count = inputStream.read(buffer, 0, blockSize)) > 0) {
-                byteStream.write(buffer,0, count);
-            }
-        } catch (IOException e) {
-        }
-
-        try {
-            byte[] bytes = byteStream.toByteArray();
-            String json = new String(bytes, 0, bytes.length, "utf-8");
-
-            DKResponse res = new DKResponse(1, json);
-            ProductDetail detail = ProductDetail.parse(res.getResponse());
-
-//            for(ProductDetail.Node node : detail.props_tree){
-//                printNode(node, 1);
+//        AssetManager assetManager = getActivity().getAssets();
+//        ByteArrayOutputStream outputStream = null;
+//        InputStream inputStream = null;
+//        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+//        try {
+//            inputStream = assetManager.open("detail.json");
+//            final int blockSize = 8192;
+//            byte[] buffer = new byte[blockSize];
+//            int count = 0;
+//            while((count = inputStream.read(buffer, 0, blockSize)) > 0) {
+//                byteStream.write(buffer,0, count);
 //            }
-
-            detail.name = "小米手机4电信4G版2GB内存 白色 16G";
-            return detail;
-
-
-
-//            JSONObject root = new JSONObject(json);
-//            Log.i(TAG, "status: " + root.getInt("status"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        } catch (IOException e) {
+//        }
+//
+//        try {
+//            byte[] bytes = byteStream.toByteArray();
+//            String json = new String(bytes, 0, bytes.length, "utf-8");
+//
+//            DKResponse res = new DKResponse(1, json, true);
+//            ProductDetail detail = ProductDetail.parse(res.getResponse());
+//
+////            for(ProductDetail.Node node : detail.props_tree){
+////                printNode(node, 1);
+////            }
+//
+//            detail.name = "小米手机4电信4G版2GB内存 白色 16G";
+//            return detail;
+//
+//
+//
+////            JSONObject root = new JSONObject(json);
+////            Log.i(TAG, "status: " + root.getInt("status"));
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
         return null;
     }
@@ -105,8 +110,6 @@ public class ProductDetailFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-
-        mDetail = initData();
 
         if(mDetail == null){
             ((DetailActivity)getActivity()).showFailurePage();
@@ -200,16 +203,8 @@ public class ProductDetailFragment extends Fragment {
         }
     }
 
-    public void reload(String json) {
-        Log.i(TAG, "reload");
-
-        ProductDetail detail = JsonSerializer.getInstance().deserialize(json, ProductDetail.class);
-        Log.i(TAG, "detail image count: " + detail.images.length);
-
-        mDetail = detail;
-
-        if(mDetail != null){
-            initView();
-        }
+    public void reload() {
+        mDetail = ProductManager.INSTSNCE.getProductDetail(mPid);
+        initView();
     }
 }

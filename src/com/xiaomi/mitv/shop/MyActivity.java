@@ -88,42 +88,42 @@ public class MyActivity extends Activity implements DialogButtonView.OnItemCheck
     }
 
     private ProductDetail getDetail(){
-        AssetManager assetManager = getAssets();
-        ByteArrayOutputStream outputStream = null;
-        InputStream inputStream = null;
-        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-        try {
-            inputStream = assetManager.open("detail.json");
-            final int blockSize = 8192;
-            byte[] buffer = new byte[blockSize];
-            int count = 0;
-            while((count = inputStream.read(buffer, 0, blockSize)) > 0) {
-                byteStream.write(buffer,0, count);
-            }
-        } catch (IOException e) {
-        }
-
-        try {
-            byte[] bytes = byteStream.toByteArray();
-            String json = new String(bytes, 0, bytes.length, "utf-8");
-
-            DKResponse res = new DKResponse(1, json);
-            ProductDetail detail = ProductDetail.parse(res.getResponse());
-
-            for(ProductDetail.Node node : detail.props_tree){
-                printNode(node, 1);
-            }
-
-            detail.name = "小米手机4电信4G版2GB内存 白色 16G";
-            return detail;
-
-
-
-//            JSONObject root = new JSONObject(json);
-//            Log.i(TAG, "status: " + root.getInt("status"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        AssetManager assetManager = getAssets();
+//        ByteArrayOutputStream outputStream = null;
+//        InputStream inputStream = null;
+//        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+//        try {
+//            inputStream = assetManager.open("detail.json");
+//            final int blockSize = 8192;
+//            byte[] buffer = new byte[blockSize];
+//            int count = 0;
+//            while((count = inputStream.read(buffer, 0, blockSize)) > 0) {
+//                byteStream.write(buffer,0, count);
+//            }
+//        } catch (IOException e) {
+//        }
+//
+//        try {
+//            byte[] bytes = byteStream.toByteArray();
+//            String json = new String(bytes, 0, bytes.length, "utf-8");
+//
+//            DKResponse res = new DKResponse(1, json);
+//            ProductDetail detail = ProductDetail.parse(res.getResponse());
+//
+//            for(ProductDetail.Node node : detail.props_tree){
+//                printNode(node, 1);
+//            }
+//
+//            detail.name = "小米手机4电信4G版2GB内存 白色 16G";
+//            return detail;
+//
+//
+//
+////            JSONObject root = new JSONObject(json);
+////            Log.i(TAG, "status: " + root.getInt("status"));
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
         return null;
     }
@@ -147,7 +147,7 @@ public class MyActivity extends Activity implements DialogButtonView.OnItemCheck
 
     public void onSubmit(View view){
 
-        CheckoutRequest req = new CheckoutRequest();
+        CheckoutRequest req = new CheckoutRequest("1", "1");
         req.setObserver(new MyBaseRequest.MyObserver() {
             @Override
             public void onRequestCompleted(MyBaseRequest request, DKResponse response) {
@@ -160,6 +160,11 @@ public class MyActivity extends Activity implements DialogButtonView.OnItemCheck
 
                     Log.i(TAG, "order: " + order.header.code);
                 }
+            }
+
+            @Override
+            public void onBeforeSendDone(MyBaseRequest request, DKResponse response) {
+                
             }
 
             @Override

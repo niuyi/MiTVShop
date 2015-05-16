@@ -1,5 +1,8 @@
 package com.xiaomi.mitv.shop.network;
 
+import android.text.TextUtils;
+import android.util.Log;
+import com.xiaomi.mitv.shop.db.ShopDBManager;
 import com.xiaomi.mitv.shop.model.ProductDetail;
 
 import java.util.Locale;
@@ -9,8 +12,24 @@ import java.util.Locale;
  */
 public class ProductDetailRequest extends MyDuokanBaseRequest {
 
+    private static final String TAG = "ProductDetailRequest";
+    private final String mPid;
+
+    public ProductDetailRequest(String pid) {
+        mPid = pid;
+    }
+
     @Override
-    protected boolean beforeSend() {
+    protected DKResponse beforeSend() {
+        Log.i(TAG, "beforeSend: " + mPid);
+        String value = ShopDBManager.INSTANCE.getValue(mPid);
+
+        if(!TextUtils.isEmpty(value)){
+            DKResponse res = new DKResponse(DKResponse.STATUS_BEFORE_SEND_SUCCESS, value, false);
+            return res;
+        }
+
+        return null;
 //        ProductDetail detail = new ProductDetail();
 //        detail.name = "小米手机";
 //        detail.price = "¥1999起";
@@ -25,7 +44,6 @@ public class ProductDetailRequest extends MyDuokanBaseRequest {
 //        mResponse = new DKResponse(DKResponse.STATUS_SUCCESS, json);
 //
 //        return true;
-        return false;
     }
 
     @Override
@@ -40,7 +58,7 @@ public class ProductDetailRequest extends MyDuokanBaseRequest {
 
     @Override
     protected String getParameters() {
-        return String.format("&product=%s", "1");
+        return String.format("&product=%s", mPid);
     }
 
     @Override

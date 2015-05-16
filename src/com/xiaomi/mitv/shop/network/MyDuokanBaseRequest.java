@@ -1,6 +1,5 @@
 package com.xiaomi.mitv.shop.network;
 
-import android.os.Build;
 import android.util.Log;
 import com.xiaomi.mitv.api.net.HttpClient;
 import com.xiaomi.mitv.api.net.HttpRequest;
@@ -22,33 +21,32 @@ public abstract class MyDuokanBaseRequest extends MyBaseRequest {
 
     private String mUrl;
 
-    protected DKResponse mResponse;
+//    protected DKResponse mResponse;
 
 
     @Override
     public void run() {
         Log.i(TAG, "MyScraperRequest run!");
-        try{
-            if(!beforeSend()){
-                doRequest(System.currentTimeMillis()/1000);
-            }
-        }finally {
-            reportRequestComplete();
+
+        reportBeforeSendDone(beforeSend());
+        reportRequestComplete(doRequest(System.currentTimeMillis()/1000));
+    }
+
+    private void reportBeforeSendDone(DKResponse response) {
+        if (mObserver != null) {
+            Log.i(TAG, "reportBeforeSendDone");
+            mObserver.onBeforeSendDone(this, response);
         }
     }
 
-    private void reportRequestComplete() {
+    private void reportRequestComplete(DKResponse response) {
         if(mObserver != null) {
-            if (mResponse == null) {
-                mResponse = new DKResponse(DKResponse.STATUS_UNKOWN_ERROR, null);
-            }
-
             Log.i(TAG, "onRequestCompleted");
-            mObserver.onRequestCompleted(this, mResponse);
+            mObserver.onRequestCompleted(this, response);
         }
     }
 
-    private void doRequest(long ts){
+    private DKResponse doRequest(long ts){
         mUrl = ApiConfig.getServerUrl();
         String deviceId = mitv.os.System.getDeviceID();
         //todo:
@@ -56,7 +54,7 @@ public abstract class MyDuokanBaseRequest extends MyBaseRequest {
 //                Build.VERSION.SDK_INT + getLocaleString() + "?key=" + ApiConfig.API_KEY +
 //                "&ts="+ts;
 
-        String sig = "/" + getPath() + String.format("?key=%s&deviceId=%s&ts=%s", ApiConfig.API_KEY, getPlatformID(), ts);
+        String sig = "/" + getPath() + String.format("?key=%s&deviceId=%s&platformId=%s&&ts=%s", ApiConfig.API_KEY, deviceId, getPlatformID(), ts);
 
         String para = getParameters();
 
@@ -109,18 +107,21 @@ public abstract class MyDuokanBaseRequest extends MyBaseRequest {
                 }
 
                 byte[] bytes = byteStream.toByteArray();
-                mResponse = new DKResponse(DKResponse.STATUS_SUCCESS,  new String(bytes, 0, bytes.length, "utf-8"));
+
+                DKResponse response = new DKResponse(DKResponse.STATUS_SUCCESS,  new String(bytes, 0, bytes.length, "utf-8"), true);
                 httpResponse.getContentStream().close();
 
+                return response;
             }catch(Exception e) {
                 e.printStackTrace();
-                mResponse = new DKResponse(DKResponse.STATUS_SERVER_ERROR, "");
                 Log.e(TAG, e.getMessage(), e);
             }
 
         }catch (Exception e) {
             e.printStackTrace();
         }
+
+        return new DKResponse(DKResponse.STATUS_SERVER_ERROR, "", false);
     }
 
 //    private DKResponse parseDKResponse(byte[] buf, Class<?> cls){
@@ -184,8 +185,8 @@ public abstract class MyDuokanBaseRequest extends MyBaseRequest {
         return "/" + locale.toString().replace('_', '/');
     }
 
-    protected boolean beforeSend(){
-        return false;
+    protected DKResponse beforeSend(){
+        return null;
     }
 
     protected abstract Object getInput();

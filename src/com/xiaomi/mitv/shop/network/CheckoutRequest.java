@@ -6,6 +6,15 @@ import java.util.Locale;
  * Created by niuyi on 2015/5/15.
  */
 public class CheckoutRequest extends MyDuokanBaseRequest {
+
+    private String mUid;
+    private String mGid;
+
+    public CheckoutRequest(String uid, String gid){
+        mUid = uid;
+        mGid = gid;
+    }
+
     @Override
     protected Object getInput() {
         return null;
@@ -18,7 +27,7 @@ public class CheckoutRequest extends MyDuokanBaseRequest {
 
     @Override
     protected String getParameters() {
-        return String.format("&uid=%s&gid=%s", "49649888", "2151400205");
+        return String.format("&uid=%s&gid=%s", mUid, mGid);
     }
 
     @Override

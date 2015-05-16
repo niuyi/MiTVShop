@@ -12,6 +12,7 @@ import org.json.JSONObject;
 public class DKResponse {
 
     public static final int STATUS_SUCCESS = 0;
+    public static final int STATUS_BEFORE_SEND_SUCCESS = 1;
     public static final int STATUS_NETWORK_ERROR = 10000;
     public static final int STATUS_SERVER_ERROR = 10001;
     public static final int STATUS_UNKOWN_ERROR = 10002;
@@ -21,10 +22,19 @@ public class DKResponse {
     private int status;
     private String response;
 
-    public DKResponse(int status, String rawData) {
-        Log.i("DKResponse: ", "new dkreponse, data: " + rawData);
+//    public DKResponse(int status, String response) {
+//        this(status, response, false);
+//    }
+
+    public DKResponse(int status, String rawData, boolean needParse) {
+        Log.i("DKResponse: ", "new dkresponse, data: " + rawData);
         this.status = status;
-        this.response = parseData(rawData);
+
+        if(needParse){
+            this.response = parseData(rawData);
+        }else{
+            this.response = rawData;
+        }
     }
 
     private String parseData(String response) {

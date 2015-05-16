@@ -1,6 +1,8 @@
 package com.xiaomi.mitv.shop.model;
 
+import android.text.TextUtils;
 import com.xiaomi.mitv.shop.network.JsonSerializer;
+import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,6 +11,8 @@ import java.util.Map;
  * Created by linniu on 2015/5/9.
  */
 public class ProductDetail {
+    public static final String PID_KEY = "PID";
+
     public String id;
     public int status;
     public String name;
@@ -22,6 +26,10 @@ public class ProductDetail {
     public Node[] props_tree;
 
     public static ProductDetail parse(String input){
+        if(TextUtils.isEmpty(input)){
+            return null;
+        }
+
         try{
             return JsonSerializer.getInstance().deserialize(input, ProductDetail.class);
         }catch (Exception e){
@@ -31,6 +39,9 @@ public class ProductDetail {
         return null;
     }
 
+    public boolean check(){
+        return true;
+    }
 
     public static class Prop{
         public String name;

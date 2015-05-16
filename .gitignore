@@ -76,3 +76,4 @@ $RECYCLE.BIN/
 MiTVShop.iml
 project.properties
 .idea/encodings.xml
+.idea/*

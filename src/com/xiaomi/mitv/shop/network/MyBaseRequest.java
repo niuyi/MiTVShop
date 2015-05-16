@@ -19,6 +19,7 @@ public abstract class MyBaseRequest implements Runnable {
 
     public interface MyObserver{
         void onRequestCompleted(MyBaseRequest request, DKResponse response);
+        void onBeforeSendDone(MyBaseRequest request, DKResponse response);
         void onAbort();
     }
 

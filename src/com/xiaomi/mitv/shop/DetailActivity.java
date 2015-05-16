@@ -11,7 +11,9 @@ import android.view.KeyEvent;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
+import com.xiaomi.mitv.shop.db.ShopDBManager;
 import com.xiaomi.mitv.shop.model.ProductDetail;
+import com.xiaomi.mitv.shop.model.ProductManager;
 import com.xiaomi.mitv.shop.network.DKResponse;
 import com.xiaomi.mitv.shop.network.JsonSerializer;
 import com.xiaomi.mitv.shop.network.MyBaseRequest;
@@ -29,67 +31,84 @@ public class DetailActivity extends Activity {
     private static final int LOADING_TIMEOUT = 20000;
 
     private Handler mHandler = new Handler();
+    private String mPid;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detail_activity);
 
+        mPid = getIntent().getStringExtra("pid");
+
+        if(TextUtils.isEmpty(mPid)){
+            Log.i(TAG, "pid id empty: " + mPid);
+            showFailurePage();
+            return;
+        }
+
         startLoading();
 
-        ProductDetailRequest request = new ProductDetailRequest();
+        ProductDetailRequest request = new ProductDetailRequest(mPid);
 
         request.setObserver(new MyBaseRequest.MyObserver() {
             @Override
             public void onRequestCompleted(MyBaseRequest request, DKResponse response) {
-                Log.i(TAG, "onRequestCompleted: " + response.getResponse());
+                Log.i(TAG, "onRequestCompleted");
+
+                if (response != null) {
+                    Log.i(TAG, "onRequestCompleted: response: " + response.getStatus());
+                } else {
+                    Log.i(TAG, "onRequestCompleted: response is null");
+                }
+
                 if (response != null
                         && response.getStatus() == DKResponse.STATUS_SUCCESS
                         && !TextUtils.isEmpty(response.getResponse())) {
 
                     mHandler.removeCallbacksAndMessages(null);
 
-                    ProductDetail productDetail = ProductDetail.parse(response.getResponse());
-                    Log.i(TAG, "productDetail: " + productDetail.status);
-                    Log.i(TAG, "productDetail, price: " + productDetail.price.max);
+                    final ProductDetail productDetail = ProductDetail.parse(response.getResponse());
 
-//                    ProductDetailFragment frag = new ProductDetailFragment();
-//                    Bundle input = new Bundle();
-//                    input.putString(DKResponse.DATA_KEY, response.getResponse());
-//                    frag.setArguments(input);
-//
-//                    switchFragment(frag);
+                    if(productDetail != null && productDetail.check()){
+                        ProductManager.INSTSNCE.putProductDetail(mPid, productDetail);
 
-//                    new Thread(){
-//                        @Override
-//                        public void run() {
-//                            try {
-//                                Thread.sleep(15000);
-//                            } catch (InterruptedException e) {
-//                                e.printStackTrace();
-//                            }
-//
-//                            ProductDetail detail = new ProductDetail();
-//                            detail.price = "¥1999起";
-//                            detail.images = new String[]{
-//                                    "http://c1.mifile.cn/f/i/2014/cn/goods/mi4/md/gallery/gallery-list-f.jpg?140722",
-//                                    "http://c1.mifile.cn/f/i/2014/cn/goods/mi4/md/gallery/gallery-list-n.jpg"};
-//
-//                            final String json = JsonSerializer.getInstance().serialize(detail);
-//
-//                            final ProductDetailFragment detailFragment = getDetailFragment();
-//
-//                            runOnUiThread(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    detailFragment.reload(json);
-//                                }
-//                            });
-//                        }
-//                    }.start();
+                        Log.i(TAG, "onRequestCompleted productDetail: " + productDetail.status);
+                        Log.i(TAG, "onRequestCompleted productDetail, price: " + productDetail.price.max);
 
-                }else{
+                        ShopDBManager.INSTANCE.addValue(mPid, response.getResponse());
+
+                        ProductDetailFragment detailFragment = getDetailFragment();
+                        if(detailFragment != null && detailFragment.isVisible()){
+                            detailFragment.reload();
+                        }else{
+                            showDetailPage();
+                        }
+                    }
+                } else {
                     showFailurePage();
+                }
+            }
+
+            @Override
+            public void onBeforeSendDone(MyBaseRequest request, DKResponse response) {
+                Log.i(TAG, "onBeforeSendDone");
+
+                if (response != null
+                        && response.getStatus() == DKResponse.STATUS_BEFORE_SEND_SUCCESS
+                        && !TextUtils.isEmpty(response.getResponse())) {
+
+                    mHandler.removeCallbacksAndMessages(null);
+
+                    ProductDetail productDetail = ProductDetail.parse(response.getResponse());
+
+                    if(productDetail != null && productDetail.check()){
+                        ProductManager.INSTSNCE.putProductDetail(mPid, productDetail);
+
+                        Log.i(TAG, "onBeforeSendDone productDetail: " + productDetail.status);
+                        Log.i(TAG, "onBeforeSendDone productDetail, price: " + productDetail.price.max);
+
+                        showDetailPage();
+                    }
                 }
             }
 
@@ -100,6 +119,16 @@ public class DetailActivity extends Activity {
         });
 
         request.send();
+    }
+
+    private void showDetailPage() {
+        ProductDetailFragment frag = new ProductDetailFragment();
+
+        Bundle input = new Bundle();
+        input.putString(ProductDetail.PID_KEY, mPid);
+        frag.setArguments(input);
+
+        switchFragment(frag);
     }
 
     private void startLoading() {
@@ -156,5 +185,11 @@ public class DetailActivity extends Activity {
         }
 
         return null;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ProductManager.INSTSNCE.clear();
     }
 }
