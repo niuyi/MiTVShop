@@ -1,9 +1,11 @@
-package com.xiaomi.mitv.shop.network;
+package com.xiaomi.mitv.shop.request;
 
 import android.text.TextUtils;
 import android.util.Log;
 import com.xiaomi.mitv.shop.db.ShopDBManager;
 import com.xiaomi.mitv.shop.model.ProductDetail;
+import com.xiaomi.mitv.shop.network.DKResponse;
+import com.xiaomi.mitv.shop.network.MyDuokanBaseRequest;
 
 import java.util.Locale;
 

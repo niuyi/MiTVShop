@@ -1,7 +1,7 @@
 package com.xiaomi.mitv.shop;
 
 import android.app.Activity;
-import android.content.res.AssetManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -9,21 +9,17 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import com.xiaomi.mitv.shop.model.CheckoutResponse;
 import com.xiaomi.mitv.shop.model.Order;
 import com.xiaomi.mitv.shop.model.ProductDetail;
-import com.xiaomi.mitv.shop.network.CheckoutRequest;
-import com.xiaomi.mitv.shop.network.DKResponse;
-import com.xiaomi.mitv.shop.network.MyBaseRequest;
+import com.xiaomi.mitv.shop.network.*;
+import com.xiaomi.mitv.shop.request.CheckoutRequest;
+import com.xiaomi.mitv.shop.request.PayRequest;
+import com.xiaomi.mitv.shop.request.SubmitRequest;
+import com.xiaomi.mitv.shop.util.QRGenerator;
 import com.xiaomi.mitv.shop.widget.DialogButtonView;
-import com.xiaomi.mitv.shop.widget.GoodSelectionWindow;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
 
 public class MyActivity extends Activity implements DialogButtonView.OnItemCheckedListener {
     private static final String TAG = "MyActivity";
@@ -32,6 +28,7 @@ public class MyActivity extends Activity implements DialogButtonView.OnItemCheck
     private ArrayList<DialogButtonView> mViews = new ArrayList<DialogButtonView>();
     private ProductDetail mDetail;
     private Button mButton;
+    private ImageView mQR;
 
     /**
      * Called when the activity is first created.
@@ -69,22 +66,70 @@ public class MyActivity extends Activity implements DialogButtonView.OnItemCheck
 //            mViews.add(view);
 //        }
 //
-        mButton = new Button(this);
-        mButton.setText("Buy");
-        mButton.requestFocus();
+        setupCheckout();
+
+        submitButton();
+
+        setupPay();
+
+//        if(mViews.size() > 0){
+//            mViews.get(0).setFocus();
+//        }
+    }
+
+    private void setupPay() {
+        Button payButton = new Button(this);
+        payButton.setText("pay");
+        payButton.requestFocus();
 //        mButton.setEnabled(false);
 
-        mButton.setOnClickListener(new View.OnClickListener() {
+        payButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onPay();
+            }
+        });
+        mContainer.addView(payButton);
+
+        mQR = new ImageView(this);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(200, 200);
+        params.gravity = Gravity.RIGHT;
+        mContainer.addView(mQR, params);
+    }
+
+    private void submitButton() {
+        Button button = new Button(this);
+        button.setText("Submit");
+        button.requestFocus();
+//        mButton.setEnabled(false);
+
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onSubmit(v);
             }
         });
-        mContainer.addView(mButton);
+        mContainer.addView(button);
+    }
 
-//        if(mViews.size() > 0){
-//            mViews.get(0).setFocus();
-//        }
+    private void setupCheckout() {
+        Button checkoutButton = new Button(this);
+        checkoutButton.setText("Checkout");
+        checkoutButton.requestFocus();
+//        checkoutButton.setEnabled(false);
+
+        checkoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onCheckout();
+            }
+        });
+        mContainer.addView(checkoutButton);
+    }
+
+    public void onPay(){
+        Bitmap dCode = QRGenerator.create2DCode("http://www.baidu.com", 200);
+        mQR.setImageBitmap(dCode);
     }
 
     private ProductDetail getDetail(){
@@ -145,9 +190,46 @@ public class MyActivity extends Activity implements DialogButtonView.OnItemCheck
         }
     }
 
+    public void onCheckout(){
+        CheckoutRequest req = new CheckoutRequest("49649888", "2151400205");
+        req.setObserver(new MyBaseRequest.MyObserver() {
+            @Override
+            public void onRequestCompleted(MyBaseRequest request, DKResponse response) {
+                if(response != null
+                        && response.getStatus() == DKResponse.STATUS_SUCCESS
+                        && !TextUtils.isEmpty(response.getResponse())){
+                    Log.i(TAG, "res: " + response.getResponse());
+
+                    CheckoutResponse res = CheckoutResponse.parse(response.getResponse());
+
+                    if(res != null){
+                        Log.i(TAG, "CheckoutResponse: " + res.header.code);
+                    }else{
+                        Log.i(TAG, "CheckoutResponse is null");
+                    }
+
+                }
+            }
+
+            @Override
+            public void onBeforeSendDone(MyBaseRequest request, DKResponse response) {
+
+            }
+
+            @Override
+            public void onAbort() {
+
+            }
+        });
+        req.send();
+    }
+
     public void onSubmit(View view){
 
-        CheckoutRequest req = new CheckoutRequest("1", "1");
+        //10140627350019340
+        //jiang: 10150130630035249  31814451
+        //niuyi : 10140627350019340
+        SubmitRequest req = new SubmitRequest("49649888", "10150418550020605", "1");
         req.setObserver(new MyBaseRequest.MyObserver() {
             @Override
             public void onRequestCompleted(MyBaseRequest request, DKResponse response) {
@@ -158,13 +240,44 @@ public class MyActivity extends Activity implements DialogButtonView.OnItemCheck
 
                     Order order = Order.parse(response.getResponse());
 
-                    Log.i(TAG, "order: " + order.header.code);
+                    if(order != null){
+                        Log.i(TAG, "order: " + order.header.code);
+                        Log.i(TAG, "order id: " + order.id);
+    //
+                        PayRequest req = new PayRequest("49649888", order.id, "alipay");
+                        req.setObserver(new MyBaseRequest.MyObserver() {
+                            @Override
+                            public void onRequestCompleted(MyBaseRequest request, DKResponse response) {
+                                if(response != null
+                                        && response.getStatus() == DKResponse.STATUS_SUCCESS
+                                        && !TextUtils.isEmpty(response.getResponse())){
+                                    Log.i(TAG, "PayRequest res: " + response.getResponse());
+                                }
+                            }
+
+                            @Override
+                            public void onBeforeSendDone(MyBaseRequest request, DKResponse response) {
+
+                            }
+
+                            @Override
+                            public void onAbort() {
+
+                            }
+                        });
+
+                        req.send();
+
+                    }else {
+                        Log.i(TAG, "order is null!");
+                    }
+
                 }
             }
 
             @Override
             public void onBeforeSendDone(MyBaseRequest request, DKResponse response) {
-                
+
             }
 
             @Override
@@ -172,7 +285,35 @@ public class MyActivity extends Activity implements DialogButtonView.OnItemCheck
 
             }
         });
+
         req.send();
+
+//        CheckoutRequest req = new CheckoutRequest("31814451", "2151400205");
+//        req.setObserver(new MyBaseRequest.MyObserver() {
+//            @Override
+//            public void onRequestCompleted(MyBaseRequest request, DKResponse response) {
+//                if(response != null
+//                        && response.getStatus() == DKResponse.STATUS_SUCCESS
+//                        && !TextUtils.isEmpty(response.getResponse())){
+//                    Log.i(TAG, "res: " + response.getResponse());
+//
+//                    Order order = Order.parse(response.getResponse());
+//
+//                    Log.i(TAG, "order: " + order.header.code);
+//                }
+//            }
+//
+//            @Override
+//            public void onBeforeSendDone(MyBaseRequest request, DKResponse response) {
+//
+//            }
+//
+//            @Override
+//            public void onAbort() {
+//
+//            }
+//        });
+//        req.send();
 
 //        GoodSelectionWindow window = new GoodSelectionWindow(this, mDetail);
 //        window.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);

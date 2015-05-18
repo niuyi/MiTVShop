@@ -1,4 +1,6 @@
-package com.xiaomi.mitv.shop.network;
+package com.xiaomi.mitv.shop.request;
+
+import com.xiaomi.mitv.shop.network.MyDuokanBaseRequest;
 
 import java.util.Locale;
 

@@ -1,4 +1,6 @@
-package com.xiaomi.mitv.shop.network;
+package com.xiaomi.mitv.shop.request;
+
+import com.xiaomi.mitv.shop.network.MyDuokanBaseRequest;
 
 import java.util.Locale;
 
@@ -9,14 +11,12 @@ public class PayRequest extends MyDuokanBaseRequest {
     private String mUid;
     private final String mOrderId;
     private final String mBank;
-    private final String mField;
 
     //mishop/api/bankgo?uid={user_id}&orderId={orderId}&bank={bank}&extend_field={extend_field}
-    public PayRequest(String uid, String orderId, String bank, String field) {
+    public PayRequest(String uid, String orderId, String bank) {
         mUid = uid;
         mOrderId = orderId;
         mBank = bank;
-        mField = field;
     }
 
     @Override
@@ -26,12 +26,12 @@ public class PayRequest extends MyDuokanBaseRequest {
 
     @Override
     protected String getPath() {
-        return "mishop/api/submit_order";
+        return "mishop/api/bankgo";
     }
 
     @Override
     protected String getParameters() {
-        return String.format("&uid=%s&orderId=%s&bank=%s&extend_field=%s", mUid, mOrderId, mBank, mField);
+        return String.format("&uid=%s&orderId=%s&bank=%s", mUid, mOrderId, mBank);
     }
 
     @Override
