@@ -1,7 +1,14 @@
 package com.xiaomi.mitv.shop.request;
 
+import android.util.Log;
+import com.xiaomi.mitv.shop.model.Address;
 import com.xiaomi.mitv.shop.network.MyDuokanBaseRequest;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 
 /**
@@ -10,48 +17,47 @@ import java.util.Locale;
 public class AddAddressRequest extends MyDuokanBaseRequest {
 
     private final String uid;
-    private final String consignee;
-    private final String country;
-    private final String province_id;
-    private final String city_id;
-    private final String district_id;
-    private final String address;
-    private final String zipcode;
-    private final String tel;
-    private final String email;
-    private final String address_name;
-    private final String area;
+    private final Address address;
 
-    public AddAddressRequest(String uid, String consignee, String country, String province_id, String city_id, String district_id, String address, String zipcode, String tel, String email, String address_name, String area){
-
+    public AddAddressRequest(String uid, Address address){
         this.uid = uid;
-        this.consignee = consignee;
-        this.country = country;
-        this.province_id = province_id;
-        this.city_id = city_id;
-        this.district_id = district_id;
         this.address = address;
-        this.zipcode = zipcode;
-        this.tel = tel;
-        this.email = email;
-        this.address_name = address_name;
-        this.area = area;
     }
 
     @Override
-    protected Object getInput() {
+    protected  byte[] getInput() {
+        JSONObject root = new JSONObject();
+
+        try {
+            root.put("user_id", uid);
+            root.put("consignee", address.consignee);
+            root.put("province_id", address.province_id);
+            root.put("city_id", address.city_id);
+            root.put("district_id", address.district_id);
+            root.put("address", address.address);
+            root.put("zipcode", address.zipcode);
+            root.put("tel", address.tel);
+
+            Log.i("AddAddressRequest", "AddAddressRequest: " + root.toString());
+
+//            ByteBuffer encode = Charset.forName("UTF-8").encode(root.toString());
+//
+//            return encode.array();
+
+            return root.toString().getBytes("utf-8");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
     @Override
     protected String getPath() {
-        return "mishop/api/list";
+        return "mishop/api/address/add";
     }
 
     @Override
     protected String getParameters() {
-
-//        return String.format("&uid=%s&",);
         return null;
     }
 

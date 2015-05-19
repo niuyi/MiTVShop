@@ -2,6 +2,7 @@ package com.xiaomi.mitv.shop.request;
 
 import android.text.TextUtils;
 import android.util.Log;
+import com.xiaomi.mitv.shop.db.ShopDBHelper;
 import com.xiaomi.mitv.shop.db.ShopDBManager;
 import com.xiaomi.mitv.shop.model.ProductDetail;
 import com.xiaomi.mitv.shop.network.DKResponse;
@@ -24,7 +25,7 @@ public class ProductDetailRequest extends MyDuokanBaseRequest {
     @Override
     protected DKResponse beforeSend() {
         Log.i(TAG, "beforeSend: " + mPid);
-        String value = ShopDBManager.INSTANCE.getValue(mPid);
+        String value = ShopDBManager.INSTANCE.getValue(mPid, ShopDBHelper.TABLE_PRODUCT_INFO_NAME);
 
         if(!TextUtils.isEmpty(value)){
             DKResponse res = new DKResponse(DKResponse.STATUS_BEFORE_SEND_SUCCESS, value, false);
@@ -49,7 +50,7 @@ public class ProductDetailRequest extends MyDuokanBaseRequest {
     }
 
     @Override
-    protected Object getInput() {
+    protected byte[] getInput() {
         return null;
     }
 

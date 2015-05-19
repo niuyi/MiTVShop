@@ -37,8 +37,8 @@ public enum ShopDBManager {
         return mDBHelper;
     }
 
-    public void addValue(String key, String value) {
-        Log.i(TAG, "addValue, key:" + key + " ,value:" + value);
+    public void setValue(String key, String value, String tableName) {
+        Log.i(TAG, "setValue, key:" + key + " ,value:" + value);
 
         try {
             SQLiteDatabase db = getWritableDatabase();
@@ -48,15 +48,15 @@ public enum ShopDBManager {
             val.put(ShopDBHelper.Columns_INFO_VALUE, value);
             val.put(ShopDBHelper.Columns_INFO_TIMESTAMP, String.valueOf(System.currentTimeMillis() / 1000));
 
-            long ret = db.replace(ShopDBHelper.TABLE_SHOP_INFO_NAME, null, val);
+            long ret = db.replace(tableName, null, val);
 
-            Log.i(TAG, "addValue ret: " + ret);
+            Log.i(TAG, "setValue ret: " + ret);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public String getValue(String key) {
+    public String getValue(String key, String tableName) {
         Log.i(TAG, "getValue, key: " + key);
 
         Cursor cursor = null;
@@ -64,7 +64,7 @@ public enum ShopDBManager {
         try {
             SQLiteDatabase db = getReadableDatabase();
             cursor = db.query(
-                    ShopDBHelper.TABLE_SHOP_INFO_NAME,
+                    tableName,
                     new String[]{ShopDBHelper.Columns_INFO_VALUE},
                     String.format("%s = ?", ShopDBHelper.Columns_INFO_KEY),
                     new String[]{key}, null, null, null);

@@ -16,18 +16,22 @@ public class RegionRequest extends MyDuokanBaseRequest {
     }
 
     @Override
-    protected Object getInput() {
+    protected  byte[] getInput() {
         return null;
     }
 
     @Override
     protected String getPath() {
-        return "mishop/api/list";
+        return "mishop/api/address/region";
     }
 
     @Override
     protected String getParameters() {
-        return String.format("&parent=%s", parentId == null ? "" : parentId);
+        if(parentId == null){
+            return null;
+        }
+
+        return String.format("&parent=%s", parentId);
     }
 
     @Override

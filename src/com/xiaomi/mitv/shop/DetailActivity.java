@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
+import com.xiaomi.mitv.shop.db.ShopDBHelper;
 import com.xiaomi.mitv.shop.db.ShopDBManager;
 import com.xiaomi.mitv.shop.model.ProductDetail;
 import com.xiaomi.mitv.shop.model.ProductManager;
@@ -71,7 +72,7 @@ public class DetailActivity extends Activity {
                         Log.i(TAG, "onRequestCompleted productDetail: " + productDetail.status);
                         Log.i(TAG, "onRequestCompleted productDetail, price: " + productDetail.price.max);
 
-                        ShopDBManager.INSTANCE.addValue(mPid, response.getResponse());
+                        ShopDBManager.INSTANCE.setValue(mPid, response.getResponse(), ShopDBHelper.TABLE_PRODUCT_INFO_NAME);
 
                         ProductDetailFragment detailFragment = getDetailFragment();
                         if(detailFragment != null && detailFragment.isVisible()){

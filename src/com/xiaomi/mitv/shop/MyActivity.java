@@ -1,6 +1,7 @@
 package com.xiaomi.mitv.shop;
 
 import android.app.Activity;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -9,16 +10,18 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import com.xiaomi.mitv.shop.model.CheckoutResponse;
-import com.xiaomi.mitv.shop.model.Order;
-import com.xiaomi.mitv.shop.model.ProductDetail;
+import com.xiaomi.mitv.shop.db.ShopDBHelper;
+import com.xiaomi.mitv.shop.db.ShopDBManager;
+import com.xiaomi.mitv.shop.model.*;
 import com.xiaomi.mitv.shop.network.*;
-import com.xiaomi.mitv.shop.request.CheckoutRequest;
-import com.xiaomi.mitv.shop.request.PayRequest;
-import com.xiaomi.mitv.shop.request.SubmitRequest;
+import com.xiaomi.mitv.shop.request.*;
 import com.xiaomi.mitv.shop.util.QRGenerator;
 import com.xiaomi.mitv.shop.widget.DialogButtonView;
+import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public class MyActivity extends Activity implements DialogButtonView.OnItemCheckedListener {
@@ -72,9 +75,231 @@ public class MyActivity extends Activity implements DialogButtonView.OnItemCheck
 
         setupPay();
 
+        setupAddress();
+
+        setupRegion();
+        setupRegion2();
+
+        setupAddAddress();
+
 //        if(mViews.size() > 0){
 //            mViews.get(0).setFocus();
 //        }
+    }
+
+    private void setupAddAddress() {
+        final EditText edit = new EditText(this);
+        edit.setText("abc");
+        edit.setFocusable(true);
+        edit.setEnabled(true);
+        edit.requestFocus();
+        mContainer.addView(edit);
+
+        Button button = new Button(this);
+        button.setText("add Address");
+//        button.requestFocus();
+//        mButton.setEnabled(false);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Address addr = new Address();
+                addr.consignee = edit.getText().toString();
+                addr.province_id = 2;
+                addr.city_id = 36;
+                addr.district_id = 381;
+                addr.address = "红军营南路媒体村天畅园7号楼2层";
+                addr.zipcode = "100107";
+                addr.tel = "13810099138";
+
+                AddAddressRequest req = new AddAddressRequest("49649888", addr);
+
+                req.setObserver(new MyBaseRequest.MyObserver() {
+                    @Override
+                    public void onRequestCompleted(MyBaseRequest request, DKResponse response) {
+                        if(response != null
+                                && response.getStatus() == DKResponse.STATUS_SUCCESS
+                                && !TextUtils.isEmpty(response.getResponse())){
+                            Log.i(TAG, "RegionRequest res: " + response.getResponse());
+                            AddAddressResponse res = AddAddressResponse.parse(response.getResponse());
+                            if(res != null){
+                                Log.i(TAG, "AddAddressRequest res: " + res.addressId);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onBeforeSendDone(MyBaseRequest request, DKResponse response) {
+
+                    }
+
+                    @Override
+                    public void onAbort() {
+
+                    }
+                });
+
+                req.send();
+            }
+        });
+
+
+        mContainer.addView(button);
+    }
+
+    private void setupRegion2() {
+        Button button = new Button(this);
+        button.setText("getRegion2");
+        button.requestFocus();
+//        mButton.setEnabled(false);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final RegionRequest req = new RegionRequest("4");
+                req.setObserver(new MyBaseRequest.MyObserver() {
+                    @Override
+                    public void onRequestCompleted(MyBaseRequest request, DKResponse response) {
+                        if(response != null
+                                && response.getStatus() == DKResponse.STATUS_SUCCESS
+                                && !TextUtils.isEmpty(response.getResponse())){
+                            Log.i(TAG, "RegionRequest res: " + response.getResponse());
+
+                            RegionList regionList = RegionList.parse(response.getResponse());
+
+                            if(regionList != null){
+                                Log.i(TAG, "regionList size: " + regionList.regions.size());
+                            }
+
+                        }
+                    }
+
+                    @Override
+                    public void onBeforeSendDone(MyBaseRequest request, DKResponse response) {
+
+                    }
+
+                    @Override
+                    public void onAbort() {
+
+                    }
+                });
+
+                req.send();
+            }
+        });
+
+
+        mContainer.addView(button);
+    }
+
+    private void setupRegion() {
+        Button button = new Button(this);
+        button.setText("getRegion");
+        button.requestFocus();
+//        mButton.setEnabled(false);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final RegionRequest req = new RegionRequest(null);
+                req.setObserver(new MyBaseRequest.MyObserver() {
+                    @Override
+                    public void onRequestCompleted(MyBaseRequest request, DKResponse response) {
+                        if(response != null
+                                && response.getStatus() == DKResponse.STATUS_SUCCESS
+                                && !TextUtils.isEmpty(response.getResponse())){
+                            Log.i(TAG, "RegionRequest res: " + response.getResponse());
+
+                            RegionList regionList = RegionList.parse(response.getResponse());
+
+                            if(regionList != null){
+                                Log.i(TAG, "regionList size: " + regionList.regions.size());
+                            }
+
+                        }
+                    }
+
+                    @Override
+                    public void onBeforeSendDone(MyBaseRequest request, DKResponse response) {
+
+                    }
+
+                    @Override
+                    public void onAbort() {
+
+                    }
+                });
+
+                req.send();
+            }
+        });
+
+
+        mContainer.addView(button);
+    }
+
+    private void setupAddress() {
+        Button button = new Button(this);
+        button.setText("getAddress");
+        button.requestFocus();
+//        mButton.setEnabled(false);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String value = ShopDBManager.INSTANCE.getValue("49649888", ShopDBHelper.TABLE_ADDRESS_LIST_NAME);
+
+                if(!TextUtils.isEmpty(value)){
+                    Log.i(TAG, "get address list from db");
+                    AddressList list = AddressList.parse(value);
+                    if(list.addresses.size() > 0){
+                        Log.i(TAG, "consignee: " +list.addresses.get(0).consignee);
+                    }
+
+                    return;
+                }
+
+                GetAddressListRequest req = new GetAddressListRequest("49649888");
+                req.setObserver(new MyBaseRequest.MyObserver() {
+                    @Override
+                    public void onRequestCompleted(MyBaseRequest request, DKResponse response) {
+                        if(response != null
+                                && response.getStatus() == DKResponse.STATUS_SUCCESS
+                                && !TextUtils.isEmpty(response.getResponse())){
+                            Log.i(TAG, "GetAddressListRequest res: " + response.getResponse());
+                            AddressList list = AddressList.parse(response.getResponse());
+
+                            if(list != null){
+                                Log.i(TAG, "address list: " + list.addresses.size());
+                                if(list.addresses.size() > 0){
+                                    Log.i(TAG, "consignee: " +list.addresses.get(0).consignee);
+                                    ShopDBManager.INSTANCE.setValue("49649888", response.getResponse(), ShopDBHelper.TABLE_ADDRESS_LIST_NAME);
+                                }
+                            }else{
+                                Log.i(TAG, "address list is null");
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onBeforeSendDone(MyBaseRequest request, DKResponse response) {
+
+                    }
+
+                    @Override
+                    public void onAbort() {
+
+                    }
+                });
+
+                req.send();
+            }
+        });
+
+
+        mContainer.addView(button);
     }
 
     private void setupPay() {
@@ -122,6 +347,7 @@ public class MyActivity extends Activity implements DialogButtonView.OnItemCheck
             @Override
             public void onClick(View v) {
                 onCheckout();
+//                getCheckout();
             }
         });
         mContainer.addView(checkoutButton);
@@ -130,6 +356,62 @@ public class MyActivity extends Activity implements DialogButtonView.OnItemCheck
     public void onPay(){
         Bitmap dCode = QRGenerator.create2DCode("http://www.baidu.com", 200);
         mQR.setImageBitmap(dCode);
+    }
+
+    private void getCheckout(){
+        Log.i(TAG, "getCheckout");
+
+        AssetManager assetManager = getAssets();
+
+        ByteArrayOutputStream outputStream = null;
+        InputStream inputStream = null;
+        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+
+        try {
+            inputStream = assetManager.open("checkout_response");
+            final int blockSize = 8192;
+            byte[] buffer = new byte[blockSize];
+            int count = 0;
+            while((count = inputStream.read(buffer, 0, blockSize)) > 0) {
+                byteStream.write(buffer,0, count);
+            }
+        } catch (IOException e) {
+        }
+
+        try {
+            byte[] bytes = byteStream.toByteArray();
+            String json = new String(bytes, 0, bytes.length, "utf-8");
+
+            JSONObject root = new JSONObject(json);
+            JSONObject body = root.getJSONObject("body");
+            JSONObject address = body.optJSONObject("address");
+
+            if(address != null){
+                Log.i(TAG, "address: " + address);
+            }else{
+                Log.i(TAG, "address is null");
+            }
+
+//            CheckoutResponse res = CheckoutResponse.parse(json);
+//
+//            if(res != null){
+//                Log.i(TAG, "CheckoutResponse: " + res.header.code);
+//                if(res.body.address != null){
+//                    Log.i(TAG, "CheckoutResponse, address id: " + res.body.address.address_id);
+//                    Log.i(TAG, "CheckoutResponse, address consignee: " + res.body.address.consignee);
+//                    Log.i(TAG, "CheckoutResponse, address address: " + res.body.address.address);
+//                }else{
+//                    Log.i(TAG, "CheckoutResponse address is null");
+//                }
+//            }else{
+//                Log.i(TAG, "CheckoutResponse is null");
+//            }
+
+//            JSONObject root = new JSONObject(json);
+//            Log.i(TAG, "status: " + root.getInt("status"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private ProductDetail getDetail(){
@@ -204,6 +486,13 @@ public class MyActivity extends Activity implements DialogButtonView.OnItemCheck
 
                     if(res != null){
                         Log.i(TAG, "CheckoutResponse: " + res.header.code);
+                        if(res.body.address != null){
+                            Log.i(TAG, "CheckoutResponse, address id: " + res.body.address.address_id);
+                            Log.i(TAG, "CheckoutResponse, address consignee: " + res.body.address.consignee);
+                            Log.i(TAG, "CheckoutResponse, address address: " + res.body.address.address);
+                        }else{
+                            Log.i(TAG, "CheckoutResponse address is null");
+                        }
                     }else{
                         Log.i(TAG, "CheckoutResponse is null");
                     }
@@ -243,7 +532,7 @@ public class MyActivity extends Activity implements DialogButtonView.OnItemCheck
                     if(order != null){
                         Log.i(TAG, "order: " + order.header.code);
                         Log.i(TAG, "order id: " + order.id);
-    //
+                        //
                         PayRequest req = new PayRequest("49649888", order.id, "alipay");
                         req.setObserver(new MyBaseRequest.MyObserver() {
                             @Override

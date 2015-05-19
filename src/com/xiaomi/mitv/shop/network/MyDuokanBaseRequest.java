@@ -67,7 +67,7 @@ public abstract class MyDuokanBaseRequest extends MyBaseRequest {
             byte[] key = Security.SECRET_KEY.getBytes();
             String data = sig;
 
-            byte[] body = getBody();
+            byte[] body = getInput();
 
             if(body != null){
                 data +=  "&" + new String(body);
@@ -141,36 +141,36 @@ public abstract class MyDuokanBaseRequest extends MyBaseRequest {
 //        return res;
 //    }
 
-    private byte[] getBody(){
-        Object input = getInput();
-        if(input == null)
-            return null;  //for get
-
-        String json = JsonSerializer.getInstance().serialize(input);
-
-        ByteArrayOutputStream os = null;
-        GZIPOutputStream gos = null;
-
-        try {
-            os = new ByteArrayOutputStream();
-            gos = new GZIPOutputStream(os);
-
-            gos.write(json.getBytes());
-
-            gos.finish();
-
-            BASE64Encoder encoder = new BASE64Encoder();
-            String body = encoder.encode(os.toByteArray());
-            return body.getBytes();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }finally{
-            Util.closeQuietly(os);
-            Util.closeQuietly(gos);
-        }
-
-        return null;
-    }
+//    private byte[] getBody(){
+//        Object input = getInput();
+//        if(input == null)
+//            return null;  //for get
+//
+//        String json = JsonSerializer.getInstance().serialize(input);
+//
+//        ByteArrayOutputStream os = null;
+//        GZIPOutputStream gos = null;
+//
+//        try {
+//            os = new ByteArrayOutputStream();
+//            gos = new GZIPOutputStream(os);
+//
+//            gos.write(json.getBytes());
+//
+//            gos.finish();
+//
+//            BASE64Encoder encoder = new BASE64Encoder();
+//            String body = encoder.encode(os.toByteArray());
+//            return body.getBytes();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }finally{
+//            Util.closeQuietly(os);
+//            Util.closeQuietly(gos);
+//        }
+//
+//        return null;
+//    }
 
     private String  getPlatformID(){
         return String.valueOf(mitv.os.System.getPlatform());
@@ -189,7 +189,7 @@ public abstract class MyDuokanBaseRequest extends MyBaseRequest {
         return null;
     }
 
-    protected abstract Object getInput();
+    protected abstract byte[] getInput();
     protected abstract String getPath();
     protected abstract String getParameters();
     protected abstract Locale getLocale();

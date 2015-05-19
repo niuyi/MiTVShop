@@ -16,13 +16,13 @@ public class GetAddressListRequest extends MyDuokanBaseRequest {
     }
 
     @Override
-    protected Object getInput() {
+    protected  byte[] getInput() {
         return null;
     }
 
     @Override
     protected String getPath() {
-        return "mishop/api/list";
+        return "mishop/api/address/list";
     }
 
     @Override

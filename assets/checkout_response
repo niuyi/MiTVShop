@@ -1,0 +1,186 @@
+{
+    "header": {
+        "code": 0,
+        "exe_time": "0.0097",
+        "info": "success",
+        "desc": "成功"
+    },
+    "body": {
+        "eaddress": {
+            "is_event": false
+        },
+        "address": [],
+        "payment": [
+            {
+                "brief": "在线支付",
+                "pay_id": "1",
+                "checked": true,
+                "tpis": "快递配送（免运费）"
+            }
+        ],
+        "paylist": [
+            {
+                "brief": "在线支付",
+                "pay_id": "1",
+                "checked": true
+            }
+        ],
+        "shipmentlist": [
+            {
+                "shipment_id": "1",
+                "brief": "快递配送（免运费）",
+                "amount": "0",
+                "checked": true
+            }
+        ],
+        "delivertime": [
+            {
+                "value": 1,
+                "desc": "不限送货时间",
+                "checked": true
+            },
+            {
+                "value": 2,
+                "desc": "工作日送货",
+                "checked": false
+            },
+            {
+                "value": 3,
+                "desc": "双休日、假日送货",
+                "checked": false
+            }
+        ],
+        "invoice": [
+            {
+                "type": "personal",
+                "value": 1,
+                "desc": "个人*屏蔽的关键字*",
+                "checked": false
+            },
+            {
+                "type": "electron",
+                "value": 4,
+                "desc": "电子*屏蔽的关键字*",
+                "checked": true
+            },
+            {
+                "type": "company",
+                "value": 2,
+                "desc": "单位*屏蔽的关键字*",
+                "checked": false
+            }
+        ],
+        "invoice_title": "",
+        "invoice_open": true,
+        "productMoney": 5097,
+        "activityDiscountMoney": 0,
+        "couponDiscountMoney": 0,
+        "present": "",
+        "total": 3,
+        "amount": "5097",
+        "shipment": "0",
+        "cartlist": {
+            "resultCode": 0,
+            "items": [
+                {
+                    "itemId": "2151400205_0_buy",
+                    "scenario": 0,
+                    "goodsId": 2151400205,
+                    "getType": "buy",
+                    "num": 3,
+                    "properties": {
+                        "source": "common",
+                        "insurance": {
+                            "name": "手机意外保障 服务",
+                            "short_name": "手机意外保 服务",
+                            "price": "99",
+                            "sku": "8800",
+                            "goods_id": "2144000014",
+                            "image_url": "http://i1.mifile.cn/a1/T1aKDgBXJT1RXrhCrK.jpg",
+                            "type": "mi4",
+                            "itemId": ""
+                        }
+                    },
+                    "addTime": 1431694422,
+                    "updateTime": 1431694625,
+                    "stdPrice": "1699",
+                    "salePrice": "1699",
+                    "commodity_id": "1151400061",
+                    "sku": "10476",
+                    "cats": {
+                        "31": "手机"
+                    },
+                    "is_alone_buy": "0",
+                    "subtotal": 5097,
+                    "iscontract": "",
+                    "is_cos": false,
+                    "product_name": "小米手机4联通4G版2GB内存 白色 16GB",
+                    "short_name": "小米手机4联通4G版2GB内存 白色 16GB",
+                    "isInsurance": false,
+                    "product_id": "2151400205",
+                    "image_url": "http://i1.mifile.cn/a1/T1ZGVgB4ZT1RXrhCrK.jpg",
+                    "is_alone_sale": true,
+                    "is_on_sale": true,
+                    "adapt": {
+                        "123": "小米手机4"
+                    },
+                    "adapt_desc": "",
+                    "is_batched": false,
+                    "area_id": "2",
+                    "buy_limit": 20,
+                    "product_brief": "",
+                    "price": "1699",
+                    "market_price": "1699",
+                    "promotion_price": "0",
+                    "cat_id": "31",
+                    "is_self_get": false,
+                    "goods_limit_buy": "0",
+                    "cartTTL": 1431705222,
+                    "push_time": "21",
+                    "show_stock": true,
+                    "goodsType": "",
+                    "showType": "buy",
+                    "can_change_num": true,
+                    "can_delete": true,
+                    "elementsGoods": false
+                }
+            ],
+            "postFree": false,
+            "joinedActs": [],
+            "specialMoney": 0,
+            "productMoney": 5097,
+            "bargainSupply": [],
+            "activityDiscountMoney": 0,
+            "orderMoney": "5097.00",
+            "ActDiscountMin": 150,
+            "ActTotalMoney": "5097.00",
+            "total": 3,
+            "totalWithoutGift": 3,
+            "totalprice": "5097",
+            "has": [
+                "mobile"
+            ],
+            "activitys": {
+                "gift": [],
+                "reduction": [],
+                "coupons": [],
+                "postFree": []
+            },
+            "appConfig": {
+                "discountMin": "150",
+                "shipmentExpense": "10",
+                "CODExpense": "20",
+                "shipmentDesc": "全场满￥150免运费，除电视、净化器、体重秤"
+            },
+            "bargains": [],
+            "hasBargainSupply": false,
+            "postFreeBalance": 0,
+            "gatherorder_info": {
+                "balance_price": 0,
+                "show_list": false,
+                "goods_list": []
+            },
+            "address_match": "common"
+        }
+    }
+}

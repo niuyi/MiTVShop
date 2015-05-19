@@ -20,7 +20,7 @@ public class PayRequest extends MyDuokanBaseRequest {
     }
 
     @Override
-    protected Object getInput() {
+    protected byte[] getInput() {
         return null;
     }
 
