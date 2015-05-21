@@ -26,7 +26,7 @@ public class PayRequest extends MyDuokanBaseRequest {
 
     @Override
     protected String getPath() {
-        return "mishop/api/bankgo";
+        return "mishop/api/pay/bankgo";
     }
 
     @Override

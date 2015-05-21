@@ -77,45 +77,22 @@ public abstract class MyDuokanBaseRequest extends MyBaseRequest {
             opaque = Security.signature(data.getBytes(), key);
             mUrl += sig + "&" + ApiConfig.PARAM_OPAQUE + "=" + opaque;
 
-            Hashtable<String, String> params = new Hashtable<String, String>();
-            HttpRequest request = new HttpRequest();
-            Log.i(TAG, "murl!!!: " + mUrl);
-            request.setUrl(mUrl);
-            request.setParams(params);
+            Log.i(TAG, "murl: " + mUrl);
 
-            if(body != null){
-                request.setBody(body);
-            }
+//            Hashtable<String, String> params = new Hashtable<String, String>();
+//            HttpRequest request = new HttpRequest();
+//            Log.i(TAG, "murl!!!: " + mUrl);
+//            request.setUrl(mUrl);
+//            request.setParams(params);
+//
+//            if(body != null){
+//                request.setBody(body);
+//            }
 
-            HttpClient httpClient = new HttpClient();
+            String res = NetworkApi.getStringFromUrl(mUrl, ApiConfig.getServerHost(), getInput());
+            DKResponse response = new DKResponse(DKResponse.STATUS_SUCCESS, res, true);
 
-            httpClient.addHeader("Accept-Encoding", "gzip,deflate");
-            httpClient.addHeader("host", ApiConfig.getServerHost());
-
-            HttpResponse httpResponse;
-
-            try {
-                httpResponse = httpClient.doRequest(request, body == null && params.size() == 0);
-                ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-
-                final int blockSize = 8192;
-                byte[] buffer = new byte[blockSize];
-
-                int count = 0;
-                while((count = httpResponse.getContentStream().read(buffer, 0 , blockSize)) > 0) {
-                    byteStream.write(buffer,0, count);
-                }
-
-                byte[] bytes = byteStream.toByteArray();
-
-                DKResponse response = new DKResponse(DKResponse.STATUS_SUCCESS,  new String(bytes, 0, bytes.length, "utf-8"), true);
-                httpResponse.getContentStream().close();
-
-                return response;
-            }catch(Exception e) {
-                e.printStackTrace();
-                Log.e(TAG, e.getMessage(), e);
-            }
+            return response;
 
         }catch (Exception e) {
             e.printStackTrace();
@@ -123,6 +100,85 @@ public abstract class MyDuokanBaseRequest extends MyBaseRequest {
 
         return new DKResponse(DKResponse.STATUS_SERVER_ERROR, "", false);
     }
+
+
+//    private DKResponse doRequest(long ts){
+//        mUrl = ApiConfig.getServerUrl();
+//        String deviceId = mitv.os.System.getDeviceID();
+//        //todo:
+////        String sig = "/" + getPath() + "/" + deviceId + "/" + getPlatformID() + "/" +
+////                Build.VERSION.SDK_INT + getLocaleString() + "?key=" + ApiConfig.API_KEY +
+////                "&ts="+ts;
+//
+//        String sig = "/" + getPath() + String.format("?key=%s&deviceId=%s&platformId=%s&&ts=%s", ApiConfig.API_KEY, deviceId, getPlatformID(), ts);
+//
+//        String para = getParameters();
+//
+//        if(para != null){
+//            sig = sig + para;
+//        }
+//
+//        String opaque = null;
+//        try {
+//            byte[] key = Security.SECRET_KEY.getBytes();
+//            String data = sig;
+//
+//            byte[] body = getInput();
+//
+//            if(body != null){
+//                data +=  "&" + new String(body);
+//            }
+//
+//            data += "&token=" + Security.SECRET_TOKEN;
+//            opaque = Security.signature(data.getBytes(), key);
+//            mUrl += sig + "&" + ApiConfig.PARAM_OPAQUE + "=" + opaque;
+//
+//            Hashtable<String, String> params = new Hashtable<String, String>();
+//            HttpRequest request = new HttpRequest();
+//            Log.i(TAG, "murl!!!: " + mUrl);
+//            request.setUrl(mUrl);
+//            request.setParams(params);
+//
+//            if(body != null){
+//                request.setBody(body);
+//            }
+//
+//            HttpClient httpClient = new HttpClient();
+//
+//            httpClient.addHeader("Accept-Encoding", "gzip,deflate");
+//            httpClient.addHeader("host", ApiConfig.getServerHost());
+//
+//            HttpResponse httpResponse;
+//
+//            try {
+//                httpResponse = httpClient.doRequest(request, body == null && params.size() == 0);
+//                ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+//
+//                final int blockSize = 8192;
+//                byte[] buffer = new byte[blockSize];
+//
+//                int count = 0;
+//                while((count = httpResponse.getContentStream().read(buffer, 0 , blockSize)) > 0) {
+//                    byteStream.write(buffer,0, count);
+//                }
+//
+//                byte[] bytes = byteStream.toByteArray();
+//
+//                DKResponse response = new DKResponse(DKResponse.STATUS_SUCCESS,  new String(bytes, 0, bytes.length, "utf-8"), true);
+//                httpResponse.getContentStream().close();
+//
+//                return response;
+//            }catch(Exception e) {
+//                e.printStackTrace();
+//                Log.e(TAG, e.getMessage(), e);
+//            }
+//
+//        }catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        return new DKResponse(DKResponse.STATUS_SERVER_ERROR, "", false);
+//    }
 
 //    private DKResponse parseDKResponse(byte[] buf, Class<?> cls){
 //

@@ -56,7 +56,7 @@ public class ProductDetailRequest extends MyDuokanBaseRequest {
 
     @Override
     protected String getPath() {
-        return "mishop/api/list";
+        return "mishop/api/product/list";
     }
 
     @Override

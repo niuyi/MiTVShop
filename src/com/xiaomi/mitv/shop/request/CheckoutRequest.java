@@ -24,7 +24,7 @@ public class CheckoutRequest extends MyDuokanBaseRequest {
 
     @Override
     protected String getPath() {
-        return "mishop/api/checkout";
+        return "mishop/api/product/checkout";
     }
 
     @Override

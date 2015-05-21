@@ -8,7 +8,7 @@ import com.xiaomi.mitv.shop.util.ProductInfo;
 public class ApiConfig {
 
     private static final String TAG = "ApiConfig";
-    private static final String SERVER_HOST = "scraper.server1";
+    private static final String SERVER_HOST = "mishop.n.duokanbox.com";
     private static final String SERVER_HK_HOST = "scraper.g.duokanbox.com";
 
     public static final String PARAM_OPAQUE = "opaque";
@@ -23,7 +23,8 @@ public class ApiConfig {
 //            return "http://" + SERVER_HK_HOST;
 //        }
 
-        return "http://10.235.176.26:9025";
+//        return "http://10.235.176.26:9025";
+        return "http://mishop.n.duokanbox.com";
 
     }
 

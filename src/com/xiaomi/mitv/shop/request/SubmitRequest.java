@@ -28,7 +28,7 @@ public class SubmitRequest extends MyDuokanBaseRequest {
 
     @Override
     protected String getPath() {
-        return "mishop/api/submit_order";
+        return "mishop/api/order/submit_order";
     }
 
     @Override

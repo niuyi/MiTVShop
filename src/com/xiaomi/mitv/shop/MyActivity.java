@@ -1,15 +1,20 @@
 package com.xiaomi.mitv.shop;
 
+import android.accounts.Account;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import com.xiaomi.mitv.api.util.MILog;
+import com.xiaomi.mitv.shop.account.MiTVAccount;
 import com.xiaomi.mitv.shop.db.ShopDBHelper;
 import com.xiaomi.mitv.shop.db.ShopDBManager;
 import com.xiaomi.mitv.shop.model.*;
@@ -32,6 +37,11 @@ public class MyActivity extends Activity implements DialogButtonView.OnItemCheck
     private ProductDetail mDetail;
     private Button mButton;
     private ImageView mQR;
+    private MiTVAccount mAccount;
+
+    private String adddressId;
+    private String accountId;
+    private String orderId;
 
     /**
      * Called when the activity is first created.
@@ -40,6 +50,8 @@ public class MyActivity extends Activity implements DialogButtonView.OnItemCheck
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+
+        Log.i(TAG, "onCreate");
 
         ViewGroup root = (ViewGroup)findViewById(R.id.root);
 
@@ -73,6 +85,8 @@ public class MyActivity extends Activity implements DialogButtonView.OnItemCheck
 
         submitButton();
 
+        setupCheckOrder();
+
         setupPay();
 
         setupAddress();
@@ -85,6 +99,49 @@ public class MyActivity extends Activity implements DialogButtonView.OnItemCheck
 //        if(mViews.size() > 0){
 //            mViews.get(0).setFocus();
 //        }
+    }
+
+    private void setupCheckOrder() {
+        Button button = new Button(this);
+        button.setText("check order");
+        button.requestFocus();
+//        mButton.setEnabled(false);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final ViewOrderRequest req = new ViewOrderRequest(accountId, orderId);
+                req.setObserver(new MyBaseRequest.MyObserver() {
+                    @Override
+                    public void onRequestCompleted(MyBaseRequest request, DKResponse response) {
+                        if(response != null
+                                && response.getStatus() == DKResponse.STATUS_SUCCESS
+                                && !TextUtils.isEmpty(response.getResponse())){
+                            Log.i(TAG, "ViewOrderRequest res: " + response.getResponse());
+
+                            OrderStatus status = OrderStatus.parse(response.getResponse());
+                            Log.i(TAG, "ViewOrderRequest is pay done: " + status.isPayDone);
+
+                        }
+                    }
+
+                    @Override
+                    public void onBeforeSendDone(MyBaseRequest request, DKResponse response) {
+
+                    }
+
+                    @Override
+                    public void onAbort() {
+
+                    }
+                });
+
+                req.send();
+            }
+        });
+
+
+        mContainer.addView(button);
     }
 
     private void setupAddAddress() {
@@ -123,6 +180,7 @@ public class MyActivity extends Activity implements DialogButtonView.OnItemCheck
                             Log.i(TAG, "RegionRequest res: " + response.getResponse());
                             AddAddressResponse res = AddAddressResponse.parse(response.getResponse());
                             if(res != null){
+                                Log.i(TAG, "AddAddressRequest res: " + res.addressId);
                                 Log.i(TAG, "AddAddressRequest res: " + res.addressId);
                             }
                         }
@@ -251,16 +309,18 @@ public class MyActivity extends Activity implements DialogButtonView.OnItemCheck
 
                 String value = ShopDBManager.INSTANCE.getValue("49649888", ShopDBHelper.TABLE_ADDRESS_LIST_NAME);
 
-                if(!TextUtils.isEmpty(value)){
-                    Log.i(TAG, "get address list from db");
-                    AddressList list = AddressList.parse(value);
-                    if(list.addresses.size() > 0){
-                        Log.i(TAG, "consignee: " +list.addresses.get(0).consignee);
-                    }
+//                if(!TextUtils.isEmpty(value)){
+//                    Log.i(TAG, "get address list from db");
+//                    AddressList list = AddressList.parse(value);
+//                    if(list.addresses.size() > 0){
+//                        Log.i(TAG, "consignee: " +list.addresses.get(0).consignee);
+//                    }
+//
+//                    return;
+//                }
 
-                    return;
-                }
 
+                final long start = System.currentTimeMillis();
                 GetAddressListRequest req = new GetAddressListRequest("49649888");
                 req.setObserver(new MyBaseRequest.MyObserver() {
                     @Override
@@ -269,6 +329,8 @@ public class MyActivity extends Activity implements DialogButtonView.OnItemCheck
                                 && response.getStatus() == DKResponse.STATUS_SUCCESS
                                 && !TextUtils.isEmpty(response.getResponse())){
                             Log.i(TAG, "GetAddressListRequest res: " + response.getResponse());
+                            Log.i(TAG, "GetAddressListRequest res dur: " + (System.currentTimeMillis() - start));
+
                             AddressList list = AddressList.parse(response.getResponse());
 
                             if(list != null){
@@ -472,28 +534,30 @@ public class MyActivity extends Activity implements DialogButtonView.OnItemCheck
         }
     }
 
+
     public void onCheckout(){
-        CheckoutRequest req = new CheckoutRequest("49649888", "2151400205");
+        CheckoutRequest req = new CheckoutRequest(accountId, "2151400205");
         req.setObserver(new MyBaseRequest.MyObserver() {
             @Override
             public void onRequestCompleted(MyBaseRequest request, DKResponse response) {
-                if(response != null
+                if (response != null
                         && response.getStatus() == DKResponse.STATUS_SUCCESS
-                        && !TextUtils.isEmpty(response.getResponse())){
+                        && !TextUtils.isEmpty(response.getResponse())) {
                     Log.i(TAG, "res: " + response.getResponse());
 
                     CheckoutResponse res = CheckoutResponse.parse(response.getResponse());
 
-                    if(res != null){
+                    if (res != null) {
                         Log.i(TAG, "CheckoutResponse: " + res.header.code);
-                        if(res.body.address != null){
+                        if (res.body.address != null) {
+                            adddressId = res.body.address.address_id;
                             Log.i(TAG, "CheckoutResponse, address id: " + res.body.address.address_id);
                             Log.i(TAG, "CheckoutResponse, address consignee: " + res.body.address.consignee);
                             Log.i(TAG, "CheckoutResponse, address address: " + res.body.address.address);
-                        }else{
+                        } else {
                             Log.i(TAG, "CheckoutResponse address is null");
                         }
-                    }else{
+                    } else {
                         Log.i(TAG, "CheckoutResponse is null");
                     }
 
@@ -518,7 +582,7 @@ public class MyActivity extends Activity implements DialogButtonView.OnItemCheck
         //10140627350019340
         //jiang: 10150130630035249  31814451
         //niuyi : 10140627350019340
-        SubmitRequest req = new SubmitRequest("49649888", "10150418550020605", "1");
+        SubmitRequest req = new SubmitRequest(accountId, adddressId, "1");
         req.setObserver(new MyBaseRequest.MyObserver() {
             @Override
             public void onRequestCompleted(MyBaseRequest request, DKResponse response) {
@@ -532,30 +596,31 @@ public class MyActivity extends Activity implements DialogButtonView.OnItemCheck
                     if(order != null){
                         Log.i(TAG, "order: " + order.header.code);
                         Log.i(TAG, "order id: " + order.id);
+                        orderId = order.id;
                         //
-                        PayRequest req = new PayRequest("49649888", order.id, "alipay");
-                        req.setObserver(new MyBaseRequest.MyObserver() {
-                            @Override
-                            public void onRequestCompleted(MyBaseRequest request, DKResponse response) {
-                                if(response != null
-                                        && response.getStatus() == DKResponse.STATUS_SUCCESS
-                                        && !TextUtils.isEmpty(response.getResponse())){
-                                    Log.i(TAG, "PayRequest res: " + response.getResponse());
-                                }
-                            }
-
-                            @Override
-                            public void onBeforeSendDone(MyBaseRequest request, DKResponse response) {
-
-                            }
-
-                            @Override
-                            public void onAbort() {
-
-                            }
-                        });
-
-                        req.send();
+//                        PayRequest req = new PayRequest("49649888", order.id, "alipay");
+//                        req.setObserver(new MyBaseRequest.MyObserver() {
+//                            @Override
+//                            public void onRequestCompleted(MyBaseRequest request, DKResponse response) {
+//                                if(response != null
+//                                        && response.getStatus() == DKResponse.STATUS_SUCCESS
+//                                        && !TextUtils.isEmpty(response.getResponse())){
+//                                    Log.i(TAG, "PayRequest res: " + response.getResponse());
+//                                }
+//                            }
+//
+//                            @Override
+//                            public void onBeforeSendDone(MyBaseRequest request, DKResponse response) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onAbort() {
+//
+//                            }
+//                        });
+//
+//                        req.send();
 
                     }else {
                         Log.i(TAG, "order is null!");
@@ -708,4 +773,81 @@ public class MyActivity extends Activity implements DialogButtonView.OnItemCheck
 //        }
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.i(TAG, "onPause");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.i(TAG, "onStop");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.i(TAG, "onStart");
+
+        mAccount = new MiTVAccount(this);
+        if(mAccount.getAccount() == null){
+            Log.i(TAG, "accout is null");
+            login();
+        }else{
+            Log.i(TAG, "get account: " + mAccount.getAccount().name);
+            accountId = mAccount.getAccount().name;
+        }
+    }
+
+    private void login() {
+
+        MILog.i(TAG, "Login");
+        if(isFinishing() ){
+            MILog.i(TAG, "Login: finish return");
+            return;
+        }
+
+        mAccount.login(this, new MiTVAccount.LoginCallback() {
+
+            @Override
+            public void onSuccess(Account account) {
+                MILog.i(TAG, "login success");
+                Log.i(TAG, "get account: " + mAccount.getAccount().name);
+            }
+
+            @Override
+            public void onFailed(int error, String message) {
+                MILog.i(TAG, "login failed");
+                finish();
+            }
+        }, null);
+
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.i(TAG, "onRestart");
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.i(TAG, "onSaveInstanceState");
+    }
+
+
+
+    @Override
+    protected void onDestroy() {
+        Log.i(TAG, "onDestroy");
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        Log.i(TAG, "onRestoreInstanceState");
+    }
 }
