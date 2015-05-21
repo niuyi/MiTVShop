@@ -24,7 +24,7 @@ public class ApiConfig {
 //        }
 
 //        return "http://10.235.176.26:9025";
-        return "http://mishop.n.duokanbox.com";
+        return "https://mishop.n.duokanbox.com";
 
     }
 

@@ -89,7 +89,7 @@ public abstract class MyDuokanBaseRequest extends MyBaseRequest {
 //                request.setBody(body);
 //            }
 
-            String res = NetworkApi.getStringFromUrl(mUrl, ApiConfig.getServerHost(), getInput());
+            String res = NetworkApi.getStringFromUrlByHttps(mUrl, ApiConfig.getServerHost(), getInput());
             DKResponse response = new DKResponse(DKResponse.STATUS_SUCCESS, res, true);
 
             return response;

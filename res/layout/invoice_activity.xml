@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+
+       <include layout="@layout/title_view"/>
+
+       <RadioGroup
+               android:id="@+id/radio_group"
+               android:layout_gravity="center"
+               android:orientation="horizontal"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content">
+
+              <RadioButton
+                      android:layout_width="400px"
+                      android:layout_height="200px"
+                      android:text="电子发票"
+                      android:tag="4"
+                      android:background="@drawable/invoice_btn_selector"/>
+
+              <RadioButton
+                      android:layout_width="400px"
+                      android:layout_height="200px"
+                      android:layout_marginLeft="30px"
+                      android:text="个人发票"
+                      android:tag="1"
+                      android:background="@drawable/invoice_btn_selector"/>
+
+              <RadioButton
+                      android:layout_width="400px"
+                      android:layout_height="200px"
+                      android:layout_marginLeft="30px"
+                      android:text="单位发票"
+                      android:tag="2"
+                      android:background="@drawable/invoice_btn_selector"/>
+
+        </RadioGroup>>
+
+       <TextView
+               android:id="@+id/tv_desc"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_gravity="center_horizontal"
+               android:layout_marginTop="1200px"
+               android:textSize="28px"
+               android:includeFontPadding="false"/>
+
+</merge>

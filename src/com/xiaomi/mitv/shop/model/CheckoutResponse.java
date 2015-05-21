@@ -186,6 +186,10 @@ public class CheckoutResponse {
     }
 
     public static class Invoice{
+        public static final String PERSONAL_ID = "1";
+        public static final String ELECTRON_ID = "4";
+        public static final String COMPANY_ID = "2";
+
         public String type;
         public int value;
         public String desc;

@@ -177,7 +177,7 @@ public class MyActivity extends Activity implements DialogButtonView.OnItemCheck
                         if(response != null
                                 && response.getStatus() == DKResponse.STATUS_SUCCESS
                                 && !TextUtils.isEmpty(response.getResponse())){
-                            Log.i(TAG, "RegionRequest res: " + response.getResponse());
+                            Log.i(TAG, "AddAddressRequest res!: " + response.getResponse());
                             AddAddressResponse res = AddAddressResponse.parse(response.getResponse());
                             if(res != null){
                                 Log.i(TAG, "AddAddressRequest res: " + res.addressId);
@@ -543,7 +543,7 @@ public class MyActivity extends Activity implements DialogButtonView.OnItemCheck
                 if (response != null
                         && response.getStatus() == DKResponse.STATUS_SUCCESS
                         && !TextUtils.isEmpty(response.getResponse())) {
-                    Log.i(TAG, "res: " + response.getResponse());
+                    Log.i(TAG, "onCheckout!!: " + response.getResponse());
 
                     CheckoutResponse res = CheckoutResponse.parse(response.getResponse());
 
