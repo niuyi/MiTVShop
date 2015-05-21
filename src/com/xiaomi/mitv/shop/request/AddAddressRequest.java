@@ -3,12 +3,8 @@ package com.xiaomi.mitv.shop.request;
 import android.util.Log;
 import com.xiaomi.mitv.shop.model.Address;
 import com.xiaomi.mitv.shop.network.MyDuokanBaseRequest;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 
 /**
