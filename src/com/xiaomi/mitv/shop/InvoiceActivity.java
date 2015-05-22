@@ -25,7 +25,7 @@ public class InvoiceActivity extends BaseSelectorActivity {
         setContentView(R.layout.invoice_activity);
 
         TextView title = (TextView)findViewById(R.id.title_text);
-        title.setText("发票信息1");
+        title.setText("发票信息");
 
         mDesc = (TextView)findViewById(R.id.title_text);
         mGroup = (CheckedButtonGroup)findViewById(R.id.radio_group);

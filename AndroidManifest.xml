@@ -64,13 +64,21 @@
             <!--</intent-filter>-->
         </activity>
         <activity android:name=".InvoiceActivity">
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN"/>-->
+                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
+                <!--<category android:name="android.intent.category.DEFAULT"/>-->
+            <!--</intent-filter>-->
+     </activity>
+        <activity android:name=".BaseSelectorActivity"/>
+
+        <activity android:name=".DeliverTimeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
-     </activity>
-        <activity android:name=".BaseSelectorActivity"/>
+        </activity>
 
         <uses-library
                 android:name="com.xiaomi.mitv.api"

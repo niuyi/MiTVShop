@@ -180,6 +180,10 @@ public class CheckoutResponse {
     }
 
     public static class DeliverTime{
+        public static final String ON_LIMITED_ID = "1";
+        public static final String WORKING_DAY_ID = "2";
+        public static final String HOLIDAY_ID = "3";
+
         public int value;
         public String desc;
         public boolean checked;
