@@ -1,5 +1,6 @@
 package com.xiaomi.mitv.shop;
 
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.os.Bundle;
@@ -19,8 +20,7 @@ public class BaseSelectorActivity extends Activity implements View.OnFocusChange
     private SelectorView mSelectorView;
     protected ViewGroup mRootView;
 
-    private ObjectAnimator mMoveXAnimator;
-    private ObjectAnimator mMoveYAnimator;
+    private AnimatorSet mMovieAnimator;
 
     private int delta = 42;
 
@@ -65,27 +65,48 @@ public class BaseSelectorActivity extends Activity implements View.OnFocusChange
     }
 
     private void moveSelector(View focusView) {
+
+        if(mMovieAnimator != null){
+            mMovieAnimator.cancel();
+            mMovieAnimator = null;
+        }
+
+        mMovieAnimator = new AnimatorSet();
+
         int[] coord = new int[2];
         focusView.getLocationInWindow(coord);
-
-        if(mMoveXAnimator != null){
-            mMoveXAnimator.cancel();
-        }
-
-        if(mMoveYAnimator != null){
-            mMoveYAnimator.cancel();
-        }
 
         int newX = coord[0] - delta;
         int newY = coord[1] - delta;
 
-        mMoveXAnimator = ObjectAnimator.ofFloat(mSelectorView, "x", mSelectorView.getX(), newX);
-        mMoveYAnimator = ObjectAnimator.ofFloat(mSelectorView, "y", mSelectorView.getY(), newY);
+        ObjectAnimator moveXAnimator = ObjectAnimator.ofFloat(mSelectorView, "x", mSelectorView.getX(), newX);
+        ObjectAnimator moveYAnimator = ObjectAnimator.ofFloat(mSelectorView, "y", mSelectorView.getY(), newY);
 
-        mMoveXAnimator.setDuration(300);
-        mMoveYAnimator.setDuration(300);
+        moveXAnimator.setDuration(300);
+        moveYAnimator.setDuration(300);
 
-        mMoveXAnimator.start();
-        mMoveYAnimator.start();
+        int newHeight = focusView.getHeight() + delta*2;
+
+        if(mSelectorView.getHeight() != newHeight){
+//            ObjectAnimator sizeAnimator = ObjectAnimator.ofFloat(mSelectorView, "height", mSelectorView.getHeight(), newHeight);
+//            sizeAnimator.setDuration(300);
+//            mMovieAnimator.playTogether(moveXAnimator, moveYAnimator, sizeAnimator);
+        }else{
+            mMovieAnimator.playTogether(moveXAnimator, moveYAnimator);
+        }
+
+        mMovieAnimator.start();
+
+
+////        moveXAnimator.setDuration(300);
+////        mMoveYAnimator.setDuration(300);
+////
+////        moveXAnimator.start();
+////        mMoveYAnimator.start();
+//
+//        int newHeight = focusView.getHeight() + delta*2;
+//
+//        AnimatorSet set = new AnimatorSet();
+
     }
 }

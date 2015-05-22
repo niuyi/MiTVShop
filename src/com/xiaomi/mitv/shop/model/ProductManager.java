@@ -9,6 +9,7 @@ public enum ProductManager {
     INSTSNCE;
 
     private HashMap<String, ProductDetail> mProducts = new HashMap<String, ProductDetail>();
+    private HashMap<String, AddressList> mAddressList = new HashMap<String, AddressList>();
 
     public ProductDetail getProductDetail(String pid){
         return mProducts.get(pid);
@@ -18,7 +19,16 @@ public enum ProductManager {
         mProducts.put(pid, productDetail);
     }
 
+    public void putAddressList(String uid, AddressList list){
+        mAddressList.put(uid, list);
+    }
+
+    public AddressList getAddressList(String uid){
+        return mAddressList.get(uid);
+    }
+
     public void clear(){
         mProducts.clear();
+        mAddressList.clear();
     }
 }
