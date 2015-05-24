@@ -34,7 +34,7 @@
                 <!--<category android:name="android.intent.category.LAUNCHER"/>-->
             <!--</intent-filter>-->
         </activity>
-        <activity android:name=".CheckoutActivity">
+        <activity android:name=".OldCheckoutActivity">
             <!--<intent-filter>-->
                 <!--<action android:name="android.intent.action.MAIN"/>-->
                 <!--<category android:name="android.intent.category.LAUNCHER"/>-->
@@ -70,7 +70,6 @@
                 <!--<category android:name="android.intent.category.DEFAULT"/>-->
             <!--</intent-filter>-->
      </activity>
-        <activity android:name=".BaseSelectorActivity"/>
 
         <activity android:name=".DeliverTimeActivity">
             <!--<intent-filter>-->
@@ -89,6 +88,13 @@
             </intent-filter>
         </activity>
         <activity android:name=".AddAddressActivity"/>
+        <activity android:name=".CheckoutActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
 
         <uses-library
                 android:name="com.xiaomi.mitv.api"

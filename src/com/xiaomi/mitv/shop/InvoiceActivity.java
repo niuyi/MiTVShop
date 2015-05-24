@@ -1,18 +1,22 @@
 package com.xiaomi.mitv.shop;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.TextView;
 import com.xiaomi.mitv.shop.model.CheckoutResponse.Invoice;
+import com.xiaomi.mitv.shop.model.ProductManager;
 import com.xiaomi.mitv.shop.widget.CheckedButtonGroup;
 import com.xiaomi.mitv.shop.widget.InvoiceButton;
+import com.xiaomi.mitv.shop.widget.SelectorView;
+import com.xiaomi.mitv.shop.widget.SelectorViewListener;
 
 /**
  * Created by niuyi on 2015/5/21.
  */
-public class InvoiceActivity extends BaseSelectorActivity {
+public class InvoiceActivity extends Activity {
 
     private static final String TAG = "InvoiceActivity";
 
@@ -30,15 +34,14 @@ public class InvoiceActivity extends BaseSelectorActivity {
         mDesc = (TextView)findViewById(R.id.title_text);
         mGroup = (CheckedButtonGroup)findViewById(R.id.radio_group);
 
-        String id = getIntent().getStringExtra("invoice_id");
-
-        if(id == null)
-            id = Invoice.PERSONAL_ID;
+        ViewGroup rootView = (ViewGroup)findViewById(android.R.id.content);
+        SelectorView selectorView = new SelectorView(this);
+        SelectorViewListener listener = new SelectorViewListener(rootView, selectorView);
 
         InvoiceButton button = (InvoiceButton)getLayoutInflater().inflate(R.layout.invoice_button_widget, null);
         button.setTitle("电子发票");
         button.setValue(Invoice.ELECTRON_ID);
-        button.setOnFocusChangeListener(this);
+        button.setOnFocusChangeListener(listener);
 
         LinearLayout.LayoutParams para = new LinearLayout.LayoutParams(400, 200);
         para.gravity = Gravity.CENTER_VERTICAL;
@@ -48,7 +51,7 @@ public class InvoiceActivity extends BaseSelectorActivity {
         button = (InvoiceButton)getLayoutInflater().inflate(R.layout.invoice_button_widget, null);
         button.setTitle("个人发票");
         button.setValue(Invoice.PERSONAL_ID);
-        button.setOnFocusChangeListener(this);
+        button.setOnFocusChangeListener(listener);
 
         para = new LinearLayout.LayoutParams(400, 200);
         para.gravity = Gravity.CENTER_VERTICAL;
@@ -59,26 +62,18 @@ public class InvoiceActivity extends BaseSelectorActivity {
         button = (InvoiceButton)getLayoutInflater().inflate(R.layout.invoice_button_widget, null);
         button.setTitle("单位发票");
         button.setValue(Invoice.COMPANY_ID);
-        button.setOnFocusChangeListener(this);
+        button.setOnFocusChangeListener(listener);
 
         mGroup.addView(button, 2, para);
 
-        mGroup.setCheckedByValue(id);
+        String value = ProductManager.INSTSNCE.getCurrentCheckoutResponse().getSelectedInvoiceValue();
+        mGroup.setCheckedByValue(value);
+    }
 
-//        for(int i = 0 ; i < mGroup.getChildCount(); i++){
-//            View child = mGroup.getChildAt(i);
-//
-//            if(child instanceof RadioButton){
-//                RadioButton button = (RadioButton)child;
-//                button.setOnFocusChangeListener(this);
-//
-//                if(id.equals(child.getTag())){
-//                    Log.i(TAG, "find child for " + id);
-//                    mCurrentButton = button;
-//                    button.setChecked(true);
-//                    button.requestFocus();
-//                }
-//            }
-//        }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        ProductManager.INSTSNCE.getCurrentCheckoutResponse().setInvoiceSelectedByValue(mGroup.getCheckedValue());
     }
 }

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10px"
+        android:paddingRight="10px"
+        android:paddingTop="10px"
+        android:paddingBottom="10px"
+        android:focusable="true"
+        android:orientation="horizontal" tools:showIn="@layout/checkout_widget">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:textSize="38px"
+                android:text="收货地址"/>
+
+        <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="36px"
+                android:layout_marginTop="20px"
+                android:layout_marginLeft="20px"
+                android:text="牛毅 13810099138"/>
+
+        <TextView
+                android:id="@+id/tv_city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="32px"
+                android:layout_marginTop="20px"
+                android:layout_marginLeft="20px"
+                android:text="北京 北京市 海淀区"/>
+
+        <TextView
+                android:id="@+id/tv_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="32px"
+                android:layout_marginTop="20px"
+                android:layout_marginLeft="20px"
+                android:text="西三旗建材城东路"/>
+
+    </LinearLayout>
+
+    <Button
+            android:id="@+id/btn_select_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/arrow_right"
+            android:layout_gravity="center_vertical|right"/>
+
+</LinearLayout>

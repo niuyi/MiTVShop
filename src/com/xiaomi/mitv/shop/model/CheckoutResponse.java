@@ -17,6 +17,44 @@ public class CheckoutResponse {
     public Header header;
     public CheckoutInfo body = new CheckoutInfo();
 
+    public String getSelectedDeliverTimeValue(){
+        for(DeliverTime time : body.deliverTimeList){
+            if(time.checked)
+                return String.valueOf(time.value);
+        }
+
+        return DeliverTime.ON_LIMITED_ID;
+    }
+
+    public void setDeliverTimeSelectedByValue(String value){
+        for(DeliverTime time : body.deliverTimeList){
+            if(time.value == Integer.valueOf(value)){
+                time.checked = true;
+            }else{
+                time.checked = false;
+            }
+        }
+    }
+
+    public String getSelectedInvoiceValue(){
+        for(Invoice invoice : body.invoiceList){
+            if(invoice.checked)
+                return String.valueOf(invoice.value);
+        }
+
+        return Invoice.ELECTRON_ID;
+    }
+
+    public void setInvoiceSelectedByValue(String value){
+        for(Invoice invoice : body.invoiceList){
+            if(invoice.value == Integer.valueOf(value)){
+                invoice.checked = true;
+            }else{
+                invoice.checked = false;
+            }
+        }
+    }
+
     public static CheckoutResponse parse(String input){
 
         if(TextUtils.isEmpty(input)){

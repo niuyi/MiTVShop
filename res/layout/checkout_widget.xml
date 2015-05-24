@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:id="@+id/root_container"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
+
+    <include layout="@layout/title_view"/>
+
+    <LinearLayout
+            android:layout_width="1800px"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center_vertical|left">
+
+            <ImageView
+                    android:id="@+id/iv_goods_icon"
+                    android:layout_width="420px"
+                    android:layout_height="420px"
+                    android:layout_gravity="center_horizontal"
+                    android:scaleType="fitXY"
+                    android:background="@drawable/ic_launcher"/>
+
+            <TextView
+                    android:id="@+id/tv_goods_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="30px"
+                    android:textSize="38px"
+                    android:text="小米路由器 黑色"/>
+
+            <TextView
+                    android:id="@+id/tv_shipment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="30px"
+                    android:textSize="32px"
+                    android:text="快递配送（运费30元）"/>
+
+            <TextView
+                    android:id="@+id/tv_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="30px"
+                    android:textSize="38px"
+                    android:text="总计：699元"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:background="@drawable/mitv_category_background"
+                android:divider="@drawable/checkout_divider"
+                android:showDividers="middle"
+                android:layout_marginLeft="50px"
+                android:layout_gravity="center_vertical|right">
+
+            <include
+                    android:id="@+id/address_item"
+                    layout="@layout/address_item"/>
+
+            <include
+                    android:id="@+id/deliver_time_item"
+                    layout="@layout/switcher_item"/>
+            <include
+                    android:id="@+id/invoice_item"
+                    layout="@layout/switcher_item"/>
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="50px"
+            android:layout_marginBottom="30px"
+            android:layout_gravity="bottom|right">
+
+
+        <Button android:id="@+id/ali_pay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="支付宝付款"/>
+
+
+        <Button android:id="@+id/xiaomi_pay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="小米钱包付款" />
+
+
+    </LinearLayout>
+
+</FrameLayout>

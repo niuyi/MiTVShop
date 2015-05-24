@@ -10,6 +10,7 @@ public enum ProductManager {
 
     private HashMap<String, ProductDetail> mProducts = new HashMap<String, ProductDetail>();
     private HashMap<String, AddressList> mAddressList = new HashMap<String, AddressList>();
+    private CheckoutResponse mCurrentCheckoutResponse;
 
     public ProductDetail getProductDetail(String pid){
         return mProducts.get(pid);
@@ -30,5 +31,14 @@ public enum ProductManager {
     public void clear(){
         mProducts.clear();
         mAddressList.clear();
+        mCurrentCheckoutResponse = null;
+    }
+
+    public void setCurrentCheckoutResponse(CheckoutResponse mCurrentCheckoutResponse) {
+        this.mCurrentCheckoutResponse = mCurrentCheckoutResponse;
+    }
+
+    public CheckoutResponse getCurrentCheckoutResponse(){
+        return mCurrentCheckoutResponse;
     }
 }

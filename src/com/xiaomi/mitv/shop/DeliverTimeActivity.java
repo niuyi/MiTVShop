@@ -1,17 +1,22 @@
 package com.xiaomi.mitv.shop;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.xiaomi.mitv.shop.model.CheckoutResponse;
+import com.xiaomi.mitv.shop.model.ProductManager;
 import com.xiaomi.mitv.shop.widget.CheckedButtonGroup;
 import com.xiaomi.mitv.shop.widget.DeliverTimeButton;
+import com.xiaomi.mitv.shop.widget.SelectorView;
+import com.xiaomi.mitv.shop.widget.SelectorViewListener;
 
 /**
  * Created by niuyi on 2015/5/22.
  */
-public class DeliverTimeActivity extends BaseSelectorActivity {
+public class DeliverTimeActivity extends Activity {
 
     private CheckedButtonGroup mGroup;
 
@@ -25,16 +30,15 @@ public class DeliverTimeActivity extends BaseSelectorActivity {
 
         mGroup = (CheckedButtonGroup)findViewById(R.id.radio_group);
 
-        String id = getIntent().getStringExtra("delivertime_id");
-
-        if(id == null)
-            id = CheckoutResponse.DeliverTime.ON_LIMITED_ID;
+        ViewGroup rootView = (ViewGroup)findViewById(android.R.id.content);
+        SelectorView selectorView = new SelectorView(this);
+        SelectorViewListener listener = new SelectorViewListener(rootView, selectorView);
 
         DeliverTimeButton button = (DeliverTimeButton)getLayoutInflater().inflate(R.layout.deliver_time_button_widget, null);
         button.setTitle("不限送货时间");
         button.setTitle2("周一至周日");
         button.setValue(CheckoutResponse.DeliverTime.ON_LIMITED_ID);
-        button.setOnFocusChangeListener(this);
+        button.setOnFocusChangeListener(listener);
 
         LinearLayout.LayoutParams para = new LinearLayout.LayoutParams(400, 200);
         para.gravity = Gravity.CENTER_VERTICAL;
@@ -45,7 +49,7 @@ public class DeliverTimeActivity extends BaseSelectorActivity {
         button.setTitle("工作日送货");
         button.setTitle2("周一至周五");
         button.setValue(CheckoutResponse.DeliverTime.WORKING_DAY_ID);
-        button.setOnFocusChangeListener(this);
+        button.setOnFocusChangeListener(listener);
 
         para = new LinearLayout.LayoutParams(400, 200);
         para.gravity = Gravity.CENTER_VERTICAL;
@@ -57,10 +61,17 @@ public class DeliverTimeActivity extends BaseSelectorActivity {
         button.setTitle("双休日、假日送货");
         button.setTitle2("周六至周日");
         button.setValue(CheckoutResponse.DeliverTime.HOLIDAY_ID);
-        button.setOnFocusChangeListener(this);
+        button.setOnFocusChangeListener(listener);
 
         mGroup.addView(button, 2, para);
 
-        mGroup.setCheckedByValue(id);
+        String value = ProductManager.INSTSNCE.getCurrentCheckoutResponse().getSelectedDeliverTimeValue();
+        mGroup.setCheckedByValue(value);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        ProductManager.INSTSNCE.getCurrentCheckoutResponse().setDeliverTimeSelectedByValue(mGroup.getCheckedValue());
     }
 }

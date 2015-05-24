@@ -11,10 +11,10 @@
                android:layout_width="1500px"
                android:layout_height="match_parent"
                android:layout_marginTop="200px"
-               android:dividerHeight="20px"
+               android:dividerHeight="40px"
                android:listSelector="@android:color/transparent"
                android:divider="@android:color/transparent"
                android:layout_gravity="center_horizontal"
-               android:scrollbarStyle="outsideOverlay"/>
+               android:scrollbars="none"/>
 
 </FrameLayout>

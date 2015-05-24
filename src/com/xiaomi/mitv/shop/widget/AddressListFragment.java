@@ -23,7 +23,7 @@ import com.xiaomi.mitv.shop.model.ProductManager;
 /**
  * Created by niuyi on 2015/5/22.
  */
-public class AddressListFragment extends Fragment implements View.OnFocusChangeListener{
+public class AddressListFragment extends Fragment{
 
 
     public static final String UID = "uid";
@@ -36,9 +36,9 @@ public class AddressListFragment extends Fragment implements View.OnFocusChangeL
     private SelectorView mSelectorView;
     private ViewGroup mRootView;
 
-    private AnimatorSet mMovieAnimator;
+    private View mCurrentView;
 
-    private int delta = 42;
+//    private View mStubView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -52,7 +52,7 @@ public class AddressListFragment extends Fragment implements View.OnFocusChangeL
 
         mRootView = (ViewGroup)view.findViewById(R.id.root_container);
 
-        ListView listView = (ListView)view.findViewById(R.id.list_view);
+        final ListView listView = (ListView)view.findViewById(R.id.list_view);
 
 
 
@@ -73,6 +73,10 @@ public class AddressListFragment extends Fragment implements View.OnFocusChangeL
         View footerView = inflater.inflate(R.layout.address_list_footer_item, null, false);
         listView.addFooterView(footerView, null, true);
 
+//        mStubView = new View(getActivity());
+//        mStubView.setLayoutParams(new ListView.LayoutParams(1, 300));
+//        listView.addFooterView(mStubView, null, false);
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -90,176 +94,32 @@ public class AddressListFragment extends Fragment implements View.OnFocusChangeL
             }
         });
 
-        listView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.i(TAG, "select view: " + view.getClass().getCanonicalName() + " id: " + id);
-
-                final View focusView = view;
-
-//                Log.i(TAG, "select :" + ((AddressListAdapter.ViewHolder)view.getTag()).address.getText());
-
-                view.post(new Runnable() {
-                    @Override
-                    public void run() {
-//                        int[] coord = new int[2];
-//                        focusView.getLocationOnScreen(coord);
+//        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(AbsListView absListView, int i) {
+//                if(i == SCROLL_STATE_IDLE){
+//                    Log.i(TAG, "onScrollStateChanged");
+//                    if(mCurrentView != null){
+//                        moveSelector(mCurrentView);
+//                        mCurrentView = null;
+//                    }
+//                }
+//            }
 //
-//                        Log.i(TAG, "select view x: " + coord[0] + " ,select view y: " + coord[1]);
-//                        Log.i(TAG, "select view w: " + focusView.getWidth() + " ,select view h: " + focusView.getHeight());
+//            @Override
+//            public void onScroll(AbsListView absListView, int i, int i1, int i2) {
+//            }
+//        });
 
+        SelectorViewListener listener = new SelectorViewListener(mRootView, mSelectorView);
 
-                        if (mSelectorView == null) {
-                            mSelectorView = new SelectorView(getActivity());
-
-                            FrameLayout.LayoutParams para = new FrameLayout.LayoutParams(focusView.getWidth() + delta * 2, focusView.getHeight() + delta * 2);
-                            mRootView.addView(mSelectorView, para);
-
-                            int[] coord = new int[2];
-                            focusView.getLocationOnScreen(coord);
-
-                            Log.i(TAG, "select view x: " + coord[0] + " ,select view y: " + coord[1]);
-
-//                            int newX = coord[0];
-//                            int newY = coord[1];
-
-                            int newX = 210 - delta;
-                            int newY = 200 - delta;
-
-
-                            mSelectorView.setX(newX);
-                            mSelectorView.setY(newY);
-
-                        } else {
-                            moveSelector(focusView);
-                        }
-                    }
-                });
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        listView.setSelection(0);
+        listView.setOnItemSelectedListener(listener);
 
         listView.requestFocus();
+        listView.setSelection(0);
+
 
         return view;
-    }
-
-    private ValueAnimator mValueAnimator;
-
-    private FrameLayout.LayoutParams mAnimStartLayout;
-
-    private void moveSelector(View focusView) {
-
-        mAnimStartLayout = (FrameLayout.LayoutParams)mSelectorView.getLayoutParams();
-
-        if(mValueAnimator != null){
-            mValueAnimator.cancel();
-            mValueAnimator = null;
-        }
-
-        int[] coord = new int[2];
-        focusView.getLocationInWindow(coord);
-
-        final int newX = coord[0] - delta;
-        final int newY = coord[1] - delta;
-
-//        final int oldX = (int)mSelectorView.getX();
-//        final int oldY = (int)mSelectorView.getY();
-
-        coord = new int[2];
-        mSelectorView.getLocationInWindow(coord);
-
-        final int oldX = coord[0];
-        final int oldY = coord[1];
-
-        final int newHeight = focusView.getHeight() + delta*2;
-
-        mValueAnimator = ValueAnimator.ofFloat(0f, 1f);
-
-        mValueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(mAnimStartLayout);
-                float percent = (Float) animation.getAnimatedValue();
-
-                mSelectorView.setX(newX - oldX * (1 - percent));
-                mSelectorView.setY(newY - oldY * (1 - percent));
-
-                lp.height = (int) (lp.height + (newHeight - lp.height) * percent);
-
-                mSelectorView.setLayoutParams(lp);
-            }
-        });
-
-        mValueAnimator.setDuration(300);
-        mValueAnimator.start();
-
-//        if(mMovieAnimator != null){
-//            mMovieAnimator.cancel();
-//            mMovieAnimator = null;
-//        }
-//
-//        mMovieAnimator = new AnimatorSet();
-//
-//        int[] coord = new int[2];
-//        focusView.getLocationInWindow(coord);
-//
-//        final int newX = coord[0] - delta;
-//        final int newY = coord[1] - delta;
-//
-//        ObjectAnimator moveXAnimator = ObjectAnimator.ofFloat(mSelectorView, "x", mSelectorView.getX(), newX);
-//        ObjectAnimator moveYAnimator = ObjectAnimator.ofFloat(mSelectorView, "y", mSelectorView.getY(), newY);
-//
-//        moveXAnimator.setDuration(300);
-//        moveYAnimator.setDuration(300);
-//
-//        final int newHeight = focusView.getHeight() + delta*2;
-//
-//        Log.i(TAG, "old h: " + mSelectorView.getHeight() + " ,newh: " + newHeight);
-//
-//        if(mSelectorView.getHeight() != newHeight){
-//            float rate = (float)newHeight/ (float)mSelectorView.getHeight();
-//            Log.i(TAG, "scaleY rate: " + rate);
-//            ObjectAnimator sizeAnimator = ObjectAnimator.ofFloat(mSelectorView, "scaleY", rate);
-//            sizeAnimator.setDuration(300);
-//
-//            sizeAnimator.addListener(new Animator.AnimatorListener() {
-//                @Override
-//                public void onAnimationStart(Animator animation) {
-//
-//                }
-//
-//                @Override
-//                public void onAnimationEnd(Animator animation) {
-//                    FrameLayout.LayoutParams para = new FrameLayout.LayoutParams(mSelectorView.getWidth(), newHeight);
-//                    mSelectorView.setLayoutParams(para);
-////                    mSelectorView.setX(newX);
-////                    mSelectorView.setY(newY);
-//                }
-//
-//                @Override
-//                public void onAnimationCancel(Animator animation) {
-//
-//                }
-//
-//                @Override
-//                public void onAnimationRepeat(Animator animation) {
-//
-//                }
-//            });
-//
-//            mMovieAnimator.playTogether(moveXAnimator, moveYAnimator, sizeAnimator);
-//        }else{
-//            mMovieAnimator.playTogether(moveXAnimator, moveYAnimator);
-//        }
-//
-//        mMovieAnimator.start();
     }
 
 
@@ -314,8 +174,6 @@ public class AddressListFragment extends Fragment implements View.OnFocusChangeL
                 holder.address =  (TextView)view.findViewById(R.id.tv_address);
 
                 view.setTag(holder);
-
-                view.setOnFocusChangeListener(AddressListFragment.this);
             } else {
                 holder = (ViewHolder) view.getTag();
             }
@@ -343,12 +201,5 @@ public class AddressListFragment extends Fragment implements View.OnFocusChangeL
             return view;
         }
 
-    }
-
-    @Override
-    public void onFocusChange(View v, boolean hasFocus) {
-        if(hasFocus){
-            Log.i(TAG, "focus view: " + v.getClass().getCanonicalName());
-        }
     }
 }
