@@ -3,7 +3,9 @@ package com.xiaomi.mitv.shop;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.xiaomi.mitv.shop.model.CheckoutResponse.Invoice;
@@ -16,12 +18,15 @@ import com.xiaomi.mitv.shop.widget.SelectorViewListener;
 /**
  * Created by niuyi on 2015/5/21.
  */
-public class InvoiceActivity extends Activity {
+public class InvoiceActivity extends Activity implements View.OnClickListener, View.OnFocusChangeListener {
 
     private static final String TAG = "InvoiceActivity";
 
     private TextView mDesc;
-    private CheckedButtonGroup mGroup;
+
+    private Button mElecButton;
+    private Button mPersonalButton;
+    private Button mCompanyButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -29,51 +34,50 @@ public class InvoiceActivity extends Activity {
         setContentView(R.layout.invoice_activity);
 
         TextView title = (TextView)findViewById(R.id.title_text);
-        title.setText("发票信息");
+        title.setText(R.string.invoice_title);
 
-        mDesc = (TextView)findViewById(R.id.title_text);
-        mGroup = (CheckedButtonGroup)findViewById(R.id.radio_group);
+        mDesc = (TextView)findViewById(R.id.tv_desc);
 
-        ViewGroup rootView = (ViewGroup)findViewById(android.R.id.content);
-        SelectorView selectorView = new SelectorView(this);
-        SelectorViewListener listener = new SelectorViewListener(rootView, selectorView);
+        mElecButton = (Button)findViewById(R.id.btn_electron);
+        mElecButton.setOnClickListener(this);
+        mElecButton.setOnFocusChangeListener(this);
 
-        InvoiceButton button = (InvoiceButton)getLayoutInflater().inflate(R.layout.invoice_button_widget, null);
-        button.setTitle("电子发票");
-        button.setValue(Invoice.ELECTRON_ID);
-        button.setOnFocusChangeListener(listener);
+        mPersonalButton = (Button)findViewById(R.id.btn_personal);
+        mPersonalButton.setOnClickListener(this);
 
-        LinearLayout.LayoutParams para = new LinearLayout.LayoutParams(400, 200);
-        para.gravity = Gravity.CENTER_VERTICAL;
-
-        mGroup.addView(button, 0, para);
-
-        button = (InvoiceButton)getLayoutInflater().inflate(R.layout.invoice_button_widget, null);
-        button.setTitle("个人发票");
-        button.setValue(Invoice.PERSONAL_ID);
-        button.setOnFocusChangeListener(listener);
-
-        para = new LinearLayout.LayoutParams(400, 200);
-        para.gravity = Gravity.CENTER_VERTICAL;
-        para.leftMargin = 50;
-
-        mGroup.addView(button, 1, para);
-
-        button = (InvoiceButton)getLayoutInflater().inflate(R.layout.invoice_button_widget, null);
-        button.setTitle("单位发票");
-        button.setValue(Invoice.COMPANY_ID);
-        button.setOnFocusChangeListener(listener);
-
-        mGroup.addView(button, 2, para);
+        mCompanyButton = (Button)findViewById(R.id.btn_company);
+        mCompanyButton.setOnClickListener(this);
 
         String value = ProductManager.INSTSNCE.getCurrentCheckoutResponse().getSelectedInvoiceValue();
-        mGroup.setCheckedByValue(value);
+
+        if(Invoice.ELECTRON_ID.equalsIgnoreCase(value)){
+            mElecButton.requestFocus();
+        }else if(Invoice.PERSONAL_ID.equalsIgnoreCase(value)){
+            mPersonalButton.requestFocus();
+        }else if(Invoice.COMPANY_ID.equalsIgnoreCase(value)){
+            mCompanyButton.requestFocus();
+        }
     }
 
+    @Override
+    public void onClick(View view) {
+        if(view == mElecButton){
+            ProductManager.INSTSNCE.getCurrentCheckoutResponse().setInvoiceSelectedByValue(Invoice.ELECTRON_ID);
+            finish();
+        }else if(view == mPersonalButton){
+            ProductManager.INSTSNCE.getCurrentCheckoutResponse().setInvoiceSelectedByValue(Invoice.PERSONAL_ID);
+            finish();
+        }
+    }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        ProductManager.INSTSNCE.getCurrentCheckoutResponse().setInvoiceSelectedByValue(mGroup.getCheckedValue());
+    public void onFocusChange(View view, boolean hasFocus) {
+        if(view == mElecButton){
+            if(hasFocus){
+                mDesc.setVisibility(View.VISIBLE);
+            }else{
+                mDesc.setVisibility(View.GONE);
+            }
+        }
     }
 }

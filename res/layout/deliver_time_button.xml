@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.xiaomi.mitv.shop.widget.DeliverTimeButton xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="374px"
+              android:layout_height="180px"
+              android:focusable="true"
+              android:clickable="true"
+              android:background="@drawable/btn_normal"
+              android:orientation="vertical">
+
+
+    <TextView
+            android:id="@+id/item_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:layout_marginTop="26px"
+            android:layout_gravity="center_horizontal"
+            android:textSize="36px"/>
+
+    <TextView
+            android:id="@+id/item_title_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20px"
+            android:alpha="0.6"
+            android:textSize="30px"/>
+
+</com.xiaomi.mitv.shop.widget.DeliverTimeButton>

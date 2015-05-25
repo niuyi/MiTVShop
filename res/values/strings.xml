@@ -4,4 +4,22 @@
     <string name="device_shop_cart_checkout_total_price">￥%1$s</string>
     <string name="device_shop_order_goods_item_count_fmt">× %d</string>
     <string name="hdplayer">高清播放器</string>
+
+    <string name="deliver_time">选择送货时间</string>
+
+    <string name="deliver_time_no_limit">不限送货时间</string>
+    <string name="deliver_time_no_limit_2">周一至周日</string>
+
+    <string name="deliver_time_working_day">工作日送货</string>
+    <string name="deliver_time_working_day_2">周一至周五</string>
+
+    <string name="deliver_time_holiday_day">双休日、假日送货</string>
+    <string name="deliver_time_holiday_day_2">周六至周日</string>
+
+    <string name="invoice_title">选择发票类型</string>
+
+    <string name="invoice_electron">电子发票</string>
+    <string name="invoice_personal">个人发票</string>
+    <string name="invoice_company">公司发票</string>
+    <string name="invoice_electron_desc">电子发票是税务局认可的有效凭证，可作为售后维权凭据，不随商品寄送。开票后不可更换纸质发票，如需报销请选择普通发票。</string>
 </resources>

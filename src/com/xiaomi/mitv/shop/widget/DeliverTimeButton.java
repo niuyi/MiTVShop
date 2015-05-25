@@ -1,16 +1,21 @@
 package com.xiaomi.mitv.shop.widget;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.xiaomi.mitv.shop.R;
+import com.xiaomi.mitv.shop.model.ProductManager;
 
 /**
  * Created by linniu on 2015/5/21.
  */
-public class DeliverTimeButton extends CheckableButton{
-    private ImageView mIcon;
+public class DeliverTimeButton extends LinearLayout{
+
     private TextView mTitle;
     private TextView mTitle2;
 
@@ -26,11 +31,16 @@ public class DeliverTimeButton extends CheckableButton{
         super(context, attrs, defStyle);
     }
 
-    public void setTitle(String title){
-        mTitle.setText(title);
-    }
-    public void setTitle2(String title){
-        mTitle2.setText(title);
+    public void init(final Activity activity, int text1, int text2, final String value){
+        mTitle.setText(text1);
+        mTitle2.setText(text2);
+        setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ProductManager.INSTSNCE.getCurrentCheckoutResponse().setDeliverTimeSelectedByValue(value);
+                activity.finish();
+            }
+        });
     }
 
     @Override
@@ -38,16 +48,5 @@ public class DeliverTimeButton extends CheckableButton{
         super.onFinishInflate();
         mTitle = (TextView)findViewById(R.id.item_title);
         mTitle2 = (TextView)findViewById(R.id.item_title_2);
-        mIcon = (ImageView)findViewById(R.id.iv_icon);
-    }
-
-    @Override
-    public void setChecked(boolean status) {
-        super.setChecked(status);
-        if(status){
-            mIcon.setImageResource(R.drawable.radio_on);
-        }else{
-            mIcon.setImageResource(R.drawable.radio_off);
-        }
     }
 }

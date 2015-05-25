@@ -5,22 +5,46 @@
 
        <include layout="@layout/title_view"/>
 
-       <com.xiaomi.mitv.shop.widget.CheckedButtonGroup
-               android:id="@+id/radio_group"
-               android:layout_gravity="center"
-               android:orientation="horizontal"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content">
+      <LinearLayout
+              android:layout_gravity="center"
+              android:orientation="horizontal"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content">
 
-        </com.xiaomi.mitv.shop.widget.CheckedButtonGroup>
+          <Button
+              android:id="@+id/btn_electron"
+              android:layout_width="374px"
+              android:layout_height="180px"
+              android:textSize="36px"
+              android:text="@string/invoice_electron"/>
+
+          <Button
+              android:id="@+id/btn_personal"
+              android:layout_width="374px"
+              android:layout_height="180px"
+              android:textSize="36px"
+              android:layout_marginLeft="90px"
+              android:text="@string/invoice_personal"/>
+
+          <Button
+              android:id="@+id/btn_company"
+              android:layout_width="374px"
+              android:layout_height="180px"
+              android:textSize="36px"
+              android:layout_marginLeft="90px"
+              android:text="@string/invoice_company"/>
+
+      </LinearLayout>
 
        <TextView
                android:id="@+id/tv_desc"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:layout_gravity="center_horizontal"
-               android:layout_marginTop="1200px"
-               android:textSize="28px"
+               android:layout_gravity="center_horizontal|bottom"
+               android:layout_marginBottom="90px"
+               android:textSize="30px"
+               android:alpha="0.5"
+               android:text="@string/invoice_electron_desc"
                android:includeFontPadding="false"/>
 
 </merge>

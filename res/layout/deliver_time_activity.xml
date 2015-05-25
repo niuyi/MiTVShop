@@ -3,15 +3,25 @@
        android:layout_width="match_parent"
        android:layout_height="match_parent">
 
-       <include layout="@layout/title_view"/>
+    <include layout="@layout/title_view"/>
 
-       <com.xiaomi.mitv.shop.widget.CheckedButtonGroup
-               android:id="@+id/radio_group"
-               android:layout_gravity="center"
-               android:orientation="horizontal"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content">
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-       </com.xiaomi.mitv.shop.widget.CheckedButtonGroup>
+        <include
+                android:id="@+id/btn_1"
+                layout="@layout/deliver_time_button"/>
 
+        <include
+                android:id="@+id/btn_2"
+                layout="@layout/deliver_time_button"/>
+
+        <include
+                android:id="@+id/btn_3"
+                layout="@layout/deliver_time_button"/>
+
+    </LinearLayout>
 </merge>
