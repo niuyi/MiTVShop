@@ -8,6 +8,7 @@
         android:paddingTop="10px"
         android:paddingBottom="10px"
         android:focusable="true"
+        android:clickable="true"
         android:orientation="horizontal" tools:showIn="@layout/checkout_widget">
 
     <LinearLayout
@@ -30,8 +31,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="36px"
                 android:layout_marginTop="20px"
-                android:layout_marginLeft="20px"
-                android:text="牛毅 13810099138"/>
+                android:layout_marginLeft="20px"/>
 
         <TextView
                 android:id="@+id/tv_city"
@@ -39,8 +39,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="32px"
                 android:layout_marginTop="20px"
-                android:layout_marginLeft="20px"
-                android:text="北京 北京市 海淀区"/>
+                android:layout_marginLeft="20px"/>
 
         <TextView
                 android:id="@+id/tv_address"
@@ -48,8 +47,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="32px"
                 android:layout_marginTop="20px"
-                android:layout_marginLeft="20px"
-                android:text="西三旗建材城东路"/>
+                android:layout_marginLeft="20px"/>
 
     </LinearLayout>
 

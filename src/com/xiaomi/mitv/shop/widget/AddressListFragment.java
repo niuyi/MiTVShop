@@ -1,6 +1,9 @@
 package com.xiaomi.mitv.shop.widget;
 
 import android.app.Fragment;
+import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import com.xiaomi.mitv.shop.AddAddressActivity;
 import com.xiaomi.mitv.shop.R;
 import com.xiaomi.mitv.shop.model.Address;
 import com.xiaomi.mitv.shop.model.AddressList;
@@ -18,7 +22,7 @@ import com.xiaomi.mitv.shop.model.ProductManager;
 /**
  * Created by niuyi on 2015/5/22.
  */
-public class AddressListFragment extends Fragment{
+public class AddressListFragment extends Fragment {
 
 
     public static final String UID = "uid";
@@ -26,14 +30,7 @@ public class AddressListFragment extends Fragment{
     public static final String TAG = "AddressListFragment";
 
     private String mAddressId;
-    private AddressListAdapter mAdapter;
-
-    private SelectorView mSelectorView;
-    private ViewGroup mRootView;
-
-    private View mCurrentView;
-
-//    private View mStubView;
+    private VerticalGridView mListView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -42,82 +39,34 @@ public class AddressListFragment extends Fragment{
 
         View view = inflater.inflate(R.layout.address_list_layout, container, false);
 
-        TextView title = (TextView)view.findViewById(R.id.title_text);
+        TextView title = (TextView) view.findViewById(R.id.title_text);
         title.setText(R.string.select_address);
 
-        mRootView = (ViewGroup)view.findViewById(R.id.root_container);
-
-        RecyclerView listView = (RecyclerView)view.findViewById(R.id.list_view);
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
-
-        listView.setLayoutManager(layoutManager);
+        mListView = (VerticalGridView) view.findViewById(R.id.list_view);
 
         Bundle arguments = getArguments();
-        if(arguments != null){
+        if (arguments != null) {
             String uid = arguments.getString(UID);
             mAddressId = arguments.getString(ADDRESS_ID);
 
-            if(uid != null){
+            if (uid != null) {
                 AddressList addressList = ProductManager.INSTSNCE.getAddressList(uid);
-                if(addressList != null){
+                if (addressList != null) {
+                    int index = 0;
+                    for (int i = 0; i < addressList.addresses.size(); i++) {
+                        if (addressList.addresses.get(i).address_id.equals(mAddressId)) {
+                            index = i;
+                        }
+                    }
+
                     AddressListAdapter adapter = new AddressListAdapter(addressList);
-                    listView.setAdapter(adapter);
-//                    listView.setSelectedPosition(0);
-//                    mAdapter = new AddressListAdapter(getActivity(), addressList);
-//                    listView.setAdapter(mAdapter);
+                    mListView.setAdapter(adapter);
+                    mListView.setWindowAlignment(VerticalGridView.WINDOW_ALIGN_LOW_EDGE);
+                    mListView.setSelectedPosition(index);
+                    mListView.setVerticalMargin(45);
                 }
             }
         }
-
-//        View footerView = inflater.inflate(R.layout.address_list_footer_item, null, false);
-//        listView.addFooterView(footerView, null, true);
-//
-////        mStubView = new View(getActivity());
-////        mStubView.setLayoutParams(new ListView.LayoutParams(1, 300));
-////        listView.addFooterView(mStubView, null, false);
-//
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Log.i(TAG, "on item click! " + parent.getCount() + " : " + position);
-//                if (position == parent.getCount() - 1) {
-//                    Intent in = new Intent();
-//                    in.setClass(getActivity(), AddAddressActivity.class);
-//                    startActivity(in);
-//                } else {
-//                    Address address = (Address) parent.getItemAtPosition(position);
-//                    mAddressId = address.address_id;
-//                    Log.i(TAG, "mAddressId: " + mAddressId);
-//                    mAdapter.notifyDataSetChanged();
-//                }
-//            }
-//        });
-//
-////        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
-////            @Override
-////            public void onScrollStateChanged(AbsListView absListView, int i) {
-////                if(i == SCROLL_STATE_IDLE){
-////                    Log.i(TAG, "onScrollStateChanged");
-////                    if(mCurrentView != null){
-////                        moveSelector(mCurrentView);
-////                        mCurrentView = null;
-////                    }
-////                }
-////            }
-////
-////            @Override
-////            public void onScroll(AbsListView absListView, int i, int i1, int i2) {
-////            }
-////        });
-//
-//        SelectorViewListener listener = new SelectorViewListener(mRootView, mSelectorView);
-//
-//        listView.setOnItemSelectedListener(listener);
-//
-//        listView.requestFocus();
-//        listView.setSelection(0);
-
 
         return view;
     }
@@ -130,9 +79,9 @@ public class AddressListFragment extends Fragment{
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            mName = (TextView)itemView.findViewById(R.id.tv_name);
-            mCity = (TextView)itemView.findViewById(R.id.tv_city);
-            mAddress = (TextView)itemView.findViewById(R.id.tv_address);
+            mName = (TextView) itemView.findViewById(R.id.tv_name);
+            mCity = (TextView) itemView.findViewById(R.id.tv_city);
+            mAddress = (TextView) itemView.findViewById(R.id.tv_address);
         }
     }
 
@@ -142,7 +91,7 @@ public class AddressListFragment extends Fragment{
         }
     }
 
-    class AddressListAdapter extends  RecyclerView.Adapter{
+    class AddressListAdapter extends RecyclerView.Adapter implements View.OnClickListener {
 
         private static final int FOOTER_TYPE = Integer.MIN_VALUE;
 
@@ -153,30 +102,23 @@ public class AddressListFragment extends Fragment{
         }
 
         @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+        public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup viewGroup, int i) {
 
-            if(i == FOOTER_TYPE){
+            if (i == FOOTER_TYPE) {
                 View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.address_list_footer_item, viewGroup, false);
-                view.setFocusable(true);
-                return new MyFooterViewHolder(view);
-            }else{
-                View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.address_list_item, viewGroup, false);
-                view.setFocusable(true);
-                view.setSelected(true);
-
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.i(TAG, "on click");
+                        Intent in = new Intent();
+                        in.setClass(getActivity(), AddAddressActivity.class);
+                        startActivityForResult(in, 0);
                     }
                 });
+                return new MyFooterViewHolder(view);
+            } else {
+                final View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.address_list_item, viewGroup, false);
 
-                view.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                    @Override
-                    public void onFocusChange(View v, boolean hasFocus) {
-                        Log.i(TAG, "onFocusChange");
-                    }
-                });
+                view.setOnClickListener(this);
 
                 return new MyViewHolder(view);
             }
@@ -187,20 +129,17 @@ public class AddressListFragment extends Fragment{
         public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int i) {
             Log.i(TAG, "onBindViewHolder: " + viewHolder.getClass().getCanonicalName() + " ,i: " + i);
 
-            if(i == mAddressList.addresses.size())
+            if (i == mAddressList.addresses.size())
                 return;
 
-            if(viewHolder instanceof MyViewHolder){
-                MyViewHolder holder = (MyViewHolder)viewHolder;
+            if (viewHolder instanceof MyViewHolder) {
+                MyViewHolder holder = (MyViewHolder) viewHolder;
                 Address address = mAddressList.addresses.get(i);
 
                 holder.mName.setText(String.format("%s  %s", address.consignee, address.tel));
                 holder.mCity.setText(String.format("%s  %s %s", address.province_name, address.city_name, address.district_name));
                 holder.mAddress.setText(address.address);
 
-//                if(address.address_id.equals(mAddressId)){
-//                    holder.itemView.requestFocus();
-//                }
             }
 
         }
@@ -212,11 +151,25 @@ public class AddressListFragment extends Fragment{
 
         @Override
         public int getItemViewType(int position) {
-            if(position == mAddressList.addresses.size()){
+            if (position == mAddressList.addresses.size()) {
                 return FOOTER_TYPE;
             }
 
             return 0;
+        }
+
+        @Override
+        public void onClick(View v) {
+
+            int index = mListView.getChildAdapterPosition(v);
+            Log.i(TAG, "index click: " + index);
+
+            Address address = mAddressList.addresses.get(index);
+
+            ProductManager.INSTSNCE.getCurrentCheckoutResponse().body.address = address;
+
+            getActivity().finish();
+
         }
     }
 

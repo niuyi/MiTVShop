@@ -59,7 +59,9 @@ public class AddressActivity extends BaseLoadingActivity {
 
         Bundle bundle = new Bundle();
         bundle.putString(AddressListFragment.UID, mUid);
-        bundle.putString(AddressListFragment.ADDRESS_ID, mAddressId);
+
+        Address address = ProductManager.INSTSNCE.getCurrentCheckoutResponse().body.address;
+        bundle.putString(AddressListFragment.ADDRESS_ID, address == null ? "" : address.address_id);
 
         frag.setArguments(bundle);
 

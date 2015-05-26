@@ -29,4 +29,10 @@
     <string name="fail_to_add_address_list">无法获取地址信息</string>
     <string name="select_address">选择地址</string>
     <string name="use_new_address">使用新地址</string>
+
+    <string name="address_name">收货人姓名</string>
+    <string name="address_tel">电话</string>
+    <string name="address_city">省/市/区</string>
+    <string name="address_address">路名或街道地址，门牌号</string>
+    <string name="input_address">输入地址</string>
 </resources>

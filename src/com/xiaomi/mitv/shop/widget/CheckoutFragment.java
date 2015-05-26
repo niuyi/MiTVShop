@@ -10,9 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import com.xiaomi.mitv.shop.AddressActivity;
 import com.xiaomi.mitv.shop.DeliverTimeActivity;
 import com.xiaomi.mitv.shop.InvoiceActivity;
 import com.xiaomi.mitv.shop.R;
+import com.xiaomi.mitv.shop.model.Address;
+import com.xiaomi.mitv.shop.model.AddressList;
 import com.xiaomi.mitv.shop.model.CheckoutResponse;
 import com.xiaomi.mitv.shop.model.ProductManager;
 
@@ -32,6 +35,9 @@ public class CheckoutFragment extends Fragment implements View.OnFocusChangeList
     private Button mXiaomiPayButton;
     private SwitcherItem mDeliverTimeItem;
     private SwitcherItem mInvoiceItem;
+    private TextView mNameTextView;
+    private TextView mCityTextView;
+    private TextView mAddressTextView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -60,6 +66,18 @@ public class CheckoutFragment extends Fragment implements View.OnFocusChangeList
 
         final View addressView = view.findViewById(R.id.address_item);
         addressView.setOnFocusChangeListener(listener);
+        addressView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent in = new Intent();
+                in.setClass(getActivity(), AddressActivity.class);
+                startActivity(in);
+            }
+        });
+
+        mNameTextView = (TextView)view.findViewById(R.id.tv_name);
+        mCityTextView = (TextView)view.findViewById(R.id.tv_city);
+        mAddressTextView = (TextView)view.findViewById(R.id.tv_address);
 
         mAlipayButton = (Button)view.findViewById(R.id.ali_pay);
         mAlipayButton.setOnFocusChangeListener(this);
@@ -76,6 +94,13 @@ public class CheckoutFragment extends Fragment implements View.OnFocusChangeList
         super.onResume();
         mDeliverTimeItem.setSelectedValue(ProductManager.INSTSNCE.getCurrentCheckoutResponse().getSelectedDeliverTimeValue());
         mInvoiceItem.setSelectedValue(ProductManager.INSTSNCE.getCurrentCheckoutResponse().getSelectedInvoiceValue());
+
+        Address address = ProductManager.INSTSNCE.getCurrentCheckoutResponse().body.address;
+        if(address != null){
+            mNameTextView.setText(String.format("%s %s", address.consignee, address.tel));
+            mCityTextView.setText(String.format("%s %s %s", address.province_name, address.city_name, address.district_name));
+            mAddressTextView.setText(String.format("%s", address.address));
+        }
     }
 
     private void setupDeliverItem(CheckoutResponse res, SwitcherItem item) {
@@ -176,6 +201,16 @@ public class CheckoutFragment extends Fragment implements View.OnFocusChangeList
         invoice.checked = false;
         response.body.invoiceList.add(invoice);
 
+        Address addr = new Address();
+        addr.address_id = "2";
+        addr.consignee = "牛毅2";
+        addr.province_name = "北京";
+        addr.city_name = "北京";
+        addr.district_name = "海淀区";
+        addr.address = "西三旗建材城路";
+        addr.tel = "122222222";
+
+        response.body.address = addr;
         return response;
     }
 

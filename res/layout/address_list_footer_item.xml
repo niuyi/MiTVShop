@@ -5,7 +5,6 @@
               android:minHeight="102px"
               android:paddingLeft="35px"
               android:background="@drawable/btn_normal"
-              android:layout_marginTop="45px"
               android:focusable="true"
               android:clickable="true"
               android:orientation="horizontal">
@@ -13,16 +12,16 @@
     <ImageView
             android:id="@+id/icon"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="30px"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/radio_off"/>
+            android:background="@drawable/add"/>
 
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="30px"
+            android:layout_marginLeft="16px"
+            android:includeFontPadding="false"
             android:singleLine="true"
             android:textSize="30px"
             android:text="@string/use_new_address"/>
