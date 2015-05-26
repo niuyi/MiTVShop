@@ -10,8 +10,7 @@
             android:layout_width="1522px"
             android:layout_height="wrap_content"
             android:scrollbars="none"
-            android:layout_gravity="center"
-            android:background="@color/black"
+            android:layout_gravity="center_horizontal"
             />
 
 </FrameLayout>
