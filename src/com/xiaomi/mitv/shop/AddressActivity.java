@@ -27,7 +27,7 @@ public class AddressActivity extends BaseLoadingActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setFailureMessage("无法获取地址信息");
+        setFailureMessage(getResources().getString(R.string.fail_to_add_address_list));
 
         mUid = getIntent().getStringExtra(AddressListFragment.UID);
         mAddressId = getIntent().getStringExtra(AddressListFragment.ADDRESS_ID);
@@ -36,13 +36,13 @@ public class AddressActivity extends BaseLoadingActivity {
         mAddressId = "10150519610024458";
 
         AddressList list = new AddressList();
-        for(int i = 0 ; i < 5 ; i ++){
+        for(int i = 0 ; i < 10 ; i ++){
             Address a = new Address();
-            a.consignee = String.valueOf(i);
-            a.province_name = "beijing";
-            a.city_name = "beijing";
-            a.district_name = "district_name";
-            a.address = "12345678";
+            a.consignee = "牛毅" + String.valueOf(i);
+            a.province_name = "北京";
+            a.city_name = "北京";
+            a.district_name = "海淀区";
+            a.address = "海淀区西三旗abcd路";
             a.tel = "13812345678";
             if(i == 0){
                 a.address_id = mAddressId;
@@ -64,6 +64,7 @@ public class AddressActivity extends BaseLoadingActivity {
         frag.setArguments(bundle);
 
         switchFragment(frag);
+
 //
 ////        if(!TextUtils.isEmpty(mUid)){
 ////            GetAddressListRequest req = new GetAddressListRequest(mUid);

@@ -2,24 +2,20 @@ package com.xiaomi.mitv.shop;
 
 import android.app.Activity;
 import android.content.Context;
-import android.net.Uri;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.xiaomi.mitv.api.util.MILog;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.utils.URIUtils;
-import org.apache.http.client.utils.URLEncodedUtils;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
+import com.xiaomi.mitv.shop.model.ProductManager;
 
 /**
  * Created by niuyi on 2015/5/21.
@@ -37,7 +33,7 @@ public class InputAddressActivity extends Activity {
         setContentView(R.layout.input_address_activity);
 
         TextView tv = (TextView)findViewById(R.id.title_text);
-        tv.setText("请输入公司名称");
+        tv.setText(R.string.input_company_name);
 
         mEditText = (EditText)findViewById(R.id.address_edit_text);
         mButton = (Button) findViewById(R.id.ok_button);
@@ -49,6 +45,11 @@ public class InputAddressActivity extends Activity {
             }
         });
 
+        String title = ProductManager.INSTSNCE.getCurrentCheckoutResponse().body.invoice_title;
+        if(!TextUtils.isEmpty(title)){
+            mEditText.setText(title);
+        }
+
         mEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -59,7 +60,7 @@ public class InputAddressActivity extends Activity {
                     ime.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
 
                     inputDone();
-                    mButton.requestFocus();
+
                 }
 
                 return true;
@@ -69,16 +70,43 @@ public class InputAddressActivity extends Activity {
 
     public void inputDone(){
 
-        Uri uri = Uri.parse("mitv://mitv.shop?product=1&ver=1");
-        Log.i(TAG, String.format("get product:%s ver:%s", uri.getQueryParameter("product"), uri.getQueryParameter("ver")));
+//        Uri uri = Uri.parse("mitv://mitv.shop?product=1&ver=1");
+//        Log.i(TAG, String.format("get product:%s ver:%s", uri.getQueryParameter("product"), uri.getQueryParameter("ver")));
+//
+        String title = mEditText.getText().toString().trim();
 
-        String address = mEditText.getText().toString();
-
-        if(address.trim().length() == 0){
+        if(title.length() == 0){
             mEditText.setBackgroundResource(R.drawable.input_error);
-            mEditText.requestFocus();
+
+            Animation animation = AnimationUtils.loadAnimation(this, R.anim.shake);
+            mEditText.startAnimation(animation);
+
+            animation.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    mEditText.requestFocus();
+                    mEditText.setBackgroundResource(R.drawable.input_selector);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
             return;
         }
+
+        mButton.requestFocus();
+
+        Intent in = new Intent();
+        in.putExtra(InvoiceActivity.TITLE_KEY, title);
+
+        setResult(RESULT_OK, in);
 
         finish();
     }

@@ -22,4 +22,11 @@
     <string name="invoice_personal">个人发票</string>
     <string name="invoice_company">公司发票</string>
     <string name="invoice_electron_desc">电子发票是税务局认可的有效凭证，可作为售后维权凭据，不随商品寄送。开票后不可更换纸质发票，如需报销请选择普通发票。</string>
+
+    <string name="btn_ok">确定</string>
+    <string name="input_company_name">输入公司名称</string>
+
+    <string name="fail_to_add_address_list">无法获取地址信息</string>
+    <string name="select_address">选择地址</string>
+    <string name="use_new_address">使用新地址</string>
 </resources>

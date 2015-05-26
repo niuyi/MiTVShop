@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/MiTVShop.iml" filepath="$PROJECT_DIR$/MiTVShop.iml" />
+      <module fileurl="file://C:/Android/android-sdk/extras/android/support/v17/leanback/V17.iml" filepath="C:/Android/android-sdk/extras/android/support/v17/leanback/V17.iml" />
     </modules>
   </component>
 </project>

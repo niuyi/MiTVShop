@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
     <include layout="@layout/title_view"/>
 
     <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center">
         
         <EditText
                 android:id="@+id/address_edit_text"
-                android:layout_width="1000px"
-                android:layout_height="wrap_content"
+                android:layout_width="1120px"
+                android:layout_height="100px"
                 android:layout_gravity="center_horizontal"
                 android:gravity="left|center_vertical"
-                android:textSize="32px"
+                android:textSize="36px"
                 android:singleLine="true"
                 android:background="@drawable/input_selector"
                 android:imeOptions="actionDone"
                 android:paddingLeft="25px"
                 android:paddingRight="25px"
                 android:paddingBottom="12px"
+                android:paddingTop="12px"
                 android:textColor="@color/white">
             <requestFocus />
 
@@ -32,12 +32,12 @@
 
         <Button
                 android:id="@+id/ok_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20px"
+                android:layout_width="290px"
+                android:layout_height="100px"
+                android:layout_gravity="center_vertical|right"
+                android:layout_marginLeft="36px"
                 android:textSize="36px"
-                android:text="确认"/>
+                android:text="@string/btn_ok"/>
 
     </LinearLayout>
 

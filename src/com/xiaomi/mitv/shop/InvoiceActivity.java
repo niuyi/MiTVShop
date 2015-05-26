@@ -1,19 +1,13 @@
 package com.xiaomi.mitv.shop;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.xiaomi.mitv.shop.model.CheckoutResponse.Invoice;
 import com.xiaomi.mitv.shop.model.ProductManager;
-import com.xiaomi.mitv.shop.widget.CheckedButtonGroup;
-import com.xiaomi.mitv.shop.widget.InvoiceButton;
-import com.xiaomi.mitv.shop.widget.SelectorView;
-import com.xiaomi.mitv.shop.widget.SelectorViewListener;
 
 /**
  * Created by niuyi on 2015/5/21.
@@ -21,6 +15,8 @@ import com.xiaomi.mitv.shop.widget.SelectorViewListener;
 public class InvoiceActivity extends Activity implements View.OnClickListener, View.OnFocusChangeListener {
 
     private static final String TAG = "InvoiceActivity";
+    public static final int REQUEST_CODE = 0;
+    public static final String TITLE_KEY = "title";
 
     private TextView mDesc;
 
@@ -67,6 +63,10 @@ public class InvoiceActivity extends Activity implements View.OnClickListener, V
         }else if(view == mPersonalButton){
             ProductManager.INSTSNCE.getCurrentCheckoutResponse().setInvoiceSelectedByValue(Invoice.PERSONAL_ID);
             finish();
+        }else if(view == mCompanyButton){
+            Intent in = new Intent();
+            in.setClass(this, InputAddressActivity.class);
+            startActivityForResult(in, REQUEST_CODE);
         }
     }
 
@@ -78,6 +78,19 @@ public class InvoiceActivity extends Activity implements View.OnClickListener, V
             }else{
                 mDesc.setVisibility(View.GONE);
             }
+        }
+    }
+
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQUEST_CODE && resultCode == RESULT_OK){
+            String address = data.getStringExtra(TITLE_KEY);
+            ProductManager.INSTSNCE.getCurrentCheckoutResponse().setInvoiceSelectedByValue(Invoice.COMPANY_ID);
+            ProductManager.INSTSNCE.getCurrentCheckoutResponse().body.invoice_title = address;
+            finish();
         }
     }
 }
