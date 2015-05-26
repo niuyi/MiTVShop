@@ -1,15 +1,13 @@
 package com.xiaomi.mitv.shop;
 
 import android.app.Activity;
-import android.database.DataSetObserver;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
+import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.ViewGroup;
-import android.widget.*;
-import com.squareup.picasso.Picasso;
-import com.xiaomi.mitv.shop.widget.MyListViewEx;
+import android.widget.TextView;
+import com.xiaomi.mitv.shop.widget.VerticalGridView;
 
 /**
  * Created by niuyi on 2015/5/11.
@@ -17,79 +15,63 @@ import com.xiaomi.mitv.shop.widget.MyListViewEx;
 public class GoodSelectionActivity extends Activity {
 
     private static final String TAG = "MyListViewEx";
-    private MyListViewEx mListView;
-    private LayoutInflater mLayoutInflater;
-    
+    private VerticalGridView mListView;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.good_selection_activity);
 
-        mListView = (MyListViewEx)findViewById(R.id.list_view);
-//        mListView.setAdapter(new L);
-        mListView.setAdapter(new MyListAdapter());
-//        mListView.setSelection(0);
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                int sel = mListView.getSelection();
-                Log.i(TAG, "sel: " + sel);
-            }
-        });
+        TextView title = (TextView)findViewById(R.id.title_text);
+        title.setText(R.string.select_goods);
 
-
-        mLayoutInflater = getLayoutInflater();
+        mListView = (VerticalGridView)findViewById(R.id.list_view);
+        mListView.setNumColumns(2);
+        mListView.setVerticalMargin(45);
+        mListView.setHorizontalMargin(118);
+        mListView.setSelectedPosition(0);
+        mListView.setHasFixedSize(true);
+        mListView.setAdapter(new GoodsListAdapter());
     }
 
-    public class ViewHolder {
-        ImageView icon;
-        TextView title;
-        TextView price;
-        View backIcon;
-    }
+    static class GoodsViewHolder extends RecyclerView.ViewHolder{
 
-    class MyListAdapter extends BaseAdapter {
+        private TextView itemView;
 
-
-        @Override
-        public int getCount() {
-            return 9;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            final ViewHolder holder;
-            if(convertView == null){
-                convertView = mLayoutInflater.inflate(R.layout.selection_list_item, parent, false);
-
-                holder = new ViewHolder();
-
-                holder.icon = (ImageView)convertView.findViewById(R.id.poster_view);
-                holder.title = (TextView)convertView.findViewById(R.id.tv_title);
-                holder.price = (TextView)convertView.findViewById(R.id.tv_price);
-                holder.backIcon = convertView.findViewById(R.id.arrow);
-
-                convertView.setTag(holder);
-            }else{
-                holder = (ViewHolder)convertView.getTag();
-            }
-
-            Picasso.with(GoodSelectionActivity.this).load("http://static.home.mi.com/app/shop/img?id=shop_466161732d4d67bb15d3ae550da7c0f8.jpg&t=jpeg&z=1&q=80").into(holder.icon);
-            holder.title.setText("小米手机4: "+ position);
-            holder.price.setText("1999元");
-
-            return convertView;
+        public GoodsViewHolder(TextView itemView) {
+            super(itemView);
+            this.itemView = itemView;
         }
     }
+
+    class GoodsListAdapter extends RecyclerView.Adapter<GoodsViewHolder>{
+
+        @Override
+        public GoodsViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+            TextView tv = new TextView(GoodSelectionActivity.this);
+            tv.setFocusable(true);
+            tv.setClickable(true);
+            tv.setBackgroundResource(R.drawable.btn_normal);
+            tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, 42);
+//            android.support.v7.widget.GridLayoutManager.LayoutParams params = new android.support.v7.widget.GridLayoutManager.LayoutParams(242, 702);
+            com.xiaomi.mitv.shop.widget.GridLayoutManager.LayoutParams params = new com.xiaomi.mitv.shop.widget.GridLayoutManager.LayoutParams(702, 242);
+            tv.setGravity(Gravity.CENTER);
+            tv.setLayoutParams(params);
+
+            return new GoodsViewHolder(tv);
+        }
+
+        @Override
+        public void onBindViewHolder(GoodsViewHolder viewHolder, int i) {
+            viewHolder.itemView.setText("小米手机4 移动4G版\r\n2GB内存 黑色 16GB\r\n2400元");
+        }
+
+        @Override
+        public int getItemCount() {
+            return 2;
+        }
+    }
+
+
 }

@@ -20,7 +20,7 @@ import com.xiaomi.mitv.shop.model.ProductManager;
 /**
  * Created by niuyi on 2015/5/21.
  */
-public class InputAddressActivity extends Activity {
+public class InputInvoiceTitleActivity extends Activity {
 
     private static final String TAG = "InputAddressActivity";
 
@@ -30,7 +30,7 @@ public class InputAddressActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.input_address_activity);
+        setContentView(R.layout.input_invoice_title_activity);
 
         TextView tv = (TextView)findViewById(R.id.title_text);
         tv.setText(R.string.input_company_name);

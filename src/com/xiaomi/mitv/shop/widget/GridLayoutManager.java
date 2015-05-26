@@ -45,7 +45,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-final class GridLayoutManager extends RecyclerView.LayoutManager {
+public final class GridLayoutManager extends RecyclerView.LayoutManager {
 
      /*
       * LayoutParams for {@link HorizontalGridView} and {@link VerticalGridView}.
@@ -53,7 +53,7 @@ final class GridLayoutManager extends RecyclerView.LayoutManager {
       * - Saves optical bounds insets.
       * - Caches focus align view center.
       */
-    static class LayoutParams extends RecyclerView.LayoutParams {
+    public static class LayoutParams extends RecyclerView.LayoutParams {
 
         // The view is saved only during animation.
         private View mView;

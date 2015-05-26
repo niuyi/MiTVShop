@@ -65,7 +65,7 @@ public class InvoiceActivity extends Activity implements View.OnClickListener, V
             finish();
         }else if(view == mCompanyButton){
             Intent in = new Intent();
-            in.setClass(this, InputAddressActivity.class);
+            in.setClass(this, InputInvoiceTitleActivity.class);
             startActivityForResult(in, REQUEST_CODE);
         }
     }

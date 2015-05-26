@@ -35,4 +35,6 @@
     <string name="address_city">省/市/区</string>
     <string name="address_address">路名或街道地址，门牌号</string>
     <string name="input_address">输入地址</string>
+
+    <string name="select_goods">选择产品型号</string>
 </resources>

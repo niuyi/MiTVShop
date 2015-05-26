@@ -36,7 +36,7 @@ public class AddressActivity extends BaseLoadingActivity {
         mAddressId = "10150519610024458";
 
         AddressList list = new AddressList();
-        for(int i = 0 ; i < 10 ; i ++){
+        for(int i = 0 ; i < 1 ; i ++){
             Address a = new Address();
             a.consignee = "牛毅" + String.valueOf(i);
             a.province_name = "北京";
