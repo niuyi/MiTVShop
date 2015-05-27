@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.xiaomi.mitv.api.util.PopupWindow;
+import com.xiaomi.mitv.shop.model.Region;
 import com.xiaomi.mitv.shop.util.LocationManager;
 import com.xiaomi.mitv.shop.widget.MyEditText;
 import com.xiaomi.mitv.shop.widget.SelectLocationWindow;
@@ -27,7 +28,7 @@ public class AddAddressActivity extends Activity {
     private MyEditText mAddress;
 
     private SelectLocationWindow mWindow;
-    private EditText mCity;
+    private TextView mCity;
     private Button mButton;
     private FutureTask<LocationManager.AllLocations> mTask;
 
@@ -42,12 +43,12 @@ public class AddAddressActivity extends Activity {
         mName = (MyEditText)findViewById(R.id.et_name);
         mTel = (MyEditText)findViewById(R.id.et_tel);
         mAddress = (MyEditText)findViewById(R.id.et_address);
-        mCity = (EditText)findViewById(R.id.et_city);
+        mCity = (TextView)findViewById(R.id.et_city);
 
         mCity.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus){
+                if (hasFocus) {
                     showWindow();
                 }
             }
@@ -85,35 +86,32 @@ public class AddAddressActivity extends Activity {
             mWindow.setOnWindowListener(new PopupWindow.OnWindowListener() {
                 @Override
                 public void onShow(PopupWindow popupWindow) {
-
+                    mName.setVisibility(View.GONE);
+                    mTel.setVisibility(View.GONE);
+                    mCity.setVisibility(View.GONE);
+                    mAddress.setVisibility(View.GONE);
+                    mButton.setVisibility(View.GONE);
                 }
 
                 @Override
                 public void onDismiss(PopupWindow popupWindow) {
+                    Region[] currentRegion = mWindow.getCurrentRegion();
+                    if (currentRegion != null) {
+                        mCity.setText(getString(R.string.address_city_template, currentRegion[0].region_name, currentRegion[1].region_name, currentRegion[2].region_name));
+                    }
+
                     mName.setVisibility(View.VISIBLE);
                     mTel.setVisibility(View.VISIBLE);
                     mCity.setVisibility(View.VISIBLE);
                     mAddress.setVisibility(View.VISIBLE);
                     mButton.setVisibility(View.VISIBLE);
 
-                    mAddress.requestFocus();
+//                    mAddress.requestFocus();
                 }
             });
         }
-        mName.setVisibility(View.GONE);
-        mTel.setVisibility(View.GONE);
-        mCity.setVisibility(View.GONE);
-        mAddress.setVisibility(View.GONE);
-        mButton.setVisibility(View.GONE);
 
         mWindow.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);
-    }
-
-    public void onClick(View view){
-        if(mWindow != null){
-            mWindow.dismiss();
-            mAddress.requestFocus();
-        }
     }
 
     static class GetLocationCall implements Callable<LocationManager.AllLocations>{

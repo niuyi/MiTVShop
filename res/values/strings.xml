@@ -33,6 +33,7 @@
     <string name="address_name">收货人姓名</string>
     <string name="address_tel">电话</string>
     <string name="address_city">省/市/区</string>
+    <string name="address_city_template">%1$s/%2$s/%3$s</string>
     <string name="address_address">路名或街道地址，门牌号</string>
     <string name="input_address">输入地址</string>
 
@@ -53,4 +54,5 @@
     <string name="location_province">省份</string>
     <string name="location_city">城市</string>
     <string name="location_district">地区</string>
+
 </resources>

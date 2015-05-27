@@ -81,11 +81,11 @@
         <activity android:name=".BaseLoadingActivity"/>
 
         <activity android:name=".AddAddressActivity">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN"/>-->
-                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-                <!--<category android:name="android.intent.category.DEFAULT"/>-->
-            <!--</intent-filter>-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
         </activity>
         <activity android:name=".CheckoutActivity">
             <!--<intent-filter>-->
