@@ -3,7 +3,6 @@ package com.xiaomi.mitv.shop;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.ViewGroup;
@@ -29,15 +28,11 @@ public class GoodSelectionActivity extends Activity {
         title.setText(R.string.select_goods);
 
         mListView = (VerticalGridView)findViewById(R.id.list_view);
-
-        Log.i(TAG, "para: " + mListView.getLayoutParams().getClass());
         mListView.setNumColumns(2);
         mListView.setVerticalMargin(45);
         mListView.setHorizontalMargin(118);
         mListView.setSelectedPosition(0);
         mListView.setHasFixedSize(true);
-        mListView.setVerticalFadingEdgeEnabled(true);
-        mListView.setFadingEdgeLength(100);
         mListView.setWindowAlignment(VerticalGridView.WINDOW_ALIGN_LOW_EDGE);
         GoodsListAdapter adapter = new GoodsListAdapter();
         mListView.setAdapter(adapter);
@@ -50,22 +45,11 @@ public class GoodSelectionActivity extends Activity {
         }else{
             para.topMargin = 240;
         }
-
     }
 
     static class GoodsViewHolder extends RecyclerView.ViewHolder{
 
-        @Override
-        public GoodsViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-            TextView tv = new TextView(GoodSelectionActivity.this);
-            tv.setFocusable(true);
-            tv.setClickable(true);
-            tv.setBackgroundResource(R.drawable.btn_normal);
-            tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, 42);
-//            android.support.v7.widget.GridLayoutManager.LayoutParams params = new android.support.v7.widget.GridLayoutManager.LayoutParams(242, 702);
-            com.xiaomi.mitv.shop.widget.GridLayoutManager.LayoutParams params = new com.xiaomi.mitv.shop.widget.GridLayoutManager.LayoutParams(702, 242);
-            tv.setGravity(Gravity.CENTER);
-            tv.setLayoutParams(params);
+        private TextView itemView;
 
         public GoodsViewHolder(TextView itemView) {
             super(itemView);
@@ -91,11 +75,15 @@ public class GoodSelectionActivity extends Activity {
         }
 
         @Override
+        public void onBindViewHolder(GoodsViewHolder viewHolder, int i) {
+            viewHolder.itemView.setText("小米手机4 移动4G版\r\n2GB内存 黑色 16GB\r\n2400元");
+        }
+
+        @Override
         public int getItemCount() {
-            return 2;
+            return 8;
         }
     }
-
 
 
 }
