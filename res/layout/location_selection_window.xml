@@ -1,0 +1,104 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/AbsoluteLayout1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+
+        <!--<ImageView-->
+                <!--android:id="@+id/imageView2"-->
+                <!--android:layout_width="@dimen/general_location_ImageView_background_selector_width"-->
+                <!--android:layout_height="@dimen/general_location_ImageView_background_selector_height"-->
+                <!--android:scaleType="fitXY"-->
+                <!--android:src="@drawable/background_selector_location" />-->
+    <!--<ImageView-->
+            <!--android:id="@+id/imgViewSelectBar"-->
+            <!--android:layout_width="@dimen/general_location_ImageView_selector_bar_width"-->
+            <!--android:layout_height="@dimen/general_location_ImageView_selector_bar_height"-->
+            <!--android:layout_x="@dimen/general_location_ImageView_selector_bar_marginLeft"-->
+            <!--android:layout_y="@dimen/general_location_ImageView_selector_bar_marginTop"-->
+            <!--android:src="@drawable/selector_bar" />-->
+
+        <!--<ImageView-->
+                <!--android:id="@+id/imgViewMask"-->
+                <!--android:layout_width="@dimen/general_location_ImageView_mask_width"-->
+                <!--android:layout_height="@dimen/general_location_ImageView_background_selector_height"-->
+                <!--android:scaleType="fitXY"-->
+                <!--android:src="@drawable/mask_selector_location" />-->
+
+        <LinearLayout
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                android:background="@drawable/background_selector_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                        android:layout_gravity="center"
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <TextView
+                                android:id="@+id/textView1"
+                                android:layout_width="@dimen/general_location_TextView_width"
+                                android:layout_height="@dimen/general_location_TextView_height"
+                                android:gravity="center"
+                                android:text="@string/location_province"
+                                android:textColor="@color/location_title"
+                                android:textSize="@dimen/general_location_text_size" />
+
+                        <com.xiaomi.mitv.shop.widget.WheelView
+                                android:id="@+id/province"
+                                android:layout_width="@dimen/general_location_WheelView_width"
+                                android:layout_height="@dimen/general_location_WheelView_height"/>
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                        android:layout_gravity="center"
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <TextView
+                                android:id="@+id/textView2"
+                                android:layout_width="@dimen/general_location_TextView_width"
+                                android:layout_height="@dimen/general_location_TextView_height"
+                                android:gravity="center"
+                                android:text="@string/location_city"
+                                android:textColor="@color/location_title"
+                                android:textSize="@dimen/general_location_text_size" />
+                        <com.xiaomi.mitv.shop.widget.WheelView
+                                android:id="@+id/city"
+                                android:layout_width="@dimen/general_location_WheelView_width"
+                                android:layout_height="@dimen/general_location_WheelView_height"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                        android:layout_gravity="center"
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <TextView
+                                android:id="@+id/textView3"
+                                android:layout_width="@dimen/general_location_TextView_width"
+                                android:layout_height="@dimen/general_location_TextView_height"
+                                android:gravity="center"
+                                android:text="@string/location_district"
+                                android:textColor="@color/location_title"
+                                android:textSize="@dimen/general_location_text_size" />
+                        <com.xiaomi.mitv.shop.widget.WheelView
+                                android:id="@+id/district"
+                                android:layout_width="@dimen/general_location_WheelView_width"
+                                android:layout_height="@dimen/general_location_WheelView_height" />
+
+                </LinearLayout>
+        </LinearLayout>
+
+
+
+
+
+
+
+</FrameLayout>

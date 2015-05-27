@@ -45,7 +45,7 @@ public class InputInvoiceTitleActivity extends Activity {
             }
         });
 
-        String title = ProductManager.INSTSNCE.getCurrentCheckoutResponse().body.invoice_title;
+        String title = ProductManager.INSTANCE.getCurrentCheckoutResponse().body.invoice_title;
         if(!TextUtils.isEmpty(title)){
             mEditText.setText(title);
         }

@@ -5,6 +5,8 @@
 
     <include layout="@layout/title_view"/>
 
+
+
     <LinearLayout
             android:layout_width="1126px"
             android:layout_height="wrap_content"
@@ -64,6 +66,7 @@
             android:text="@string/address_city"
             android:background="@drawable/input_selector"
             android:imeOptions="actionNext"
+            android:editable="false"
             android:alpha="0.6"/>
 
     <com.xiaomi.mitv.shop.widget.MyEditText
@@ -93,5 +96,12 @@
 
 
     </LinearLayout>
+
+        <View
+                android:id="@+id/mask"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/black"
+                android:visibility="gone"/>
 
 </merge>

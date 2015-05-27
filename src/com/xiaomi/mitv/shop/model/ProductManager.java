@@ -6,7 +6,7 @@ import java.util.HashMap;
  * Created by linniu on 2015/5/16.
  */
 public enum ProductManager {
-    INSTSNCE;
+    INSTANCE;
 
     private HashMap<String, ProductDetail> mProducts = new HashMap<String, ProductDetail>();
     private HashMap<String, AddressList> mAddressList = new HashMap<String, AddressList>();

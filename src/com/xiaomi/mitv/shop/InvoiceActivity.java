@@ -44,7 +44,7 @@ public class InvoiceActivity extends Activity implements View.OnClickListener, V
         mCompanyButton = (Button)findViewById(R.id.btn_company);
         mCompanyButton.setOnClickListener(this);
 
-        String value = ProductManager.INSTSNCE.getCurrentCheckoutResponse().getSelectedInvoiceValue();
+        String value = ProductManager.INSTANCE.getCurrentCheckoutResponse().getSelectedInvoiceValue();
 
         if(Invoice.ELECTRON_ID.equalsIgnoreCase(value)){
             mElecButton.requestFocus();
@@ -58,10 +58,10 @@ public class InvoiceActivity extends Activity implements View.OnClickListener, V
     @Override
     public void onClick(View view) {
         if(view == mElecButton){
-            ProductManager.INSTSNCE.getCurrentCheckoutResponse().setInvoiceSelectedByValue(Invoice.ELECTRON_ID);
+            ProductManager.INSTANCE.getCurrentCheckoutResponse().setInvoiceSelectedByValue(Invoice.ELECTRON_ID);
             finish();
         }else if(view == mPersonalButton){
-            ProductManager.INSTSNCE.getCurrentCheckoutResponse().setInvoiceSelectedByValue(Invoice.PERSONAL_ID);
+            ProductManager.INSTANCE.getCurrentCheckoutResponse().setInvoiceSelectedByValue(Invoice.PERSONAL_ID);
             finish();
         }else if(view == mCompanyButton){
             Intent in = new Intent();
@@ -88,8 +88,8 @@ public class InvoiceActivity extends Activity implements View.OnClickListener, V
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == REQUEST_CODE && resultCode == RESULT_OK){
             String address = data.getStringExtra(TITLE_KEY);
-            ProductManager.INSTSNCE.getCurrentCheckoutResponse().setInvoiceSelectedByValue(Invoice.COMPANY_ID);
-            ProductManager.INSTSNCE.getCurrentCheckoutResponse().body.invoice_title = address;
+            ProductManager.INSTANCE.getCurrentCheckoutResponse().setInvoiceSelectedByValue(Invoice.COMPANY_ID);
+            ProductManager.INSTANCE.getCurrentCheckoutResponse().body.invoice_title = address;
             finish();
         }
     }

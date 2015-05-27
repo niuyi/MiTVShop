@@ -2,16 +2,12 @@ package com.xiaomi.mitv.shop;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.xiaomi.mitv.shop.model.CheckoutResponse;
 import com.xiaomi.mitv.shop.model.ProductManager;
 import com.xiaomi.mitv.shop.widget.CheckedButtonGroup;
 import com.xiaomi.mitv.shop.widget.DeliverTimeButton;
-import com.xiaomi.mitv.shop.widget.SelectorView;
-import com.xiaomi.mitv.shop.widget.SelectorViewListener;
 
 /**
  * Created by niuyi on 2015/5/22.
@@ -28,7 +24,7 @@ public class DeliverTimeActivity extends Activity {
         TextView title = (TextView)findViewById(R.id.title_text);
         title.setText(R.string.deliver_time);
 
-        String value = ProductManager.INSTSNCE.getCurrentCheckoutResponse().getSelectedDeliverTimeValue();
+        String value = ProductManager.INSTANCE.getCurrentCheckoutResponse().getSelectedDeliverTimeValue();
 
         DeliverTimeButton button = (DeliverTimeButton)findViewById(R.id.btn_1);
         button.init(this, R.string.deliver_time_no_limit, R.string.deliver_time_no_limit_2, CheckoutResponse.DeliverTime.ON_LIMITED_ID);

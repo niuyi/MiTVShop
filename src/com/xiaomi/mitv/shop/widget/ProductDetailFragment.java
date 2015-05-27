@@ -1,8 +1,6 @@
 package com.xiaomi.mitv.shop.widget;
 
 import android.app.Fragment;
-import android.content.Intent;
-import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,16 +9,11 @@ import android.view.animation.AnimationUtils;
 import android.widget.*;
 import com.squareup.picasso.Picasso;
 import com.xiaomi.mitv.shop.DetailActivity;
-import com.xiaomi.mitv.shop.GoodSelectionActivity;
 import com.xiaomi.mitv.shop.R;
 import com.xiaomi.mitv.shop.model.ProductDetail;
 import com.xiaomi.mitv.shop.model.ProductManager;
 import com.xiaomi.mitv.shop.network.DKResponse;
 import com.xiaomi.mitv.shop.network.JsonSerializer;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * Created by linniu on 2015/5/9.
@@ -45,7 +38,7 @@ public class ProductDetailFragment extends Fragment {
         mViewSwitcher = (ViewFlipper)view.findViewById(R.id.vf_container);
 
         mPid = getArguments().getString(ProductDetail.PID_KEY);
-        mDetail = ProductManager.INSTSNCE.getProductDetail(mPid);
+        mDetail = ProductManager.INSTANCE.getProductDetail(mPid);
 
         mBuyButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -204,7 +197,7 @@ public class ProductDetailFragment extends Fragment {
     }
 
     public void reload() {
-        mDetail = ProductManager.INSTSNCE.getProductDetail(mPid);
+        mDetail = ProductManager.INSTANCE.getProductDetail(mPid);
         initView();
     }
 }

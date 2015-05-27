@@ -60,8 +60,8 @@ public class CheckoutFragment extends Fragment implements SwitcherItem.OnSelectC
         mGid = "2";
         mPid = "1";
 
-        ProductManager.INSTSNCE.setCurrentCheckoutResponse(res);
-        ProductDetail productDetail = ProductManager.INSTSNCE.getProductDetail(mPid);
+        ProductManager.INSTANCE.setCurrentCheckoutResponse(res);
+        ProductDetail productDetail = ProductManager.INSTANCE.getProductDetail(mPid);
         ProductDetail.GoodStatus goodStatus = productDetail.getGoodStatus(mGid);
 
         TextView name = (TextView)view.findViewById(R.id.tv_goods_name);
@@ -157,10 +157,10 @@ public class CheckoutFragment extends Fragment implements SwitcherItem.OnSelectC
     @Override
     public void onResume() {
         super.onResume();
-        mDeliverTimeItem.setSelectedValue(ProductManager.INSTSNCE.getCurrentCheckoutResponse().getSelectedDeliverTimeValue());
-        setupInvoiceItem(ProductManager.INSTSNCE.getCurrentCheckoutResponse(), mInvoiceTV);
+        mDeliverTimeItem.setSelectedValue(ProductManager.INSTANCE.getCurrentCheckoutResponse().getSelectedDeliverTimeValue());
+        setupInvoiceItem(ProductManager.INSTANCE.getCurrentCheckoutResponse(), mInvoiceTV);
 //
-        Address address = ProductManager.INSTSNCE.getCurrentCheckoutResponse().body.address;
+        Address address = ProductManager.INSTANCE.getCurrentCheckoutResponse().body.address;
         if(address != null){
             mNameTextView.setText(String.format("%s %s", address.consignee, address.tel));
             mCityTextView.setText(String.format("%s %s %s", address.province_name, address.city_name, address.district_name));
@@ -226,7 +226,7 @@ public class CheckoutFragment extends Fragment implements SwitcherItem.OnSelectC
 
         detail.goods_status = new ProductDetail.GoodStatus[]{status};
 
-        ProductManager.INSTSNCE.putProductDetail("1", detail);
+        ProductManager.INSTANCE.putProductDetail("1", detail);
 
         CheckoutResponse response = new CheckoutResponse();
 
@@ -290,9 +290,9 @@ public class CheckoutFragment extends Fragment implements SwitcherItem.OnSelectC
     @Override
     public void onSelectChange(View view, String value) {
         if(view == mDeliverTimeItem){
-            ProductManager.INSTSNCE.getCurrentCheckoutResponse().setDeliverTimeSelectedByValue(value);
+            ProductManager.INSTANCE.getCurrentCheckoutResponse().setDeliverTimeSelectedByValue(value);
         }else if(view == mInvoiceItem){
-            ProductManager.INSTSNCE.getCurrentCheckoutResponse().setInvoiceSelectedByValue(value);
+            ProductManager.INSTANCE.getCurrentCheckoutResponse().setInvoiceSelectedByValue(value);
         }
     }
 

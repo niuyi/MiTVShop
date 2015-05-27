@@ -67,7 +67,7 @@ public class DetailActivity extends Activity {
                     final ProductDetail productDetail = ProductDetail.parse(response.getResponse());
 
                     if(productDetail != null && productDetail.check()){
-                        ProductManager.INSTSNCE.putProductDetail(mPid, productDetail);
+                        ProductManager.INSTANCE.putProductDetail(mPid, productDetail);
 
                         Log.i(TAG, "onRequestCompleted productDetail: " + productDetail.status);
                         Log.i(TAG, "onRequestCompleted productDetail, price: " + productDetail.price.max);
@@ -99,7 +99,7 @@ public class DetailActivity extends Activity {
                     ProductDetail productDetail = ProductDetail.parse(response.getResponse());
 
                     if(productDetail != null && productDetail.check()){
-                        ProductManager.INSTSNCE.putProductDetail(mPid, productDetail);
+                        ProductManager.INSTANCE.putProductDetail(mPid, productDetail);
 
                         Log.i(TAG, "onBeforeSendDone productDetail: " + productDetail.status);
                         Log.i(TAG, "onBeforeSendDone productDetail, price: " + productDetail.price.max);
@@ -187,6 +187,6 @@ public class DetailActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ProductManager.INSTSNCE.clear();
+        ProductManager.INSTANCE.clear();
     }
 }

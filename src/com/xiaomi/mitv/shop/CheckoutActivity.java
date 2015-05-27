@@ -1,15 +1,8 @@
 package com.xiaomi.mitv.shop;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
-import com.xiaomi.mitv.shop.model.CheckoutResponse;
 import com.xiaomi.mitv.shop.model.ProductDetail;
 import com.xiaomi.mitv.shop.model.ProductManager;
-import com.xiaomi.mitv.shop.network.DKResponse;
-import com.xiaomi.mitv.shop.network.MyBaseRequest;
-import com.xiaomi.mitv.shop.request.CheckoutRequest;
 import com.xiaomi.mitv.shop.widget.CheckoutFragment;
 
 /**
@@ -30,7 +23,7 @@ public class CheckoutActivity extends BaseLoadingActivity {
         setFailureMessage("添加购物车失败");
 
         mPid = getIntent().getStringExtra("pid");
-        mProduct = ProductManager.INSTSNCE.getProductDetail(mPid);
+        mProduct = ProductManager.INSTANCE.getProductDetail(mPid);
 
         mUid = getIntent().getStringExtra("uid");
         mGid = getIntent().getStringExtra("gid");

@@ -2,11 +2,7 @@ package com.xiaomi.mitv.shop.widget;
 
 import android.app.Fragment;
 import android.content.Intent;
-import android.graphics.Canvas;
-import android.graphics.Rect;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -50,7 +46,7 @@ public class AddressListFragment extends Fragment {
             mAddressId = arguments.getString(ADDRESS_ID);
 
             if (uid != null) {
-                AddressList addressList = ProductManager.INSTSNCE.getAddressList(uid);
+                AddressList addressList = ProductManager.INSTANCE.getAddressList(uid);
                 if (addressList != null) {
                     int index = 0;
                     for (int i = 0; i < addressList.addresses.size(); i++) {
@@ -166,7 +162,7 @@ public class AddressListFragment extends Fragment {
 
             Address address = mAddressList.addresses.get(index);
 
-            ProductManager.INSTSNCE.getCurrentCheckoutResponse().body.address = address;
+            ProductManager.INSTANCE.getCurrentCheckoutResponse().body.address = address;
 
             getActivity().finish();
 

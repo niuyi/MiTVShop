@@ -6,4 +6,10 @@ package com.xiaomi.mitv.shop.model;
 public class Region {
     public String region_id = "";
     public String region_name = "";
+    public Region[] child;
+
+    @Override
+    public String toString() {
+        return region_name;
+    }
 }

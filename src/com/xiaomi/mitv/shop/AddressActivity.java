@@ -1,18 +1,9 @@
 package com.xiaomi.mitv.shop;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
-import com.xiaomi.mitv.shop.db.ShopDBHelper;
-import com.xiaomi.mitv.shop.db.ShopDBManager;
 import com.xiaomi.mitv.shop.model.Address;
 import com.xiaomi.mitv.shop.model.AddressList;
-import com.xiaomi.mitv.shop.model.ProductDetail;
 import com.xiaomi.mitv.shop.model.ProductManager;
-import com.xiaomi.mitv.shop.network.DKResponse;
-import com.xiaomi.mitv.shop.network.MyBaseRequest;
-import com.xiaomi.mitv.shop.request.GetAddressListRequest;
 import com.xiaomi.mitv.shop.widget.AddressListFragment;
 
 /**
@@ -53,14 +44,14 @@ public class AddressActivity extends BaseLoadingActivity {
             list.addresses.add(a);
         }
 
-        ProductManager.INSTSNCE.putAddressList(mUid, list);
+        ProductManager.INSTANCE.putAddressList(mUid, list);
 
         AddressListFragment frag = new AddressListFragment();
 
         Bundle bundle = new Bundle();
         bundle.putString(AddressListFragment.UID, mUid);
 
-        Address address = ProductManager.INSTSNCE.getCurrentCheckoutResponse().body.address;
+        Address address = ProductManager.INSTANCE.getCurrentCheckoutResponse().body.address;
         bundle.putString(AddressListFragment.ADDRESS_ID, address == null ? "" : address.address_id);
 
         frag.setArguments(bundle);

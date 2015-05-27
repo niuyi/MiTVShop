@@ -17,4 +17,31 @@
     <dimen name="focus_offset">30px</dimen>
 
     <dimen name="sencond_page_center_imageview_scale_targetY">270px</dimen>
+
+    <dimen name="general_location_WheelView_textsize">18sp</dimen>
+    <dimen name="general_location_WheelView_additional_item_height">29dp</dimen>
+    <dimen name="general_location_WheelView_padding">5dp</dimen>
+    <dimen name="general_location_WheelView_label_offset">40dp</dimen>
+    <dimen name="general_location_WheelView_width">197dp</dimen>
+    <dimen name="general_location_WheelView_height">247dp</dimen>
+    <dimen name="general_location_WheelView_marginTop">217dp</dimen>
+    <dimen name="general_location_WheelView_province_marginLeft">201dp</dimen>
+    <dimen name="general_location_WheelView_city_marginLeft">398dp</dimen>
+    <dimen name="general_location_WheelView_district_marginLeft">595dp</dimen>
+
+    <dimen name="general_location_TextView_width">197dp</dimen>
+    <dimen name="general_location_TextView_height">47dp</dimen>
+    <dimen name="general_location_TextView_marginTop">176dp</dimen>
+    <dimen name="general_location_text_size">18dp</dimen>
+    <dimen name="general_location_ImageView_mask_width">592dp</dimen>
+    <dimen name="general_location_ImageView_mask_height">247dp</dimen>
+    <dimen name="general_location_ImageView_mask_marginTop">222dp</dimen>
+    <dimen name="general_location_ImageView_background_selector_width">592dp</dimen>
+    <dimen name="general_location_ImageView_background_selector_height">297dp</dimen>
+    <dimen name="general_location_ImageView_background_selector_marginTop">172dp</dimen>
+    <dimen name="general_location_ImageView_selector_bar_width">230dp</dimen>
+    <dimen name="general_location_ImageView_selector_bar_height">87dp</dimen>
+    <dimen name="general_location_ImageView_selector_bar_marginTop">302dp</dimen>
+    <dimen name="general_location_ImageView_selector_bar_marginLeft">184dp</dimen>
+
 </resources>

@@ -3,9 +3,7 @@ package com.xiaomi.mitv.shop.widget;
 import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.xiaomi.mitv.shop.R;
@@ -37,7 +35,7 @@ public class DeliverTimeButton extends LinearLayout{
         setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                ProductManager.INSTSNCE.getCurrentCheckoutResponse().setDeliverTimeSelectedByValue(value);
+                ProductManager.INSTANCE.getCurrentCheckoutResponse().setDeliverTimeSelectedByValue(value);
                 activity.finish();
             }
         });
