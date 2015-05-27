@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.xiaomi.mitv.shop.R;
+import com.xiaomi.mitv.shop.model.CheckoutResponse;
 
 import java.util.List;
 
@@ -18,11 +19,12 @@ import java.util.List;
  */
 public class SwitcherItem extends LinearLayout {
     private static final String TAG = "SwitcherItem";
-    private List<Pair<String, String>> values;
+    private List<String> values;
     private TextView mTitleView;
     private ImageView mLeftIcon;
     private ImageView mRightIcon;
     private TextView mValue;
+    private TextView mValue2;
     private int mCurrentIndex = 0;
     private OnSelectChangeListener mListener;
 
@@ -44,18 +46,8 @@ public class SwitcherItem extends LinearLayout {
         mTitleView = (TextView)findViewById(R.id.item_title);
         mLeftIcon = (ImageView)findViewById(R.id.iv_left);
         mRightIcon = (ImageView)findViewById(R.id.iv_right);
-        mValue = (TextView)findViewById(R.id.tv_value);
-
-        this.setOnFocusChangeListener(new OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean hasFocus) {
-                if (hasFocus) {
-                    setBackgroundColor(getContext().getResources().getColor(android.R.color.holo_blue_bright));
-                } else {
-                    setBackgroundColor(getContext().getResources().getColor(android.R.color.transparent));
-                }
-            }
-        });
+        mValue = (TextView)findViewById(R.id.tv_deliver_value);
+        mValue2 = (TextView)findViewById(R.id.tv_deliver_value_2);
     }
 
     public void setTitle(String title){
@@ -65,15 +57,15 @@ public class SwitcherItem extends LinearLayout {
         mListener = listener;
     }
 
-    public void setValues(List<Pair<String, String>> values, String selectedId){
+    public void setValues(List<String> values, String selectedId){
         this.values = values;
         setSelectedValue(selectedId);
     }
 
     public void setSelectedValue(String selectedId) {
         for(int i = 0 ; i < values.size(); i++){
-            Pair<String, String> p = values.get(i);
-            if(p.first.equals(selectedId)){
+            String p = values.get(i);
+            if(p.equals(selectedId)){
                 mCurrentIndex = i;
                 break;
             }
@@ -83,10 +75,21 @@ public class SwitcherItem extends LinearLayout {
     }
 
     private void updateValue() {
-        Pair<String, String> p = values.get(mCurrentIndex);
-        mValue.setText(p.second);
+        String p = values.get(mCurrentIndex);
+
+        if(CheckoutResponse.DeliverTime.HOLIDAY_ID.equals(p)){
+            mValue.setText(R.string.deliver_time_holiday_day);
+            mValue2.setText(R.string.deliver_time_holiday_day_2);
+        }else if(CheckoutResponse.DeliverTime.WORKING_DAY_ID.equals(p)){
+            mValue.setText(R.string.deliver_time_working_day);
+            mValue2.setText(R.string.deliver_time_working_day_2);
+        }else{
+            mValue.setText(R.string.deliver_time_no_limit);
+            mValue2.setText(R.string.deliver_time_no_limit_2);
+        }
+
         if(mListener != null){
-            mListener.onSelectChange(this, p.first);
+            mListener.onSelectChange(this, p);
         }
     }
 

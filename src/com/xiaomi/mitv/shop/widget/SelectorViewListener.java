@@ -21,7 +21,7 @@ public class SelectorViewListener implements View.OnFocusChangeListener, Adapter
     @Override
     public void onFocusChange(View view, boolean hasFocus) {
         if(hasFocus){
-
+            mSelectorView.setVisibility(View.VISIBLE);
             handleMove(view);
         }
     }

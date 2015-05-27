@@ -39,6 +39,16 @@ public class ProductDetail {
         return null;
     }
 
+    public GoodStatus getGoodStatus(String id){
+        for(GoodStatus g : goods_status){
+            if(g.id.equals(id)){
+                return g;
+            }
+        }
+
+        return null;
+    }
+
     public boolean check(){
         return true;
     }
@@ -71,6 +81,7 @@ public class ProductDetail {
         public String id;
         public String name;
         public int status;
+        public String price;
     }
 
     public static class Price{

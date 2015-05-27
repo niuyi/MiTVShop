@@ -7,23 +7,23 @@
     <include layout="@layout/title_view"/>
 
     <LinearLayout
-            android:layout_width="1800px"
+            android:layout_width="1622px"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:orientation="horizontal">
 
         <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="616px"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_gravity="center_vertical|left">
 
             <ImageView
                     android:id="@+id/iv_goods_icon"
-                    android:layout_width="420px"
-                    android:layout_height="420px"
+                    android:layout_width="match_parent"
+                    android:layout_height="350px"
                     android:layout_gravity="center_horizontal"
-                    android:scaleType="fitXY"
+                    android:scaleType="fitCenter"
                     android:background="@drawable/ic_launcher"/>
 
             <TextView
@@ -31,53 +31,116 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="30px"
-                    android:textSize="38px"
-                    android:text="小米路由器 黑色"/>
+                    android:layout_marginTop="14px"
+                    android:textSize="38px"/>
+
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginTop="35px"
+                    android:background="@drawable/checkout_divider"/>
 
             <TextView
-                    android:id="@+id/tv_shipment"
+                    android:id="@+id/buy_info"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
+                    android:layout_gravity="left"
                     android:layout_marginTop="30px"
-                    android:textSize="32px"
-                    android:text="快递配送（运费30元）"/>
+                    android:lineSpacingExtra="16px"
+                    android:gravity="left"
+                    android:textSize="36px"/>
 
             <TextView
-                    android:id="@+id/tv_total"
+                    android:id="@+id/price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="30px"
-                    android:textSize="38px"
-                    android:text="总计：699元"/>
-
+                    android:layout_gravity="left"
+                    android:layout_marginTop="22px"
+                    android:gravity="left"
+                    android:textSize="36px"/>
 
         </LinearLayout>
+
+        <View
+                android:layout_width="wrap_content"
+                android:layout_height="1px"
+                android:layout_weight="1"/>
 
         <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_width="890px"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_weight="1"
-                android:background="@drawable/mitv_category_background"
-                android:divider="@drawable/checkout_divider"
-                android:showDividers="middle"
-                android:layout_marginLeft="50px"
-                android:layout_gravity="center_vertical|right">
+                android:layout_gravity="right|center_vertical">
 
-            <include
-                    android:id="@+id/address_item"
-                    layout="@layout/address_item"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:textColor="@color/white"
+                    android:textSize="52px"
+                    android:text="@string/deliver_info"/>
 
-            <include
-                    android:id="@+id/deliver_time_item"
-                    layout="@layout/switcher_item"/>
-            <include
-                    android:id="@+id/invoice_item"
-                    layout="@layout/switcher_item"/>
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:background="@drawable/icon_off"
+                    android:divider="@drawable/checkout_divider"
+                    android:showDividers="middle"
+                    android:layout_marginTop="30px"
+                    android:padding="1px"
+                    android:layout_gravity="center_vertical">
 
+                <include
+                        android:id="@+id/address_item"
+                        layout="@layout/address_item"/>
+
+                <include
+                        android:id="@+id/deliver_time_item"
+                        layout="@layout/switcher_item"/>
+                <include
+                        android:id="@+id/invoice_item"
+                        layout="@layout/invoice_item"/>
+
+
+            </LinearLayout>
+
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="62px"
+                    android:layout_gravity="center_horizontal">
+
+                <Button
+                        android:id="@+id/ali_pay"
+                        android:layout_width="420px"
+                        android:layout_height="100px"
+                        android:background="@drawable/btn_normal"
+                        android:textSize="38px"
+                        android:paddingLeft="118px"
+                        android:layout_alignParentLeft="true"
+                        android:includeFontPadding="false"
+                        android:gravity="center_vertical"
+                        android:drawablePadding="14px"
+                        android:drawableStart="@drawable/alipay"
+                        android:text="@string/ali_pay"/>
+
+                <Button
+                        android:id="@+id/xiaomi_pay"
+                        android:layout_width="420px"
+                        android:layout_height="100px"
+                        android:background="@drawable/btn_normal"
+                        android:textSize="38px"
+                        android:paddingLeft="98px"
+                        android:layout_alignParentRight="true"
+                        android:includeFontPadding="false"
+                        android:gravity="center_vertical"
+                        android:drawablePadding="14px"
+                        android:drawableLeft="@drawable/xiaomipay"
+                        android:text="@string/xiaomi_pay"/>
+
+            </RelativeLayout>
 
         </LinearLayout>
 
@@ -85,26 +148,6 @@
     </LinearLayout>
 
 
-    <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="50px"
-            android:layout_marginBottom="30px"
-            android:layout_gravity="bottom|right">
 
-
-        <Button android:id="@+id/ali_pay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="支付宝付款"/>
-
-
-        <Button android:id="@+id/xiaomi_pay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="小米钱包付款" />
-
-
-    </LinearLayout>
 
 </FrameLayout>

@@ -37,4 +37,16 @@
     <string name="input_address">输入地址</string>
 
     <string name="select_goods">选择产品型号</string>
+    <string name="order_detail">订单详情</string>
+    <string name="deliver_info">送货信息</string>
+    <string name="xiaomi_pay">小米钱包</string>
+    <string name="ali_pay">支付宝</string>
+
+    <string name="checkout_address">收货地址</string>
+    <string name="checkout_invoice">发票信息</string>
+    <string name="checkout_deliver">送货时间</string>
+
+    <string name="price_info">商品总价：&lt;font color="#ff690b"&gt;&lt;big&gt;&lt;big&gt;&lt;big&gt;%s&lt;/big&gt;&lt;/big&gt;&lt;/big&gt;元&lt;/font&gt;</string>
+
+    <string name="buy_info">商品总价：%1$s元\r\n快递配送 （运费%2$s元）</string>
 </resources>

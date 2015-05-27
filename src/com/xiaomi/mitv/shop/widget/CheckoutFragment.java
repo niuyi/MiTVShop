@@ -3,8 +3,9 @@ package com.xiaomi.mitv.shop.widget;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
-import android.util.Pair;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +16,8 @@ import com.xiaomi.mitv.shop.DeliverTimeActivity;
 import com.xiaomi.mitv.shop.InvoiceActivity;
 import com.xiaomi.mitv.shop.R;
 import com.xiaomi.mitv.shop.model.Address;
-import com.xiaomi.mitv.shop.model.AddressList;
 import com.xiaomi.mitv.shop.model.CheckoutResponse;
+import com.xiaomi.mitv.shop.model.ProductDetail;
 import com.xiaomi.mitv.shop.model.ProductManager;
 
 import java.util.ArrayList;
@@ -25,76 +26,140 @@ import java.util.List;
 /**
  * Created by linniu on 2015/5/23.
  */
-public class CheckoutFragment extends Fragment implements View.OnFocusChangeListener, SwitcherItem.OnSelectChangeListener {
+public class CheckoutFragment extends Fragment implements SwitcherItem.OnSelectChangeListener, View.OnFocusChangeListener {
 
     private static final String TAG = "CheckoutFragment";
     private ViewGroup mRootView;
-    private SelectorView mSelectorView;
+//    private SelectorView mSelectorView;
 
     private Button mAlipayButton;
     private Button mXiaomiPayButton;
     private SwitcherItem mDeliverTimeItem;
-    private SwitcherItem mInvoiceItem;
+    private View mInvoiceItem;
     private TextView mNameTextView;
     private TextView mCityTextView;
     private TextView mAddressTextView;
+    private TextView mInvoiceTV;
+    private String mGid;
+    private String mPid;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
        View view = inflater.inflate(R.layout.checkout_widget, container, false);
 
         TextView title = (TextView)view.findViewById(R.id.title_text);
-        title.setText("订单确认");
+        title.setText(R.string.order_detail);
 
         mRootView = (ViewGroup)view.findViewById(R.id.root_container);
 
-        SelectorView selectorView = new SelectorView(getActivity());
-        SelectorViewListener listener = new SelectorViewListener(mRootView, selectorView);
-
+//        mSelectorView = new SelectorView(getActivity());
+//        SelectorViewListener listener = new SelectorViewListener(mRootView, mSelectorView);
+//
         CheckoutResponse res = getResponse();
-        ProductManager.INSTSNCE.setCurrentCheckoutResponse(res);
 
+        mGid = "2";
+        mPid = "1";
+
+        ProductManager.INSTSNCE.setCurrentCheckoutResponse(res);
+        ProductDetail productDetail = ProductManager.INSTSNCE.getProductDetail(mPid);
+        ProductDetail.GoodStatus goodStatus = productDetail.getGoodStatus(mGid);
+
+        TextView name = (TextView)view.findViewById(R.id.tv_goods_name);
+        name.setText(goodStatus.name);
+
+        TextView buy = (TextView)view.findViewById(R.id.buy_info);
+        buy.setText(getString(R.string.buy_info, res.body.productMoney, res.body.shipment));
+
+        TextView price = (TextView)view.findViewById(R.id.price);
+        price.setText(Html.fromHtml(getString(R.string.price_info, res.body.amount)));
+//
         mDeliverTimeItem = (SwitcherItem)view.findViewById(R.id.deliver_time_item);
         setupDeliverItem(res, mDeliverTimeItem);
-        mDeliverTimeItem.setOnFocusChangeListener(listener);
+//        mDeliverTimeItem.setOnFocusChangeListener(listener);
         mDeliverTimeItem.setOnSelectChangeListener(this);
+        mDeliverTimeItem.setOnFocusChangeListener(this);
+//
+        mInvoiceItem = view.findViewById(R.id.invoice_item);
+//        mInvoiceItem.setOnFocusChangeListener(listener);
+        mInvoiceTV = (TextView)view.findViewById(R.id.tv_invoice_value);
+        setupInvoiceItem(res, mInvoiceTV);
 
-        mInvoiceItem = (SwitcherItem)view.findViewById(R.id.invoice_item);
-        setupInvoiceItem(res, mInvoiceItem);
-        mInvoiceItem.setOnFocusChangeListener(listener);
-        mInvoiceItem.setOnSelectChangeListener(this);
+        mInvoiceItem.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT && event.getAction() == KeyEvent.ACTION_DOWN) {
+                    gotoInvoiceActivity();
+                    return true;
+                }
+
+                return false;
+            }
+        });
+        mInvoiceItem.setClickable(true);
+        mInvoiceItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i(TAG, "click me");
+                gotoInvoiceActivity();
+            }
+        });
+        mInvoiceItem.setOnFocusChangeListener(this);
 
         final View addressView = view.findViewById(R.id.address_item);
-        addressView.setOnFocusChangeListener(listener);
+
+        addressView.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT && event.getAction() == KeyEvent.ACTION_DOWN) {
+                    gotoAddressActivity();
+                    return true;
+                }
+
+                return false;
+            }
+        });
+
+//        addressView.setOnFocusChangeListener(listener);
         addressView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent in = new Intent();
-                in.setClass(getActivity(), AddressActivity.class);
-                startActivity(in);
+                gotoAddressActivity();
             }
         });
+        addressView.setOnFocusChangeListener(this);
 
         mNameTextView = (TextView)view.findViewById(R.id.tv_name);
         mCityTextView = (TextView)view.findViewById(R.id.tv_city);
         mAddressTextView = (TextView)view.findViewById(R.id.tv_address);
 
         mAlipayButton = (Button)view.findViewById(R.id.ali_pay);
-        mAlipayButton.setOnFocusChangeListener(this);
+//        mAlipayButton.setOnFocusChangeListener(this);
         mAlipayButton.requestFocus();
 
         mXiaomiPayButton = (Button)view.findViewById(R.id.xiaomi_pay);
-        mXiaomiPayButton.setOnFocusChangeListener(this);
+//        mXiaomiPayButton.setOnFocusChangeListener(this);
 
         return view;
+    }
+
+    private void gotoInvoiceActivity() {
+        Intent in = new Intent();
+        in.setClass(getActivity(), InvoiceActivity.class);
+        startActivity(in);
+    }
+
+    private void gotoAddressActivity() {
+        Intent in = new Intent();
+        in.setClass(getActivity(), AddressActivity.class);
+        startActivity(in);
     }
 
     @Override
     public void onResume() {
         super.onResume();
         mDeliverTimeItem.setSelectedValue(ProductManager.INSTSNCE.getCurrentCheckoutResponse().getSelectedDeliverTimeValue());
-        mInvoiceItem.setSelectedValue(ProductManager.INSTSNCE.getCurrentCheckoutResponse().getSelectedInvoiceValue());
-
+        setupInvoiceItem(ProductManager.INSTSNCE.getCurrentCheckoutResponse(), mInvoiceTV);
+//
         Address address = ProductManager.INSTSNCE.getCurrentCheckoutResponse().body.address;
         if(address != null){
             mNameTextView.setText(String.format("%s %s", address.consignee, address.tel));
@@ -104,16 +169,17 @@ public class CheckoutFragment extends Fragment implements View.OnFocusChangeList
     }
 
     private void setupDeliverItem(CheckoutResponse res, SwitcherItem item) {
-        item.setTitle("送货时间");
+        item.setTitle(getActivity().getResources().getString(R.string.checkout_deliver));
 
-        List<Pair<String, String>> values = new ArrayList<Pair<String, String>>();
+        List<String> values = new ArrayList<String>();
 
         String checkValue = "";
         for(int i = 0; i < res.body.deliverTimeList.size(); i++){
             CheckoutResponse.DeliverTime time =  res.body.deliverTimeList.get(i);
 
             String value = String.valueOf(time.value);
-            values.add(new Pair<String, String>(value, time.desc));
+            values.add(value);
+
             if(time.checked){
                 checkValue = value;
             }
@@ -133,71 +199,64 @@ public class CheckoutFragment extends Fragment implements View.OnFocusChangeList
         });
     }
 
-    private void setupInvoiceItem(CheckoutResponse res, SwitcherItem item) {
-        item.setTitle("发票信息");
+    private void setupInvoiceItem(CheckoutResponse res, TextView item) {
 
-        List<Pair<String, String>> values = new ArrayList<Pair<String, String>>();
-
-        String checkValue = "";
         for(int i = 0; i < res.body.invoiceList.size(); i++){
-            CheckoutResponse.Invoice time =  res.body.invoiceList.get(i);
+            CheckoutResponse.Invoice invoice =  res.body.invoiceList.get(i);
 
-            String value = String.valueOf(time.value);
-            values.add(new Pair<String, String>(value, time.desc));
-            if(time.checked){
-                checkValue = value;
+            if(invoice.checked) {
+                if(invoice.value == Integer.valueOf(CheckoutResponse.Invoice.PERSONAL_ID)){
+                    item.setText(R.string.invoice_personal);
+                }else if(invoice.value == Integer.valueOf(CheckoutResponse.Invoice.COMPANY_ID)){
+                    item.setText(R.string.invoice_company);
+                }else{
+                    item.setText(R.string.invoice_electron);
+                }
+
+                break;
             }
         }
-
-        item.setValues(values, checkValue);
-        item.setClickable(true);
-        item.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.i(TAG, "click me");
-                Intent in = new Intent();
-                in.setClass(getActivity(), InvoiceActivity.class);
-                startActivity(in);
-            }
-        });
     }
 
     private static CheckoutResponse getResponse() {
+        ProductDetail detail = new ProductDetail();
+        ProductDetail.GoodStatus status = new ProductDetail.GoodStatus();
+        status.id = "2";
+        status.name = "小米路由器 黑色";
+
+        detail.goods_status = new ProductDetail.GoodStatus[]{status};
+
+        ProductManager.INSTSNCE.putProductDetail("1", detail);
+
         CheckoutResponse response = new CheckoutResponse();
 
         CheckoutResponse.DeliverTime time = new CheckoutResponse.DeliverTime();
         time.value = Integer.valueOf(CheckoutResponse.DeliverTime.ON_LIMITED_ID);
-        time.desc = "不限送货时间\r\n周一至周日";
         time.checked = true;
         response.body.deliverTimeList.add(time);
 
         time = new CheckoutResponse.DeliverTime();
         time.value = Integer.valueOf(CheckoutResponse.DeliverTime.HOLIDAY_ID);
-        time.desc = "双休日、节假日送货\r\n周六至周日";
         time.checked = false;
         response.body.deliverTimeList.add(time);
 
         time = new CheckoutResponse.DeliverTime();
         time.value = Integer.valueOf(CheckoutResponse.DeliverTime.WORKING_DAY_ID);
-        time.desc = "工作日送货\r\n周一至周五";
         time.checked = false;
         response.body.deliverTimeList.add(time);
 
         CheckoutResponse.Invoice invoice = new CheckoutResponse.Invoice();
         invoice.value = Integer.valueOf(CheckoutResponse.Invoice.ELECTRON_ID);
-        invoice.desc = "电子发票";
         invoice.checked = true;
         response.body.invoiceList.add(invoice);
 
         invoice = new CheckoutResponse.Invoice();
         invoice.value = Integer.valueOf(CheckoutResponse.Invoice.PERSONAL_ID);
-        invoice.desc = "个人发票";
         invoice.checked = false;
         response.body.invoiceList.add(invoice);
 
         invoice = new CheckoutResponse.Invoice();
         invoice.value = Integer.valueOf(CheckoutResponse.Invoice.COMPANY_ID);
-        invoice.desc = "单位发票";
         invoice.checked = false;
         response.body.invoiceList.add(invoice);
 
@@ -211,25 +270,21 @@ public class CheckoutFragment extends Fragment implements View.OnFocusChangeList
         addr.tel = "122222222";
 
         response.body.address = addr;
+
+        response.body.productMoney = "1000";
+        response.body.shipment = "100";
+        response.body.amount = "1100";
+
         return response;
     }
 
     @Override
     public void onFocusChange(View view, boolean hasFocus) {
-        if(hasFocus){
-
-            if(view == mAlipayButton || view == mXiaomiPayButton){
-                if(mSelectorView != null){
-                    mSelectorView.setVisibility(View.GONE);
-                }
-
-                return;
-            }
-
-            if(mSelectorView != null){
-                mSelectorView.setVisibility(View.VISIBLE);
-            }
-        }
+//        if(hasFocus){
+//           view.setBackgroundResource(R.drawable.height_selector);
+//        }else{
+//            view.setBackgroundResource(android.R.color.transparent);
+//        }
     }
 
     @Override
@@ -240,4 +295,5 @@ public class CheckoutFragment extends Fragment implements View.OnFocusChangeList
             ProductManager.INSTSNCE.getCurrentCheckoutResponse().setInvoiceSelectedByValue(value);
         }
     }
+
 }

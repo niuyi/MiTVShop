@@ -17,7 +17,7 @@ import static android.widget.ImageView.ScaleType.*;
 
 public class SelectorView extends ImageView {
 
-	private int delta = 42;
+	private int delta = 15;
 	private ValueAnimator mValueAnimator;
 	private boolean mInit = false;
 
@@ -25,7 +25,8 @@ public class SelectorView extends ImageView {
 	public SelectorView(Context context) {
 		super(context);
 		setScaleType(FIT_XY);
-		setImageResource(R.drawable.focus_bar);
+//		setImageResource(R.drawable.icon_on);
+		setImageResource(R.drawable.mitv_highlight_bar);
 	}
 
 	public void initView(View focusView, ViewGroup container){

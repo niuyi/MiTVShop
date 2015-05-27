@@ -142,7 +142,8 @@ public class CheckoutResponse {
 
                 result.body.invoice_title = body.optString("invoice_title");
                 result.body.amount = body.optString("amount", "0");
-                result.body.shipment = body.optString("shipment");
+                result.body.shipment = body.optString("shipment", "0");
+                result.body.productMoney = body.optString("productMoney", "0");
                 result.body.invoice_open = body.optBoolean("invoice_open");
                 result.body.total = body.optInt("total", 0);
 
@@ -201,6 +202,7 @@ public class CheckoutResponse {
         public int total;
         public String amount;
         public String shipment;
+        public String productMoney;
     }
 
     public static class Payment{

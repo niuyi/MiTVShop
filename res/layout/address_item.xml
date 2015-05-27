@@ -9,7 +9,8 @@
         android:paddingBottom="10px"
         android:focusable="true"
         android:clickable="true"
-        android:orientation="horizontal" tools:showIn="@layout/checkout_widget">
+        android:background="@drawable/height_selector"
+        android:orientation="horizontal">
 
     <LinearLayout
             android:layout_width="match_parent"
@@ -23,13 +24,13 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
                 android:textSize="38px"
-                android:text="收货地址"/>
+                android:text="@string/checkout_address"/>
 
         <TextView
                 android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="36px"
+                android:textSize="32px"
                 android:layout_marginTop="20px"
                 android:layout_marginLeft="20px"/>
 
